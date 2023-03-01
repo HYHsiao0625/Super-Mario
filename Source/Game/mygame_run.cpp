@@ -33,7 +33,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		chest_and_key.SelectShowBitmap(1);
 	}
 	bee.SetAnimation(40, false);
-	kirby.SetAnimation(60, false);
+	kirby.SetAnimation(100, false);
 
 }
 
@@ -72,10 +72,11 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 		door[i].SetTopLeft(462 - 100 * i, 265);
 	}
 
-	kirby.LoadBitmapByString({ "resources/kirby1.bmp", "resources/kirby2.bmp", "resources/kirby3.bmp", "resources/kirby4.bmp", "resources/kirby5.bmp", 
-		"resources/kirby6.bmp", "resources/kirby7.bmp", "resources/kirby8.bmp"}, RGB(207, 176, 255));
-	kirby.SetTopLeft(100, 250);
+	kirby.LoadBitmapByString({ "resources/kirby0.bmp", "resources/kirby1.bmp", "resources/kirby2.bmp", "resources/kirby3.bmp", "resources/kirby4.bmp",
+		"resources/kirby5.bmp", "resources/kirby6.bmp", "resources/kirby7.bmp", "resources/kirby8.bmp", "resources/kirby9.bmp", "resources/kirby10.bmp",
+		"resources/kirby11.bmp", "resources/kirby12.bmp", "resources/kirby13.bmp", "resources/kirby14.bmp" }, RGB(207, 176, 255));
 	
+	kirby.SetTopLeft(100, 250);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
