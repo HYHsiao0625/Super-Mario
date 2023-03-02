@@ -33,7 +33,7 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 		chest_and_key.SelectShowBitmap(1);
 	}
 	bee.SetAnimation(40, false);
-	kirby.SetAnimation(100, false);
+	kirby.SetAnimation(50, false);
 
 }
 
