@@ -65,9 +65,11 @@ namespace game_framework {
 	protected:
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
+		void show_title_animation();
 		void load_background();
 		void draw_text();
 		CMovingBitmap background;
+		CMovingBitmap titleAnimation;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -96,21 +98,9 @@ namespace game_framework {
 		int phase = 1;
 		int sub_phase = 1;
 		CMovingBitmap background;
+		CMovingBitmap map;
 		CMovingBitmap character;
-		CMovingBitmap chest_and_key;
-		CMovingBitmap bee;
-		CMovingBitmap ball;
-		CMovingBitmap door[3];
-		CMovingBitmap kirby;
-		void show_image_by_phase();
-		void show_text_by_phase();
-		bool validate_phase_1();
-		bool validate_phase_2();
-		bool validate_phase_3();
-		bool validate_phase_4();
-		bool validate_phase_5();
-		bool validate_phase_6();
-
+		//void show_text_by_phase();
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
