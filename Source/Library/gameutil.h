@@ -101,6 +101,8 @@ namespace game_framework {
 		bool  IsAnimation();
 		void  SetHolding(bool status);
 		bool  GetHolding();
+		void  SetKey(int status);
+		int  GetKey();
 		int   GetMovingBitmapFrame();
 		
 		string GetImageFilename();

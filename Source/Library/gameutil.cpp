@@ -222,6 +222,16 @@ namespace game_framework {
 	{
 		return isHolding;
 	}
+
+	void  CMovingBitmap::SetKey(int status)
+	{
+		key = status;
+	}
+
+	int  CMovingBitmap::GetKey()
+	{
+		return key;
+	}
 	/////////////////////////////////////////////////////////////////////////////
 	// CTextDraw: The class provide the ability to draw the text.
 	// 這個 class 提供文字的呈現

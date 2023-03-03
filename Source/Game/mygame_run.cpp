@@ -29,7 +29,25 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 {
 	if (character.GetHolding())
 	{
-		character.SetTopLeft(character.Left(), character.Top() - 1);
+		switch (character.GetKey())
+		{
+		case 0:
+			break;
+		case 1:
+			character.SetTopLeft(character.Left(), character.Top() - 1);
+			break;
+		case 2:
+			character.SetTopLeft(character.Left() + 1, character.Top());
+			break;
+		case 3:
+			character.SetTopLeft(character.Left(), character.Top() + 1);
+			break;
+		case 4:
+			character.SetTopLeft(character.Left() - 1, character.Top());
+			break;
+		default:
+			break;
+		}
 	}
 	if (character.Top() + character.Height() >= chest_and_key.Top() && character.Top() <= chest_and_key.Top() + chest_and_key.Height() &&
 		character.Left() + character.Width() >= chest_and_key.Left() && character.Left() <= chest_and_key.Left() + chest_and_key.Width())
@@ -142,25 +160,41 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_UP)
 	{
+		character.SetKey(1);
 		character.SetHolding(true);
 	}
 	if (nChar == VK_RIGHT)
 	{
-		character.SetTopLeft(character.Left() + 50, character.Top());
+		character.SetKey(2);
+		character.SetHolding(true);
 	}
 	if (nChar == VK_DOWN)
 	{
-		character.SetTopLeft(character.Left(), character.Top() + 50);
+		character.SetKey(3);
+		character.SetHolding(true);
 	}
 	if (nChar == VK_LEFT)
 	{
-		character.SetTopLeft(character.Left() - 50, character.Top());
+		character.SetKey(4);
+		character.SetHolding(true);
 	}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if (nChar == VK_UP)
+	{
+		character.SetHolding(false);
+	}
+	if (nChar == VK_RIGHT)
+	{
+		character.SetHolding(false);
+	}
+	if (nChar == VK_DOWN)
+	{
+		character.SetHolding(false);
+	}
+	if (nChar == VK_LEFT)
 	{
 		character.SetHolding(false);
 	}
