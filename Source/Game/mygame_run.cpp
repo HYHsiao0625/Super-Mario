@@ -29,6 +29,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	if (character.GetHolding())
 	{
+		int x = character.Left();
+		int y = character.Top();
 		switch (character.GetKey())
 		{
 		case 0:
@@ -37,7 +39,10 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 			character.SetTopLeft(character.Left(), character.Top() - 1);
 			break;
 		case 2:
-			character.SetTopLeft(character.Left() + 1, character.Top());
+			character.LoadBitmapByString({ "Resources/Playable Characters/walk/.bmp/walk1.bmp","Resources/Playable Characters/walk/.bmp/walk2.bmp",
+											"Resources/Playable Characters/walk/.bmp/walk3.bmp","Resources/Playable Characters/walk/.bmp/walk4.bmp" }, RGB(207, 176, 255));
+			character.SetAnimation(350, false);
+			character.SetTopLeft(x + 1, y);
 			break;
 		case 3:
 			character.SetTopLeft(character.Left(), character.Top() + 1);
