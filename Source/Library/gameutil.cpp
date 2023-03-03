@@ -119,7 +119,7 @@ namespace game_framework {
 		location.right -= dx;
 		location.bottom -= dy;
 	}
-
+	
 	void CMovingBitmap::SetAnimation(int delay, bool _once) {
 		if(!_once) isAnimation = true;
 		once = _once;
@@ -212,7 +212,16 @@ namespace game_framework {
 	bool CMovingBitmap::IsAnimation() {
 		return isAnimation;
 	}
+	
+	void  CMovingBitmap::SetHolding(bool status)
+	{
+		isHolding = status;
+	}
 
+	bool  CMovingBitmap::GetHolding()
+	{
+		return isHolding;
+	}
 	/////////////////////////////////////////////////////////////////////////////
 	// CTextDraw: The class provide the ability to draw the text.
 	// 這個 class 提供文字的呈現

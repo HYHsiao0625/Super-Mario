@@ -99,7 +99,10 @@ namespace game_framework {
 		int   Width();						// 取得圖形的寬度
 		bool  IsAnimationDone();
 		bool  IsAnimation();
+		void  SetHolding(bool status);
+		bool  GetHolding();
 		int   GetMovingBitmapFrame();
+		
 		string GetImageFilename();
 		COLORREF GetFilterColor();
 	protected:
@@ -110,6 +113,8 @@ namespace game_framework {
 		bool isAnimation = false;
 		bool isAnimationDone = true;
 		bool once = false;
+		bool isHolding = false;
+		int key = 0;
 		vector<unsigned> SurfaceID;
 		COLORREF filter_color;
 		bool     isBitmapLoaded = false;	// whether a bitmap has been loaded

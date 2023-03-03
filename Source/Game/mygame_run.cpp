@@ -27,18 +27,23 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
+	if (character.GetHolding())
+	{
+		character.SetTopLeft(character.Left(), character.Top() - 1);
+	}
 	if (character.Top() + character.Height() >= chest_and_key.Top() && character.Top() <= chest_and_key.Top() + chest_and_key.Height() &&
 		character.Left() + character.Width() >= chest_and_key.Left() && character.Left() <= chest_and_key.Left() + chest_and_key.Width())
 	{
 		chest_and_key.SelectShowBitmap(1);
 	}
 	bee.SetAnimation(40, false);
-	kirby.SetAnimation(50, false);
+	kirby.SetAnimation(100, false);
 
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
+	int characterstate = 0;
 	background.LoadBitmapByString({ 
 		"resources/phase11_background.bmp", 
 		"resources/phase12_background.bmp", 
@@ -55,7 +60,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	});
 	background.SetTopLeft(0, 0);
 
-	character.LoadBitmapByString({ "resources/giraffe.bmp" }, RGB(255, 255, 255));
+	character.LoadBitmapByString({ "Resources/Playable Characters/others/.bmp/basic1.bmp","Resources/Playable Characters/others/.bmp/basic2.bmp"}, RGB(207, 176, 255));
+	character.SetAnimation(700, false);
 	character.SetTopLeft(150, 265);
 
 	chest_and_key.LoadBitmapByString({ "resources/chest.bmp", "resources/chest_ignore.bmp" }, RGB(255, 255, 255));
@@ -136,7 +142,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_UP)
 	{
-		character.SetTopLeft(character.Left(), character.Top() - 50);
+		character.SetHolding(true);
 	}
 	if (nChar == VK_RIGHT)
 	{
@@ -154,7 +160,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	
+	if (nChar == VK_UP)
+	{
+		character.SetHolding(false);
+	}
 }
 
 
@@ -189,7 +198,7 @@ void CGameStateRun::show_image_by_phase() {
 		background.SelectShowBitmap((phase - 1) * 2 + (sub_phase - 1));
 		background.ShowBitmap();
 		character.ShowBitmap();
-		kirby.ShowBitmap();
+		//kirby.ShowBitmap();
 		if (phase == 3 && sub_phase == 1) {
 			chest_and_key.ShowBitmap();
 		}
@@ -199,6 +208,13 @@ void CGameStateRun::show_image_by_phase() {
 		if (phase == 5 && sub_phase == 1) {
 			for (int i = 0; i < 3; i++) {
 				door[i].ShowBitmap();
+			}
+			for (int i = 0; i < 3; i++) {
+				if ((character.Top() + character.Height() >= door[i].Top() || character.Top() <= door[i].Top() + door[i].Height())&&
+					character.Left() + character.Width() >= door[i].Left())
+				{
+					door[i].SelectShowBitmap(1);
+				}
 			}
 		}
 		if (phase == 6 && sub_phase == 1) {
@@ -238,12 +254,6 @@ void CGameStateRun::show_text_by_phase() {
 		CTextDraw::Print(pDC, 173, 128, "幫你準備了三扇門");
 		CTextDraw::Print(pDC, 89, 162, "設計程式讓長頸鹿摸到門之後，門會打開");
 		CTextDraw::Print(pDC, 373, 537, "按下 Enter 鍵來驗證");
-		for (int i = 0; i < 3; i++) {
-			if (character.Top() + character.Height() >= door[i].Top() && character.Left() + character.Width() >= door[i].Left())
-			{
-				door[i].SelectShowBitmap(1);
-			}
-		}
 	} else if (phase == 6 && sub_phase == 1) {
 		CTextDraw::Print(pDC, 173, 128, "幫你準備了一顆會倒數的球");
 		CTextDraw::Print(pDC, 89, 162, "設計程式讓球倒數，然後顯示 OK 後停止動畫");
