@@ -29,7 +29,15 @@ namespace game_framework {
 	{
 		isBitmapLoaded = false;
 	}
-
+	void CMovingBitmap::UpData()
+	{
+		int dx = -horizontalSpeed;
+		int dy = -verticalSpeed;
+		location.left = location.left + horizontalSpeed;
+		location.right -= dx;
+		location.top = location.top + verticalSpeed;
+		location.bottom -= dy;
+	}
 	int CMovingBitmap::Height()
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
@@ -213,6 +221,32 @@ namespace game_framework {
 		return isAnimation;
 	}
 
+	void CMovingBitmap::SetVerticalSpeed(int value)
+	{
+		verticalSpeed = value;
+	}
+	void CMovingBitmap::SetHorizontalSpeed(int value)
+	{
+		horizontalSpeed = value;
+	}
+
+	int CMovingBitmap::GetVerticalSpeed()
+	{
+		return verticalSpeed;
+	}
+	int CMovingBitmap::GetHorizontalSpeed()
+	{
+		return horizontalSpeed;
+	}
+
+	void CMovingBitmap::SetKeyPressed(bool flags)
+	{
+		isKeyPressed = flags;
+	}
+	bool CMovingBitmap::IsKeyPressed()
+	{
+		return isKeyPressed;
+	}
 	/////////////////////////////////////////////////////////////////////////////
 	// CTextDraw: The class provide the ability to draw the text.
 	// 這個 class 提供文字的呈現
