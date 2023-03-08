@@ -62,9 +62,6 @@
     <ClInclude Include="Source\Library\gamecore.h">
       <Filter>GameLibrary</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Library\gameutil.h">
-      <Filter>GameLibrary</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Core\Game.h">
       <Filter>MFC</Filter>
     </ClInclude>
@@ -88,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\config.h">
       <Filter>MyGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Library\gameutil.h">
+      <Filter>GameLibrary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

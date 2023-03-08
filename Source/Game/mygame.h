@@ -60,14 +60,17 @@ namespace game_framework {
 		CGameStateInit(CGame *g);
 		void OnInit();  								// 遊戲的初值及圖形設定
 		void OnBeginState();							// 設定每次重玩所需的變數
+		void OnKeyDown(UINT, UINT, UINT);
 		void OnKeyUp(UINT, UINT, UINT); 				// 處理鍵盤Up的動作
 		void OnLButtonDown(UINT nFlags, CPoint point);  // 處理滑鼠的動作
 	protected:
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		void load_background();
-		void draw_text();
-		CMovingBitmap background;
+		void LoadTitle();
+		CMovingBitmap title;
+		CMovingBitmap coin;
+		CMovingBitmap select;
+		int player;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -92,22 +95,13 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		int phase = 1;
-		int sub_phase = 1;
+		void LoadBackground();
+		void LoadMap();
+		int world = 1;
+		int level = 1;
 		CMovingBitmap background;
-		CMovingBitmap character;
-		CMovingBitmap chest_and_key;
-		CMovingBitmap bee;
-		CMovingBitmap ball;
-		CMovingBitmap door[3];
-		void show_image_by_phase();
-		void show_text_by_phase();
-		bool validate_phase_1();
-		bool validate_phase_2();
-		bool validate_phase_3();
-		bool validate_phase_4();
-		bool validate_phase_5();
-		bool validate_phase_6();
+		CMovingBitmap map;
+		CMovingBitmap switchAnimation;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -125,8 +119,6 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
-		CMovingBitmap background;
-		void load_background();
 	};
 
 }
