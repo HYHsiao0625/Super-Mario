@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "../Core/Resource.h"
 #include <mmsystem.h>
 #include <ddraw.h>
@@ -9,7 +9,7 @@
 
 using namespace game_framework;
 /////////////////////////////////////////////////////////////////////////////
-// ³o­Óclass¬°¹CÀ¸ªº¹CÀ¸¶}ÀYµe­±ª«¥ó
+// é€™å€‹classç‚ºéŠæˆ²çš„éŠæˆ²é–‹é ­ç•«é¢ç‰©ä»¶
 /////////////////////////////////////////////////////////////////////////////
 
 CGameStateInit::CGameStateInit(CGame *g) : CGameState(g)
@@ -20,18 +20,18 @@ CGameStateInit::CGameStateInit(CGame *g) : CGameState(g)
 void CGameStateInit::OnInit()
 {
 	//
-	// ·í¹Ï«Ü¦h®É¡AOnInit¸ü¤J©Ò¦³ªº¹Ï­nªá«Ü¦h®É¶¡¡C¬°Á×§Kª±¹CÀ¸ªº¤H
-	//     µ¥ªº¤£­@·Ğ¡A¹CÀ¸·|¥X²{¡uLoading ...¡v¡AÅã¥ÜLoadingªº¶i«×¡C
+	// ç•¶åœ–å¾ˆå¤šæ™‚ï¼ŒOnInitè¼‰å…¥æ‰€æœ‰çš„åœ–è¦èŠ±å¾ˆå¤šæ™‚é–“ã€‚ç‚ºé¿å…ç©éŠæˆ²çš„äºº
+	//     ç­‰çš„ä¸è€ç…©ï¼ŒéŠæˆ²æœƒå‡ºç¾ã€ŒLoading ...ã€ï¼Œé¡¯ç¤ºLoadingçš„é€²åº¦ã€‚
 	//
-	ShowInitProgress(0, "Start Initialize...");	// ¤@¶}©lªºloading¶i«×¬°0%
+	ShowInitProgress(0, "Start Initialize...");	// ï¿½@ï¿½}ï¿½lï¿½ï¿½loadingï¿½iï¿½×¬ï¿½0%
 	Sleep(200);
 
-	load_background();
+	LoadTitle();
 
 	ShowInitProgress(66, "Initialize...");
 	Sleep(200);
 	//
-	// ¦¹OnInit°Ê§@·|±µ¨ìCGameStaterRun::OnInit()¡A©Ò¥H¶i«×ÁÙ¨S¨ì100%
+	// æ­¤OnInitå‹•ä½œæœƒæ¥åˆ°CGameStaterRun::OnInit()ï¼Œæ‰€ä»¥é€²åº¦é‚„æ²’åˆ°100%
 	//
 }
 
@@ -40,9 +40,44 @@ void CGameStateInit::OnBeginState()
 	
 }
 
+void CGameStateInit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if (nChar == VK_UP || nChar == 0x57)
+	{
+		switch (player)
+		{
+		default:
+			break;
+		case 1:
+			break;
+		case 2:
+			player = 1;
+			select.SetTopLeft(72 * 4 + 1, 144 * 4 + 2);
+		}
+	}
+	if (nChar == VK_DOWN || nChar == 0x53)
+	{
+		switch (player)
+		{
+		default:
+			break;
+		case 1:
+			player = 2;
+			select.SetTopLeft(72 * 4 + 1, 160 * 4 + 2);
+		case 2:
+			break;
+		}
+	}
+	if (nChar == VK_RETURN)
+	{
+		GotoGameState(GAME_STATE_RUN);
+	}
+
+}
+
 void CGameStateInit::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	GotoGameState(GAME_STATE_RUN);		// ¤Á´«¦ÜGAME_STATE_RUN
+	//GotoGameState(GAME_STATE_RUN);		// åˆ‡æ›è‡³GAME_STATE_RUN
 }
 
 void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
@@ -51,26 +86,50 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CGameStateInit::OnShow()
 {
-	background.ShowBitmap();
-	draw_text();
+	title.ShowBitmap(4);
+	coin.ShowBitmap(4);
+	coin.SetAnimation(150, false);
+	select.ShowBitmap(4);
+	//draw_text();
 }
 
-void CGameStateInit::load_background() {
-	background.LoadBitmapByString({ "resources/initialize_background.bmp" });
-	background.SetTopLeft(0, 0);
+void CGameStateInit::LoadTitle() {
+	player = 1;
+	title.LoadBitmapByString({ "resources/title.bmp" });
+	title.SetTopLeft(0, 0);
+	coin.LoadBitmapByString({
+		"resources/coin_overworld1.bmp",
+		"resources/coin_overworld2.bmp",
+		"resources/coin_overworld3.bmp",
+		"resources/coin_overworld1.bmp",
+		});
+	coin.SetTopLeft(88 * 4 + 1, 24 * 4);
+	select.LoadBitmapByString({
+		"resources/select.bmp",
+		"resources/reject.bmp"
+		});
+	if (player == 1)
+	{
+		select.SetTopLeft(72 * 4 + 1, 144 * 4 + 2);
+	}
+	else
+	{
+		select.SetTopLeft(72 * 4 + 1, 160 * 4 + 2);
+	}
+
 }
 
-void CGameStateInit::draw_text() {
+/*void CGameStateInit::draw_text() {
 	CDC *pDC = CDDraw::GetBackCDC();
 	CFont* fp;
 
-	/* Print title */
-	CTextDraw::ChangeFontLog(pDC, fp, 36, "·L³n¥¿¶ÂÅé", RGB(255, 255, 255));
+	// Print title 
+	CTextDraw::ChangeFontLog(pDC, fp, 36, "å¾®è»Ÿæ­£é»‘é«”", RGB(255, 255, 255));
 	CTextDraw::Print(pDC, 79, 228, "Game Framework Practice");
 
-	/* Print info */
-	CTextDraw::ChangeFontLog(pDC, fp, 24, "·L³n¥¿¶ÂÅé", RGB(255, 255, 255));
+	// Print info 
+	CTextDraw::ChangeFontLog(pDC, fp, 24, "å¾®è»Ÿæ­£é»‘é«”", RGB(255, 255, 255));
 	CTextDraw::Print(pDC, 182, 431, "Press any key to start");
 
 	CDDraw::ReleaseBackCDC();
-}
+}*/
