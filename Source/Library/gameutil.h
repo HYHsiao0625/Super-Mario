@@ -81,39 +81,73 @@ namespace game_framework {
 	class CMovingBitmap {
 	public:
 		CMovingBitmap();
+		//refresh
+		void  UpData();
+		//basic
 		int   Height();						// 取得圖形的高度
 		int   Left();						// 取得圖形的左上角的 x 座標
+		int   Top();						// 取得圖形的左上角的 y 座標
+		int   Width();						// 取得圖形的寬度
+		
+		//setter
 		void  SetAnimation(int delay, bool _once);
+		void  SetTopLeft(int, int);			// 將圖的左上角座標移至 (x,y)
+		void  SetVerticalSpeed(int);
+		void  SetHorizontalSpeed(int);
+		void  SetKeyPressed(bool);
+		void  SetCollision(bool);
+
+		//load
 		void  LoadBitmap(int, COLORREF = CLR_INVALID);		// 載入圖，指定圖的編號(resource)及透明色
 		void  LoadBitmap(char*, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
 		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
 		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
+
+		//unshow
 		void  UnshowBitmap();
-		void  SetTopLeft(int, int);			// 將圖的左上角座標移至 (x,y)
+		
+		//show
 		void  ShowBitmap();					// 將圖貼到螢幕
 		void  ShowBitmap(double factor);	// 將圖貼到螢幕 factor < 1時縮小，>1時放大。注意：需要VGA卡硬體的支援，否則會很慢
+		
+		//selecter
 		void  SelectShowBitmap(int select);
+
+		//getter
 		int   GetSelectShowBitmap();
-		void  ToggleAnimation();
-		int   Top();						// 取得圖形的左上角的 y 座標
-		int   Width();						// 取得圖形的寬度
-		bool  IsAnimationDone();
-		bool  IsAnimation();
 		int   GetMovingBitmapFrame();
 		string GetImageFilename();
 		COLORREF GetFilterColor();
+		int  GetVerticalSpeed();
+		int  GetHorizontalSpeed();
+
+		//animation
+		void  ToggleAnimation();
+
+		//Is function
+		bool  IsAnimationDone();
+		bool  IsAnimation();
+		bool  IsKeyPressed();
+		bool  IsCollision();
+
 	protected:
 		int selector = 0;
 		int delayCount = 10;
 		int animationCount = -1;
+		int horizontalSpeed = 0;
+		int verticalSpeed = 0;
 		clock_t last_time = clock();
+
 		bool isAnimation = false;
 		bool isAnimationDone = true;
+		bool isBitmapLoaded = false;	// whether a bitmap has been loaded
 		bool once = false;
+		bool isKeyPressed = false;
+		bool isCollision = true;
 		vector<unsigned> SurfaceID;
 		COLORREF filter_color;
-		bool     isBitmapLoaded = false;	// whether a bitmap has been loaded
 		CRect    location;			// location of the bitmap
+
 	private:
 		string image_filename;
 	};
