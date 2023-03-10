@@ -229,6 +229,10 @@ namespace game_framework {
 	{
 		horizontalSpeed = value;
 	}
+	void CMovingBitmap::SetCollision(bool value)
+	{
+		isCollision = value;
+	}
 
 	int CMovingBitmap::GetVerticalSpeed()
 	{
@@ -246,6 +250,11 @@ namespace game_framework {
 	bool CMovingBitmap::IsKeyPressed()
 	{
 		return isKeyPressed;
+	}
+
+	bool CMovingBitmap::IsCollision()
+	{
+		return isCollision;
 	}
 	/////////////////////////////////////////////////////////////////////////////
 	// CTextDraw: The class provide the ability to draw the text.

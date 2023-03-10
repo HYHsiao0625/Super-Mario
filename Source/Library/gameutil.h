@@ -95,6 +95,7 @@ namespace game_framework {
 		void  SetVerticalSpeed(int);
 		void  SetHorizontalSpeed(int);
 		void  SetKeyPressed(bool);
+		void  SetCollision(bool);
 
 		//load
 		void  LoadBitmap(int, COLORREF = CLR_INVALID);		// 載入圖，指定圖的編號(resource)及透明色
@@ -127,6 +128,7 @@ namespace game_framework {
 		bool  IsAnimationDone();
 		bool  IsAnimation();
 		bool  IsKeyPressed();
+		bool  IsCollision();
 
 	protected:
 		int selector = 0;
@@ -141,6 +143,7 @@ namespace game_framework {
 		bool isBitmapLoaded = false;	// whether a bitmap has been loaded
 		bool once = false;
 		bool isKeyPressed = false;
+		bool isCollision = true;
 		vector<unsigned> SurfaceID;
 		COLORREF filter_color;
 		CRect    location;			// location of the bitmap

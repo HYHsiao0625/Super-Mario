@@ -6,6 +6,7 @@
 #include "../Library/gameutil.h"
 #include "../Library/gamecore.h"
 #include "mygame.h"
+#include <string>
 
 using namespace game_framework;
 
@@ -34,6 +35,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	LoadBackground();
 	LoadMap();
 	LoadMario();
+	ShowMarioPostion();
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -96,6 +98,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 
 void CGameStateRun::OnShow()
 {
+	mario.UpData();
 	if (world == 1)
 	{
 		if (level == 1)
@@ -104,15 +107,24 @@ void CGameStateRun::OnShow()
 			background.ShowBitmap(4);
 			map.ShowBitmap(4);
 			mario.ShowBitmap(4);
+			ShowMarioPostion();
 		}
 	}
-	mario.UpData();
-	if (mario.Top() + mario.Height() * 4 >= map.Top())
+	
+	if(map.Left() + 1104 * 4 <= mario.Left() && mario.Left() <= map.Left() + 1135 * 4)
+	{
+		mario.SetCollision(false);
+		mario.SetVerticalSpeed(12);
+	}
+	else
+	{
+		mario.SetCollision(true);
+	}
+	if (mario.Top() + mario.Height() * 4 >= map.Top() && mario.IsCollision())
 	{
 		mario.SetVerticalSpeed(0);
 		//mario.SetTopLeft(0, 0);
 	}
-
 	//----------MARIO-MAP-LIMIT----------
 	if (mario.Left() <= map.Left())
 	{
@@ -124,6 +136,7 @@ void CGameStateRun::OnShow()
 		mario.SetHorizontalSpeed(0);
 	}
 	//----------MARIO-MAP-LIMIT----------
+
 	//-------------MAP-LIMIT-------------
 	if (map.Left() < 0 && mario.Left() <= 384)
 	{
@@ -167,4 +180,25 @@ void CGameStateRun::LoadMap()
 		"resources/1-1 floor.bmp"
 		});
 	map.SetTopLeft(0, 208 * 4 + 1);
+}
+
+void CGameStateRun::ShowMarioPostion()
+{
+	CDC *pDC = CDDraw::GetBackCDC();
+	CFont* fp;
+	if (world == 1 && level == 1)
+	{
+
+		CTextDraw::ChangeFontLog(pDC, fp, 21, "微軟正黑體", RGB(0, 0, 0), 800);
+		
+		CTextDraw::Print(pDC, 0, 0, "MARIO:");
+		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.Left()));
+		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.Top()));
+
+		CTextDraw::Print(pDC, 0, 48, "MAP:");
+		CTextDraw::Print(pDC, 0, 64, std::to_string(map.Left()));
+		CTextDraw::Print(pDC, 0, 80, std::to_string(map.Top()));
+	}
+	CDDraw::ReleaseBackCDC();
+	
 }

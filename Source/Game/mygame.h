@@ -98,9 +98,12 @@ namespace game_framework {
 		void LoadBackground();
 		void LoadMap();
 		void LoadMario();
+		void ShowMarioPostion();
+
 		int world = 1;
 		int level = 1;
 		int GRAVITY = 10;
+
 		CMovingBitmap background;
 		CMovingBitmap map;
 		CMovingBitmap switchAnimation;
