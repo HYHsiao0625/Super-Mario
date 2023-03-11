@@ -30,6 +30,37 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
+	int postition_X = mario.Left();
+	int postition_Y = mario.Top();
+	if (mario.IsKeyPressed() == true) {
+		switch (mario.GetPressedKey()) {
+			case 1:
+				mario.LoadBitmapByString({
+				"resources/marioreverse1.bmp",
+				"resources/marioreverse2.bmp",
+				"resources/marioreverse3.bmp",
+				"resources/marioreverse4.bmp"
+					}, RGB(146, 144, 255));
+				mario.SetTopLeft(postition_X, postition_Y);
+				mario.SetHorizontalSpeed(-8);
+				break;
+			case 2:
+				mario.LoadBitmapByString({
+				"resources/mario1.bmp",
+				"resources/mario2.bmp",
+				"resources/mario3.bmp",
+				"resources/mario4.bmp"
+					}, RGB(146, 144, 255));
+				mario.SetTopLeft(postition_X, postition_Y);
+				mario.SetHorizontalSpeed(8);
+				break;
+			}
+		mario.SetAnimation(120, false);
+	}
+	else{
+		mario.SetAnimation(100, true);
+		mario.SelectShowBitmap(0);
+	}
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -42,15 +73,16 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if (nChar == 0x41) //key == A
+
+	if (nChar == 0x41) //key(1) == A
 	{
+		mario.SetPressedKey(1);
 		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(-8);
 	}
-	if (nChar == 0x44) //key == D
+	if (nChar == 0x44) //key(2) == D
 	{
+		mario.SetPressedKey(2);
 		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(8);
 	}
 	if (nChar == VK_SPACE)
 	{
@@ -66,8 +98,8 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		mario.SetHorizontalSpeed(0);
 		mario.SetKeyPressed(false);
 	}
-	if (nChar == 0x44) //key == D
-	{
+	if (nChar == 0x44) //key(2)== D
+	{	
 		mario.SetHorizontalSpeed(0);
 		mario.SetKeyPressed(false);
 	}

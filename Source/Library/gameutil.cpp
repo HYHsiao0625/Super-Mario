@@ -229,6 +229,10 @@ namespace game_framework {
 	{
 		horizontalSpeed = value;
 	}
+	void CMovingBitmap::SetPressedKey(int value)
+	{
+		pressedKey = value;
+	}
 	void CMovingBitmap::SetCollision(bool value)
 	{
 		isCollision = value;
@@ -241,6 +245,11 @@ namespace game_framework {
 	int CMovingBitmap::GetHorizontalSpeed()
 	{
 		return horizontalSpeed;
+	}
+
+	int CMovingBitmap::GetPressedKey()
+	{
+		return pressedKey;
 	}
 
 	void CMovingBitmap::SetKeyPressed(bool flags)

@@ -95,6 +95,7 @@ namespace game_framework {
 		void  SetVerticalSpeed(int);
 		void  SetHorizontalSpeed(int);
 		void  SetKeyPressed(bool);
+		void  SetPressedKey(int);
 		void  SetCollision(bool);
 
 		//load
@@ -120,6 +121,7 @@ namespace game_framework {
 		COLORREF GetFilterColor();
 		int  GetVerticalSpeed();
 		int  GetHorizontalSpeed();
+		int  GetPressedKey();
 
 		//animation
 		void  ToggleAnimation();
@@ -136,6 +138,7 @@ namespace game_framework {
 		int animationCount = -1;
 		int horizontalSpeed = 0;
 		int verticalSpeed = 0;
+		int pressedKey = 0;
 		clock_t last_time = clock();
 
 		bool isAnimation = false;
