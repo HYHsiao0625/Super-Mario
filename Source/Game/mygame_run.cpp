@@ -7,6 +7,8 @@
 #include "../Library/gamecore.h"
 #include "mygame.h"
 #include <string>
+#include <windows.h>
+
 
 using namespace game_framework;
 
@@ -53,7 +55,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_SPACE)
 	{
 		mario.SetKeyPressed(true);
-		mario.SetVerticalSpeed(-12);
+		mario.SetVerticalSpeed(-8);
 	}
 }
 
@@ -121,8 +123,9 @@ void CGameStateRun::OnShow()
 		mario.SetCollision(true);
 	}
 	if (mario.Top() + mario.Height() * 4 >= map.Top() && mario.IsCollision())
-	{
-		mario.SetVerticalSpeed(0);
+	{   
+			mario.SetVerticalSpeed(0);
+			mario.SetTopLeft(mario.Left(), 770);
 		//mario.SetTopLeft(0, 0);
 	}
 	//----------MARIO-MAP-LIMIT----------
@@ -194,10 +197,11 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::Print(pDC, 0, 0, "MARIO:");
 		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.Left()));
 		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.Top()));
+		CTextDraw::Print(pDC, 0, 48, std::to_string(mario.GetVerticalSpeed()));
 
-		CTextDraw::Print(pDC, 0, 48, "MAP:");
-		CTextDraw::Print(pDC, 0, 64, std::to_string(map.Left()));
-		CTextDraw::Print(pDC, 0, 80, std::to_string(map.Top()));
+		CTextDraw::Print(pDC, 0, 64, "MAP:");
+		CTextDraw::Print(pDC, 0, 80, std::to_string(map.Left()));
+		CTextDraw::Print(pDC, 0, 96, std::to_string(map.Top()));
 	}
 	CDDraw::ReleaseBackCDC();
 	
