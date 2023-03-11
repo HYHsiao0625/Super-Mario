@@ -123,6 +123,7 @@ void CGameStateRun::OnShow()
 	if (mario.Top() + mario.Height() * 4 >= map.Top() && mario.IsCollision())
 	{
 		mario.SetVerticalSpeed(0);
+		mario.SetTopLeft(mario.Left(), 770);
 		//mario.SetTopLeft(0, 0);
 	}
 	//----------MARIO-MAP-LIMIT----------
