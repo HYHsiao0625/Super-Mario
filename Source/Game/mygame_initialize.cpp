@@ -23,8 +23,7 @@ void CGameStateInit::OnInit()
 	// 當圖很多時，OnInit載入所有的圖要花很多時間。為避免玩遊戲的人
 	//     等的不耐煩，遊戲會出現「Loading ...」，顯示Loading的進度。
 	//
-	ShowInitProgress(0, "Start Initialize...");	// �@�}�l��loading�i�׬�0%
-	Sleep(200);
+	ShowInitProgress(0, "Start Initialize...");
 
 	LoadTitle();
 

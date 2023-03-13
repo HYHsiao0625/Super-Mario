@@ -6,9 +6,7 @@
 #include "../Library/gameutil.h"
 #include "../Library/gamecore.h"
 #include "mygame.h"
-#include <string>
-#include <windows.h>
-
+#include "string"
 
 using namespace game_framework;
 
@@ -30,37 +28,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	int postition_X = mario.Left();
-	int postition_Y = mario.Top();
-	if (mario.IsKeyPressed() == true) {
-		switch (mario.GetPressedKey()) {
-			case 1:
-				mario.LoadBitmapByString({
-				"resources/marioreverse1.bmp",
-				"resources/marioreverse2.bmp",
-				"resources/marioreverse3.bmp",
-				"resources/marioreverse4.bmp"
-					}, RGB(146, 144, 255));
-				mario.SetTopLeft(postition_X, postition_Y);
-				mario.SetHorizontalSpeed(-8);
-				break;
-			case 2:
-				mario.LoadBitmapByString({
-				"resources/mario1.bmp",
-				"resources/mario2.bmp",
-				"resources/mario3.bmp",
-				"resources/mario4.bmp"
-					}, RGB(146, 144, 255));
-				mario.SetTopLeft(postition_X, postition_Y);
-				mario.SetHorizontalSpeed(8);
-				break;
-			}
-		mario.SetAnimation(120, false);
-	}
-	else{
-		mario.SetAnimation(100, true);
-		mario.SelectShowBitmap(0);
-	}
+
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -68,26 +36,28 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	LoadBackground();
 	LoadMap();
 	LoadMario();
-	ShowMarioPostion();
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 
-	if (nChar == 0x41) //key(1) == A
+	if (nChar == 0x41)
 	{
-		mario.SetPressedKey(1);
 		mario.SetKeyPressed(true);
+		mario.SetHorizontalSpeed(-8);
+		mario.SetStatus("leftwalk");
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
-		mario.SetPressedKey(2);
 		mario.SetKeyPressed(true);
+		mario.SetHorizontalSpeed(8);
+		mario.SetStatus("rightwalk");
 	}
 	if (nChar == VK_SPACE)
 	{
 		mario.SetKeyPressed(true);
-		mario.SetVerticalSpeed(-8);
+		mario.SetVerticalSpeed(-12);
+		mario.SetStatus("jump");
 	}
 }
 
@@ -95,16 +65,19 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if (nChar == 0x41)
 	{
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
 		mario.SetKeyPressed(false);
 	}
 	if (nChar == 0x44) //key(2)== D
 	{	
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
 		mario.SetKeyPressed(false);
 	}
 	if (nChar == VK_SPACE)
 	{
+		mario.SetStatus("initial");
 		mario.SetVerticalSpeed(12);
 		mario.SetKeyPressed(false);
 	}
@@ -137,15 +110,27 @@ void CGameStateRun::OnShow()
 	{
 		if (level == 1)
 		{
-			background.SelectShowBitmap(0);
 			background.ShowBitmap(4);
 			map.ShowBitmap(4);
 			mario.ShowBitmap(4);
 			ShowMarioPostion();
 		}
 	}
-	
-	if(map.Left() + 1104 * 4 <= mario.Left() && mario.Left() <= map.Left() + 1135 * 4)
+	if (mario.GetStatus() == "initial")
+	{
+		mario.SetFrameIndexOfBitmap(0);
+	}
+	if (mario.GetStatus() == "rightwalk")
+	{
+		mario.SetAnimation(120, false);
+	}
+	if (mario.GetStatus() == "jump")
+	{
+		mario.SetFrameIndexOfBitmap(0);
+	}
+
+
+	if(map.GetLeft() + 1104 * 4 <= mario.GetLeft() && mario.GetLeft() <= map.GetLeft() + 1135 * 4)
 	{
 		mario.SetCollision(false);
 		mario.SetVerticalSpeed(12);
@@ -154,36 +139,37 @@ void CGameStateRun::OnShow()
 	{
 		mario.SetCollision(true);
 	}
-	if (mario.Top() + mario.Height() * 4 >= map.Top() && mario.IsCollision())
+
+	if (mario.GetTop() + mario.GetHeight() * 4 >= map.GetTop() && mario.IsCollision())
 	{   
-			mario.SetVerticalSpeed(0);
-			mario.SetTopLeft(mario.Left(), 770);
+		mario.SetVerticalSpeed(0);
+		mario.SetTopLeft(mario.GetLeft(), 770);
 		//mario.SetTopLeft(0, 0);
 	}
 	//----------MARIO-MAP-LIMIT----------
-	if (mario.Left() <= map.Left())
+	if (mario.GetLeft() <= map.GetLeft())
 	{
 		mario.SetHorizontalSpeed(0);
-		mario.SetTopLeft(map.Left(),mario.Top());
+		mario.SetTopLeft(map.GetLeft(), mario.GetTop());
 	}
-	if (mario.Left() + mario.Width() * 4 >= map.Left() + map.Width() * 4)
+	if (mario.GetLeft() + mario.GetWidth() * 4 >= map.GetLeft() + map.GetWidth() * 4)
 	{
 		mario.SetHorizontalSpeed(0);
 	}
 	//----------MARIO-MAP-LIMIT----------
 
 	//-------------MAP-LIMIT-------------
-	if (map.Left() < 0 && mario.Left() <= 384)
+	if (map.GetLeft() < 0 && mario.GetLeft() <= 384)
 	{
-		background.SetTopLeft(background.Left() - mario.GetHorizontalSpeed() * 2, background.Top());
-		map.SetTopLeft(map.Left() - mario.GetHorizontalSpeed() * 2, map.Top());
-		mario.SetTopLeft(384, mario.Top());
+		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed() * 2, background.GetTop());
+		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed() * 2, map.GetTop());
+		mario.SetTopLeft(384, mario.GetTop());
 	}
-	if (mario.Left() >= 512 && map.Left() + map.Width() * 4 >= 1024)
+	if (mario.GetLeft() >= 512 && map.GetLeft() + map.GetWidth() * 4 >= 1024)
 	{
-		background.SetTopLeft(background.Left() - mario.GetHorizontalSpeed() * 2, background.Top());
-		map.SetTopLeft(map.Left() - mario.GetHorizontalSpeed() * 2, map.Top());
-		mario.SetTopLeft(512, mario.Top());
+		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed() * 2, background.GetTop());
+		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed() * 2, map.GetTop());
+		mario.SetTopLeft(512, mario.GetTop());
 	}
 	//-------------MAP-LIMIT-------------
 }
@@ -194,10 +180,9 @@ void CGameStateRun::LoadMario()
 		"resources/mario1.bmp",
 		"resources/mario2.bmp",
 		"resources/mario3.bmp",
-		"resources/mario4.bmp"
+		"resources/mario4.bmp",
 		}, RGB(146, 144, 255));
 	mario.SetTopLeft(0, 0);
-	mario.SelectShowBitmap(0);
 	mario.SetHorizontalSpeed(0);
 	mario.SetVerticalSpeed(GRAVITY);
 }
@@ -220,20 +205,19 @@ void CGameStateRun::LoadMap()
 void CGameStateRun::ShowMarioPostion()
 {
 	CDC *pDC = CDDraw::GetBackCDC();
-	CFont* fp;
 	if (world == 1 && level == 1)
 	{
 
-		CTextDraw::ChangeFontLog(pDC, fp, 21, "微軟正黑體", RGB(0, 0, 0), 800);
+		CTextDraw::ChangeFontLog(pDC, 21, "微軟正黑體", RGB(0, 0, 0), 800);
 		
 		CTextDraw::Print(pDC, 0, 0, "MARIO:");
-		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.Left()));
-		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.Top()));
+		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.GetLeft()));
+		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop()));
 		CTextDraw::Print(pDC, 0, 48, std::to_string(mario.GetVerticalSpeed()));
 
 		CTextDraw::Print(pDC, 0, 64, "MAP:");
-		CTextDraw::Print(pDC, 0, 80, std::to_string(map.Left()));
-		CTextDraw::Print(pDC, 0, 96, std::to_string(map.Top()));
+		CTextDraw::Print(pDC, 0, 80, std::to_string(map.GetLeft()));
+		CTextDraw::Print(pDC, 0, 96, std::to_string(map.GetTop()));
 	}
 	CDDraw::ReleaseBackCDC();
 	

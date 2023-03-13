@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  * 2012-03-21 V4.7
- *      1. Add SetCapture in CGameView::OnLButtonDown() and RelaseCapture in 
+ *      1. Add SetCapture in CGameView::OnLButtonDown() and RelaseCapture in
  *         CGameView::OnLButtonUp() so that Mouse Events (OnLButtonUp and OnMouseMove)
  *         will be called even if the cursor is outside of the window.
  * 2012-05-13 V4.8
@@ -160,14 +160,14 @@ CGameDoc* CGameView::GetDocument() // non-debug version is inline
 /////////////////////////////////////////////////////////////////////////////
 // CGameView message handlers
 
-void CGameView::OnInitialUpdate() 
+void CGameView::OnInitialUpdate()
 {
 	CView::OnInitialUpdate();
 	// TODO: Add your specialized code here and/or call the base class
 	game_framework::CGame::Instance()->OnInit();
 }
 
-void CGameView::OnLButtonDown(UINT nFlags, CPoint point) 
+void CGameView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	SetCapture();
@@ -175,7 +175,7 @@ void CGameView::OnLButtonDown(UINT nFlags, CPoint point)
 	CView::OnLButtonDown(nFlags, point);
 }
 
-void CGameView::OnLButtonUp(UINT nFlags, CPoint point) 
+void CGameView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	ReleaseCapture();
@@ -183,79 +183,79 @@ void CGameView::OnLButtonUp(UINT nFlags, CPoint point)
 	CView::OnLButtonUp(nFlags, point);
 }
 
-void CGameView::OnRButtonDown(UINT nFlags, CPoint point) 
+void CGameView::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	game_framework::CGame::Instance()->OnRButtonDown(nFlags, point);
 	CView::OnRButtonDown(nFlags, point);
 }
 
-void CGameView::OnRButtonUp(UINT nFlags, CPoint point) 
+void CGameView::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	game_framework::CGame::Instance()->OnRButtonUp(nFlags, point);
 	CView::OnRButtonUp(nFlags, point);
 }
 
-void CGameView::OnKillFocus(CWnd* pNewWnd) 
+void CGameView::OnKillFocus(CWnd* pNewWnd)
 {
 	CView::OnKillFocus(pNewWnd);
-	
+
 	// TODO: Add your message handler code here
 	game_framework::CGame::Instance()->OnKillFocus();
 	Invalidate();
 }
 
-void CGameView::OnFilePause() 
+void CGameView::OnFilePause()
 {
 	// TODO: Add your command handler code here
 	game_framework::CGame::Instance()->OnFilePause();
 	InvalidateRect(NULL);
 }
 
-void CGameView::OnUpdateFilePause(CCmdUI* pCmdUI) 
+void CGameView::OnUpdateFilePause(CCmdUI* pCmdUI)
 {
 	// TODO: Add your command update UI handler code here
-	pCmdUI->SetCheck(!game_framework::CGame::Instance()->IsRunning());	
+	pCmdUI->SetCheck(!game_framework::CGame::Instance()->IsRunning());
 }
 
-void CGameView::OnFileNew() 
+void CGameView::OnFileNew()
 {
 	// TODO: Add your command handler code here
-	
+
 }
 
-void CGameView::OnButtonPause() 
+void CGameView::OnButtonPause()
 {
 	// TODO: Add your command handler code here
 	OnFilePause();
 }
 
-void CGameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CGameView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: Add your message handler code here and/or call default
 	game_framework::CGame::Instance()->OnKeyDown(nChar, nRepCnt, nFlags);
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CGameView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CGameView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	// TODO: Add your message handler code here and/or call default
 	game_framework::CGame::Instance()->OnKeyUp(nChar, nRepCnt, nFlags);
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
 
-void CGameView::OnMouseMove(UINT nFlags, CPoint point) 
+void CGameView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	game_framework::CGame::Instance()->OnMouseMove(nFlags, point);
 	CView::OnMouseMove(nFlags, point);
 }
 
-void CGameView::OnSetFocus(CWnd* pOldWnd) 
+void CGameView::OnSetFocus(CWnd* pOldWnd)
 {
-	
+
 	// TODO: Add your message handler code here
-	game_framework::CGame::Instance()->OnSetFocus();	
+	game_framework::CGame::Instance()->OnSetFocus();
 	CView::OnSetFocus(pOldWnd);
 }

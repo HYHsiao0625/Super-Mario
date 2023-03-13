@@ -99,15 +99,13 @@ namespace game_framework {
 		void LoadMap();
 		void LoadMario();
 		void ShowMarioPostion();
-
 		int world = 1;
 		int level = 1;
-		int GRAVITY = 10;
-
+		int GRAVITY = 12;
+		CMovingBitmap mario;
 		CMovingBitmap background;
 		CMovingBitmap map;
 		CMovingBitmap switchAnimation;
-		CMovingBitmap mario;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -120,11 +118,11 @@ namespace game_framework {
 		CGameStateOver(CGame *g);
 		void OnBeginState();							// 設定每次重玩所需的變數
 		void OnInit();
-		void OnKeyDown(UINT, UINT, UINT);
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
+		int counter;	// 倒數之計數器
 	};
 
 }

@@ -52,14 +52,14 @@ static char THIS_FILE[] = __FILE__;
 BEGIN_MESSAGE_MAP(CGameApp, CWinApp)
 	//{{AFX_MSG_MAP(CGameApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
-	// Standard file based document commands
-	ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
-	// Standard print setup command
-	ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+	// NOTE - the ClassWizard will add and remove mapping macros here.
+	//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
+// Standard file based document commands
+ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
+ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
+// Standard print setup command
+ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -145,14 +145,14 @@ class CAboutDlg : public CDialog
 public:
 	CAboutDlg();
 
-// Dialog Data
-	//{{AFX_DATA(CAboutDlg)
+	// Dialog Data
+		//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -198,14 +198,14 @@ void CGameApp::OnAppAbout()
 /////////////////////////////////////////////////////////////////////////////
 // CGameApp commands
 
-BOOL CGameApp::OnIdle(LONG lCount) 
+BOOL CGameApp::OnIdle(LONG lCount)
 {
 	// TODO: Add your specialized code here and/or call the base class
 	return game_framework::CGame::Instance()->OnIdle();
 	//return CWinApp::OnIdle(lCount);
 }
 
-void CAboutDlg::OnReadme() 
+void CAboutDlg::OnReadme()
 {
 	// TODO: Add your control notification handler code here
 	system("notepad.exe ReadMe.txt");
