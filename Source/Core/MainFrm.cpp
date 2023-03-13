@@ -73,7 +73,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: add member initialization code here
-	isFullScreen = OPEN_AS_FULLSCREEN;	
+	isFullScreen = OPEN_AS_FULLSCREEN;
 	isToolBarVisible = true;
 	isStatusBarVisible = true;
 }
@@ -86,7 +86,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
-	
+
 	if (!m_wndToolBar.Create(this) ||
 		!m_wndToolBar.LoadToolBar(IDR_MAINFRAME))
 	{
@@ -96,12 +96,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+			sizeof(indicators) / sizeof(UINT)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-	
+
 
 	// TODO: Remove this if you don't want tool tips or a resizeable toolbar
 	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
@@ -122,7 +122,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//
 	pMenu = GetMenu();
 	//
-	
+
 
 	m_wndToolBar.ShowWindow(SW_HIDE);
 	m_wndStatusBar.ShowWindow(SW_SHOW);
@@ -151,8 +151,8 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 
 	cs.cx = SIZE_X; cs.cy = SIZE_Y;
 	cs.style = WS_SYSMENU | WS_MINIMIZEBOX;
-    cs.x = (::GetSystemMetrics(SM_CXSCREEN) - cs.cx) / 2; 
-	cs.y = (::GetSystemMetrics(SM_CYSCREEN) - cs.cy) / 2; 
+	cs.x = (::GetSystemMetrics(SM_CXSCREEN) - cs.cx) / 2;
+	cs.y = (::GetSystemMetrics(SM_CYSCREEN) - cs.cy) / 2;
 	//  Set priority level
 	AfxGetApp()->SetThreadPriority(THREAD_PRIORITY_HIGHEST);
 	return CFrameWnd::PreCreateWindow(cs);
@@ -227,32 +227,32 @@ void CMainFrame::SetFullScreen(bool isFull)
 		MessageBox("Fullscreen Error (Incorrect Resolution?)");
 }
 
-void CMainFrame::OnToggleFullscreen() 
+void CMainFrame::OnToggleFullscreen()
 {
 	// TODO: Add your command handler code here
 	SetFullScreen(!isFullScreen);
 }
 
-void CMainFrame::OnPaint() 
+void CMainFrame::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	
+
 	// TODO: Add your message handler code here
 
 	// Do not call CFrameWnd::OnPaint() for painting messages
 	if (isFullScreen)
 		return;
 
-	int extra_height=0;
+	int extra_height = 0;
 	CRect ClientRect;
 	game_framework::CDDraw::GetClientRect(ClientRect);
 	CalcWindowRect(&ClientRect, CWnd::adjustBorder);
 	CRect ControlRect;
-	if(m_wndToolBar.IsWindowVisible()) {
+	if (m_wndToolBar.IsWindowVisible()) {
 		m_wndToolBar.GetWindowRect(ControlRect);
 		extra_height = ControlRect.bottom - ControlRect.top;
 	}
-	if(m_wndStatusBar.IsWindowVisible()) {
+	if (m_wndStatusBar.IsWindowVisible()) {
 		m_wndStatusBar.GetWindowRect(ControlRect);
 		extra_height += ControlRect.bottom - ControlRect.top;
 	}
@@ -263,14 +263,14 @@ void CMainFrame::OnPaint()
 	MoveWindow(WindowRect.left, WindowRect.top, SIZE_X, SIZE_Y + extra_height);
 }
 
-void CMainFrame::OnButtonFullscreen() 
+void CMainFrame::OnButtonFullscreen()
 {
 	// TODO: Add your command handler code here
 	SetFullScreen(!isFullScreen);
 }
 
 
-LRESULT CMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT CMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	// TODO: Add your specialized code here and/or call the base class
 	if (message == WM_SYSCOMMAND)
@@ -286,7 +286,8 @@ LRESULT CMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 				//
 				if (wParam != SC_CLOSE)
 					return 0;
-			} else {
+			}
+			else {
 				//
 				// If non-fullscreen, process SC_MAXIMIZE and leave the
 				//		other SYSCOMMANDs to base class.
@@ -297,14 +298,16 @@ LRESULT CMainFrame::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 					return 0;
 				}
 			}
-		} else {
+		}
+		else {
 			//
 			// If Iconic, disable SC_MAXIMIZE.
 			//
 			if (wParam == SC_MAXIMIZE)
 				return 0;
 		}
-	} else if (message == WM_POWERBROADCAST) {
+	}
+	else if (message == WM_POWERBROADCAST) {
 		if (wParam == PBT_APMSUSPEND)
 			game_framework::CGame::Instance()->OnSuspend();
 		else if (wParam == PBT_APMRESUMECRITICAL || wParam == PBT_APMRESUMESUSPEND)

@@ -32,21 +32,21 @@ protected: // create from serialization only
 	CGameView();
 	DECLARE_DYNCREATE(CGameView)
 
-// Attributes
+	// Attributes
 public:
 	CGameDoc* GetDocument();
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CGameView)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CGameView)
+public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual void OnInitialUpdate();
-	protected:
+protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
@@ -62,7 +62,7 @@ public:
 
 protected:
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CGameView)
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
@@ -84,7 +84,9 @@ protected:
 
 #ifndef _DEBUG  // debug version in gameView.cpp
 inline CGameDoc* CGameView::GetDocument()
-   { return (CGameDoc*)m_pDocument; }
+{
+	return (CGameDoc*)m_pDocument;
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
