@@ -9,6 +9,10 @@
 #include "string"
 
 using namespace game_framework;
+std::vector<string> monsterpic= {
+		"resources/enemy1.bmp",
+		"resources/enemy3.bmp" 
+};
 
 /////////////////////////////////////////////////////////////////////////////
 // 這個class為遊戲的遊戲執行物件，主要的遊戲程式都在這裡
@@ -28,7 +32,16 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-
+	if (mario.IsOverlap(mario, monster)||mario.GetTop()>900) {
+		if (mario.GetTop() + mario.GetHeight() * 4 < monster.GetTop()) {
+			monster.LoadBitmapByString({
+				monsterpic[1],
+				}, RGB(146, 144, 255));
+		}
+		else {
+			OnInit();
+		}
+	}
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -36,6 +49,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	LoadBackground();
 	LoadMap();
 	LoadMario();
+	LoadMonster();
+
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -106,6 +121,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 void CGameStateRun::OnShow()
 {
 	mario.UpData();
+	monster.UpData();
 	if (world == 1)
 	{
 		if (level == 1)
@@ -163,15 +179,33 @@ void CGameStateRun::OnShow()
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed() * 2, background.GetTop());
 		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed() * 2, map.GetTop());
+		if (monster.GetStatus() == "appear") {
+			monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed() * 2, monster.GetTop());
+		}
 		mario.SetTopLeft(384, mario.GetTop());
 	}
 	if (mario.GetLeft() >= 512 && map.GetLeft() + map.GetWidth() * 4 >= 1024)
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed() * 2, background.GetTop());
 		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed() * 2, map.GetTop());
+		if (monster.GetStatus() == "appear") {
+			monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed() * 2, monster.GetTop());
+		}
 		mario.SetTopLeft(512, mario.GetTop());
 	}
 	//-------------MAP-LIMIT-------------
+	//-------------MonsterSet------------
+	if (map.GetLeft() + 400 * 4 <= mario.GetLeft() && mario.GetLeft() <= map.GetLeft() + 1520 * 4)
+	{
+		monster.ShowBitmap(4);
+		monster.SetAnimation(250, false);
+		monster.SetStatus("appear");
+	}
+	else {
+		monster.SetStatus("not_appear");
+	}
+	
+	
 }
 
 void CGameStateRun::LoadMario()
@@ -185,6 +219,12 @@ void CGameStateRun::LoadMario()
 	mario.SetTopLeft(0, 0);
 	mario.SetHorizontalSpeed(0);
 	mario.SetVerticalSpeed(GRAVITY);
+}
+void CGameStateRun::LoadMonster()
+{
+	
+	monster.LoadBitmapByString({monsterpic[0]}, RGB(146, 144, 255));
+	monster.SetTopLeft(1050,770);
 }
 
 void CGameStateRun::LoadBackground()

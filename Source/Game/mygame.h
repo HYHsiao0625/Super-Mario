@@ -98,11 +98,14 @@ namespace game_framework {
 		void LoadBackground();
 		void LoadMap();
 		void LoadMario();
+		void LoadMonster();
 		void ShowMarioPostion();
 		int world = 1;
 		int level = 1;
 		int GRAVITY = 12;
 		CMovingBitmap mario;
+		CMovingBitmap monster;
+		CMovingBitmap monster2;
 		CMovingBitmap background;
 		CMovingBitmap map;
 		CMovingBitmap switchAnimation;
