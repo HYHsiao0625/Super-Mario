@@ -96,18 +96,20 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
 		void LoadBackground();
-		void LoadMap();
+		void LoadFloor();
 		void LoadMario();
-		void LoadMonster();
 		void ShowMarioPostion();
+		void LoadBlock();
+		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
 		int GRAVITY = 12;
-		CMovingBitmap mario;
-		CMovingBitmap monster;
-		CMovingBitmap monster2;
+		Mario mario;
 		CMovingBitmap background;
-		CMovingBitmap map;
+		CMovingBitmap block1;
+		CMovingBitmap block2;
+		CMovingBitmap block3;
+		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;
 	};
 

@@ -501,4 +501,298 @@ namespace game_framework {
 		fp = pDC->SelectObject(&f);
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+	// Mario:
+	// 這個 class 提供
+	// 
+	/////////////////////////////////////////////////////////////////////////////
+
+	Mario::Mario()
+	{
+		isBitmapLoaded = false;
+	}
+
+	/* refresh */
+	void Mario::UpData()
+	{
+		int dx = -horizontalSpeed;
+		int dy = -verticalSpeed;
+		location.left = location.left + horizontalSpeed;
+		location.right -= dx;
+		location.top = location.top + verticalSpeed;
+		location.bottom -= dy;
+	}
+
+	/* The function for loading the bitmap. */
+	void Mario::LoadBitmap(int IDB_BITMAP, COLORREF color)
+	{
+		CBitmap bitmap;
+		BOOL rval = bitmap.LoadBitmap(IDB_BITMAP);
+		GAME_ASSERT(rval, "Load bitmap failed !!! Please check bitmap ID (IDB_XXX).");
+		BITMAP bitmapSize;
+		bitmap.GetBitmap(&bitmapSize);
+
+		InitializeRectByBITMAP(bitmapSize);
+
+		surfaceID.push_back(CDDraw::RegisterBitmap(IDB_BITMAP, color));
+		filterColor = color;
+		isBitmapLoaded = true;
+	}
+
+	void Mario::LoadBitmap(char *filepath, COLORREF color)
+	{
+		HBITMAP hbitmap = (HBITMAP)LoadImage(NULL, filepath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+
+		if (hbitmap == NULL) {
+			char error_msg[300];
+			sprintf(error_msg, "Loading bitmap	from file \"%s\" failed !!!", filepath);
+			GAME_ASSERT(false, error_msg);
+		}
+
+		CBitmap *bmp = CBitmap::FromHandle(hbitmap); // memory will be deleted automatically
+		BITMAP bitmapSize;
+		bmp->GetBitmap(&bitmapSize);
+
+		InitializeRectByBITMAP(bitmapSize);
+
+		surfaceID.push_back(CDDraw::RegisterBitmap(filepath, color));
+		imageFileName = string(filepath);
+		filterColor = color;
+		isBitmapLoaded = true;
+
+		bmp->DeleteObject();
+	}
+
+	void Mario::LoadBitmap(vector<char*> filepaths, COLORREF color)
+	{
+		for (int i = 0; i < (int)filepaths.size(); i++) {
+			LoadBitmap(filepaths[i], color);
+		}
+	}
+
+	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	{
+
+		for (int i = 0; i < (int)filepaths.size(); i++) {
+			LoadBitmap((char*)filepaths[i].c_str(), color);
+		}
+	}
+
+	void Mario::LoadEmptyBitmap(int height, int width) {
+		HBITMAP hbitmap = CreateBitmap(width, height, 1, 32, NULL);
+		CBitmap *bmp = CBitmap::FromHandle(hbitmap); // memory will be deleted automatically
+
+		/* Fill white color to bitmap */
+		HDC hdc = CreateCompatibleDC(NULL);
+		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hdc, hbitmap);
+		PatBlt(hdc, 0, 0, width, height, WHITENESS);
+		SelectObject(hdc, hOldBitmap);
+		DeleteDC(hdc);
+
+		BITMAP bitmapSize;
+		bmp->GetBitmap(&bitmapSize);
+
+		InitializeRectByBITMAP(bitmapSize);
+
+		surfaceID.push_back(CDDraw::RegisterBitmapWithHBITMAP(hbitmap));
+		isBitmapLoaded = true;
+
+		bmp->DeleteObject();
+	}
+
+	void Mario::UnshowBitmap()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
+		isAnimation = false;
+		this->ShowBitmap(0);
+	}
+
+	void Mario::SetTopLeft(int x, int y)
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
+		int dx = location.left - x;
+		int dy = location.top - y;
+		location.left = x;
+		location.top = y;
+		location.right -= dx;
+		location.bottom -= dy;
+	}
+
+	void Mario::SetFrameIndexOfBitmap(int frameIndex) {
+		GAME_ASSERT(frameIndex < (int)surfaceID.size(), "選擇圖片時索引出界");
+		this->frameIndex = frameIndex;
+	}
+
+	void Mario::SetAnimation(int delay, bool once) {
+		if (!once) isAnimation = true;
+		isOnce = once;
+		delayCount = delay;
+	}
+
+	void Mario::SetVerticalSpeed(int value)
+	{
+		verticalSpeed = value;
+	}
+
+	void Mario::SetHorizontalSpeed(int value)
+	{
+		horizontalSpeed = value;
+	}
+
+	void Mario::SetPressedKey(int value)
+	{
+		pressedKey = value;
+	}
+
+	void Mario::SetCollision(bool value)
+	{
+		isCollision = value;
+	}
+
+	void Mario::SetKeyPressed(bool flags)
+	{
+		isKeyPressed = flags;
+	}
+
+	void Mario::SetStatus(string action)
+	{
+		status = action;
+	}
+
+	void Mario::ShowBitmap()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
+		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top);
+		ShowBitmapBySetting();
+	}
+
+	void Mario::ShowBitmap(double factor)
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
+		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top, factor);
+		ShowBitmapBySetting();
+	}
+
+	int Mario::GetTop()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Top() is called !!!");
+		return location.top;
+	}
+
+	int Mario::GetLeft()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
+		return location.left;
+	}
+
+	int Mario::GetHeight()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
+		return location.bottom - location.top;
+	}
+
+	int Mario::GetWidth()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Width() is called !!!");
+		return location.right - location.left;
+	}
+
+	int Mario::GetFrameIndexOfBitmap() {
+		return frameIndex;
+	}
+
+	int Mario::GetFrameSizeOfBitmap() {
+		return (int)surfaceID.size();
+	}
+
+	int Mario::GetVerticalSpeed()
+	{
+		return verticalSpeed;
+	}
+	int Mario::GetHorizontalSpeed()
+	{
+		return horizontalSpeed;
+	}
+
+	int Mario::GetPressedKey()
+	{
+		return pressedKey;
+	}
+
+	string Mario::GetImageFileName()
+	{
+		return imageFileName;
+	}
+
+	COLORREF Mario::GetFilterColor()
+	{
+		return filterColor;
+	}
+
+	string Mario::GetStatus()
+	{
+		return status;
+	}
+
+	void Mario::ToggleAnimation() {
+		frameIndex = 0;
+		isAnimation = true;
+		isAnimationDone = false;
+	}
+
+	bool Mario::IsAnimation()
+	{
+		return isAnimation;
+	}
+
+	bool Mario::IsAnimationDone()
+	{
+		return isAnimationDone;
+	}
+
+	bool Mario::IsOnceAnimation()
+	{
+		return isOnce;
+	}
+
+	bool Mario::IsBitmapLoaded() {
+		return isBitmapLoaded;
+	}
+
+	bool Mario::IsKeyPressed()
+	{
+		return isKeyPressed;
+	}
+
+	bool Mario::IsCollision()
+	{
+		return isCollision;
+	}
+
+	void Mario::InitializeRectByBITMAP(BITMAP bitmapSize) {
+		const unsigned NX = 0;
+		const unsigned NY = 0;
+
+		location.left = NX;
+		location.top = NY;
+		location.right = NX + bitmapSize.bmWidth;
+		location.bottom = NY + bitmapSize.bmHeight;
+	}
+
+	void Mario::ShowBitmapBySetting() {
+		if (isAnimation == true && clock() - last_time >= delayCount) {
+			frameIndex += 1;
+			last_time = clock();
+			if (frameIndex == surfaceID.size() && animationCount > 0) {
+				animationCount -= 1;
+			}
+			if (frameIndex == surfaceID.size() && (isOnce || animationCount == 0)) {
+				isAnimation = false;
+				isAnimationDone = true;
+				frameIndex = surfaceID.size() - 1;
+				return;
+			}
+			frameIndex = frameIndex % surfaceID.size();
+		}
+	}
 }         
