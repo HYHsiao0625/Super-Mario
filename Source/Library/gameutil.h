@@ -74,6 +74,98 @@ using namespace std;
 namespace game_framework {
 
 	/////////////////////////////////////////////////////////////////////////////
+	//
+	//
+	/////////////////////////////////////////////////////////////////////////////
+
+	class Mario
+	{
+	public:
+		Mario();
+		void  UpData();
+		void  LoadBitmap(int, COLORREF = CLR_INVALID);
+		void  LoadBitmap(char*, COLORREF = CLR_INVALID);
+		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);
+		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
+		void  LoadEmptyBitmap(int height, int weight);
+		void  SetAnimation(int delay, bool _once);
+		void  SetFrameIndexOfBitmap(int frame);
+		void  SetTopLeft(int, int);
+		void  UnshowBitmap();
+		void  ShowBitmap();
+		void  ShowBitmap(double factor);
+		int   GetFrameIndexOfBitmap();
+		int   GetFrameSizeOfBitmap();
+		int   GetTop();
+		int   GetLeft();
+		int   GetHeight();
+		int   GetWidth();
+		string GetImageFileName();
+		COLORREF GetFilterColor();
+		void  ToggleAnimation();
+		bool  IsAnimation();
+		bool  IsAnimationDone();
+		bool  IsBitmapLoaded();
+		bool  IsOnceAnimation();
+
+		//---------------------------------------------------
+		void  SetVerticalSpeed(int);
+		void  SetHorizontalSpeed(int);
+		void  SetKeyPressed(bool);
+		void  SetPressedKey(int);
+		void  SetCollision(bool);
+		void  SetStatus(string);
+		
+		int   GetVerticalSpeed();
+		int   GetHorizontalSpeed();
+		int   GetPressedKey();
+		string GetStatus();
+
+		bool  IsKeyPressed();
+		bool  IsCollision();
+
+	protected:
+		int frameIndex = 0;
+		int delayCount = 10;
+		int animationCount = -1;
+		bool isAnimation = false;
+		bool isAnimationDone = true;
+		bool isBitmapLoaded = false;
+		bool isOnce = false;
+		CRect location;
+		vector<unsigned> surfaceID;
+		clock_t last_time = clock();
+		string   imageFileName = "";
+		COLORREF filterColor = CLR_INVALID;
+		vector<unsigned> SurfaceID;
+		//---------------------------------------------------
+		bool crouching;
+		bool dead;
+		bool flipped;
+		bool on_ground;
+		int x;
+		int y;
+
+		unsigned char jump_timer;
+
+		unsigned short death_timer;
+		unsigned short growth_timer;
+		unsigned short invincible_timer;
+
+		int horizontalSpeed = 0;
+		int verticalSpeed = 0;
+		int pressedKey = 0;
+		string status = "initial";
+		bool isKeyPressed = false;
+		bool isCollision = false;
+
+	private:
+		void InitializeRectByBITMAP(BITMAP bitmap);
+		void ShowBitmapBySetting();
+
+	};
+
+	/////////////////////////////////////////////////////////////////////////////
 	// 這個class提供動態(可以移動)的圖形
 	// 每個Public Interface的用法都要懂，Implementation可以不懂
 	/////////////////////////////////////////////////////////////////////////////
@@ -162,14 +254,19 @@ namespace game_framework {
 		int horizontalSpeed = 0;
 		int verticalSpeed = 0;
 		int pressedKey = 0;
+
 		string status = "initial";
 		bool isKeyPressed = false;
-		bool isCollision = true;
+		bool isCollision = false;
 
 	private:
 		void InitializeRectByBITMAP(BITMAP bitmap);
 		void ShowBitmapBySetting();
 	};
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	class CTextDraw {
 	public:
