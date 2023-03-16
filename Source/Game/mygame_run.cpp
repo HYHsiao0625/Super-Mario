@@ -207,7 +207,7 @@ void CGameStateRun::OnShow()
 	
 	
 }
-
+//
 void CGameStateRun::LoadMario()
 {
 	mario.LoadBitmapByString({
