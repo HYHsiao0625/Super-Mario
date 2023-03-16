@@ -104,7 +104,7 @@ namespace game_framework {
 		int world = 1;
 		int level = 1;
 		int GRAVITY = 12;
-		CMovingBitmap mario;
+		Mario mario;
 		CMovingBitmap background;
 		CMovingBitmap block1;
 		CMovingBitmap block2;
