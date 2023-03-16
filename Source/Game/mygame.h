@@ -103,7 +103,7 @@ namespace game_framework {
 		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
-		int GRAVITY = 24;
+		int GRAVITY = 12;
 		Mario mario;
 		CMovingBitmap background;
 		CMovingBitmap block1;
