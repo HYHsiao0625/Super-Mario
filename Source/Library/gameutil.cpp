@@ -413,6 +413,12 @@ namespace game_framework {
 		BOOL isOverlap = rect.IntersectRect(bmp1.location, bmp2.location);
 		return isOverlap;
 	}
+	bool CMovingBitmap::IsOverlap(Mario bmp1, CMovingBitmap bmp2)
+	{
+		CRect rect;
+		BOOL isOverlap = rect.IntersectRect(bmp1.location, bmp2.location);
+		return isOverlap;
+	}
 
 	bool CMovingBitmap::IsKeyPressed()
 	{
@@ -654,6 +660,10 @@ namespace game_framework {
 		isKeyPressed = flags;
 	}
 
+	void Mario::SetDie(bool flag)
+	{
+		dead = flag;
+	}
 	void Mario::SetStatus(string action)
 	{
 		status = action;
@@ -712,6 +722,11 @@ namespace game_framework {
 	int Mario::GetHorizontalSpeed()
 	{
 		return horizontalSpeed;
+	}
+
+	bool Mario::GetDie()
+	{
+		return dead;
 	}
 
 	int Mario::GetPressedKey()

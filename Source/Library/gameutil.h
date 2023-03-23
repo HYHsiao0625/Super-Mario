@@ -80,6 +80,7 @@ namespace game_framework {
 
 	class Mario
 	{
+	friend class CMovingBitmap;
 	public:
 		Mario();
 		void  UpData();
@@ -114,15 +115,18 @@ namespace game_framework {
 		void  SetKeyPressed(bool);
 		void  SetPressedKey(int);
 		void  SetCollision(bool);
+		void  SetDie(bool);
 		void  SetStatus(string);
 		
 		int   GetVerticalSpeed();
 		int   GetHorizontalSpeed();
 		int   GetPressedKey();
+		bool   GetDie();
 		string GetStatus();
 
 		bool  IsKeyPressed();
 		bool  IsCollision();
+
 
 	protected:
 		int frameIndex = 0;
@@ -140,7 +144,7 @@ namespace game_framework {
 		vector<unsigned> SurfaceID;
 		//---------------------------------------------------
 		bool crouching;
-		bool dead;
+		bool dead = false;
 		bool flipped;
 		bool on_ground;
 		int x;
@@ -171,6 +175,7 @@ namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CMovingBitmap {
+	
 	public:
 		CMovingBitmap();
 		/* refresh */
@@ -231,6 +236,8 @@ namespace game_framework {
 		bool  IsBitmapLoaded();
 		bool  IsOnceAnimation();
 		static bool IsOverlap(CMovingBitmap bmp1, CMovingBitmap bmp2);
+		static bool IsOverlap(Mario bmp1, CMovingBitmap bmp2);
+
 
 		bool  IsKeyPressed();
 		bool  IsCollision();
