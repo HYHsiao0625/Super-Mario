@@ -63,6 +63,7 @@ namespace game_framework {
 
 	class CDDraw {
 		friend class CMovingBitmap;
+		friend class Mario;
 	public:
 		~CDDraw();
 		static void  BltBackColor(DWORD);		// 將Back plain全部著上指定的顏色
