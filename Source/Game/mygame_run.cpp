@@ -5,6 +5,7 @@
 #include "../Library/audio.h"
 #include "../Library/gameutil.h"
 #include "../Library/gamecore.h"
+#include "../Library/mario.h"
 #include "mygame.h"
 #include "string"
 
@@ -28,7 +29,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	if (-10 <= mario.GetTop() + mario.GetHeight() - monster.GetTop() 
+	/*if (-10 <= mario.GetTop() + mario.GetHeight() - monster.GetTop() 
 		&& mario.GetTop() + mario.GetHeight() - monster.GetTop() <= 0 
 		&& mario.GetLeft()+ mario.GetWidth() > monster.GetLeft() 
 		&& mario.GetLeft() < monster.GetLeft() + monster.GetWidth()
@@ -42,7 +43,7 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	}
 	if (mario.GetDie()) {
 		OnInit();
-	}
+	}*/
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -50,8 +51,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	LoadBackground();
 	LoadFloor();
 	LoadMario();
-	LoadBlock();
-	LoadMonster();
+	//LoadMonster();
 	mario.SetDie(false);
 }
 
@@ -123,17 +123,14 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 void CGameStateRun::OnShow()
 {
 	mario.UpData();
-	monster.UpData();
+	//monster.UpData();
 	if (world == 1)
 	{
 		if (level == 1)
 		{
 			background.ShowBitmap();
 			floor.ShowBitmap();
-			block1.ShowBitmap();
-			block2.ShowBitmap();
-			block3.ShowBitmap();
-			monster.ShowBitmap();
+			//monster.ShowBitmap();
 			mario.ShowBitmap();
 			ShowMarioPostion();
 		}
@@ -182,32 +179,26 @@ void CGameStateRun::OnShow()
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
-		block1.SetTopLeft(block1.GetLeft() - mario.GetHorizontalSpeed(), block1.GetTop());
-		block2.SetTopLeft(block2.GetLeft() - mario.GetHorizontalSpeed(), block2.GetTop());
-		block3.SetTopLeft(block3.GetLeft() - mario.GetHorizontalSpeed(), block3.GetTop());
 		mario.SetTopLeft(384, mario.GetTop());
-	    monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed(), monster.GetTop());
+	    //monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed(), monster.GetTop());
 		
 	}
 	if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
-		block1.SetTopLeft(block1.GetLeft() - mario.GetHorizontalSpeed(), block1.GetTop());
-		block2.SetTopLeft(block2.GetLeft() - mario.GetHorizontalSpeed(), block2.GetTop());
-		block3.SetTopLeft(block3.GetLeft() - mario.GetHorizontalSpeed(), block3.GetTop());
-		monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed(), monster.GetTop());
+		//monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed(), monster.GetTop());
 		mario.SetTopLeft(512, mario.GetTop());
 	}
 	//-------------MonsterSet------------
-	if (monster.GetLeft()-mario.GetLeft() <= 512 && monster.GetStatus() != "dead")
+	/*if (monster.GetLeft()-mario.GetLeft() <= 512 && monster.GetStatus() != "dead")
 	{
 		monster.SetHorizontalSpeed(-4);
 	}
 	else
 	{
 		monster.SetHorizontalSpeed(0);
-	}
+	}*/
 	//-------------floor-LIMIT-------------
 }
 
@@ -225,7 +216,7 @@ void CGameStateRun::LoadMario()
 	mario.SetVerticalSpeed(GRAVITY);
 }
 
-void CGameStateRun::LoadMonster()
+/*void CGameStateRun::LoadMonster()
 {
 	monster.LoadBitmapByString({
 		"resources/mario7.bmp",
@@ -233,7 +224,7 @@ void CGameStateRun::LoadMonster()
 	monster.SetTopLeft(2000, 768);
 	monster.SetHorizontalSpeed(0);
 	monster.SetStatus("appear");
-}
+}*/
 
 void CGameStateRun::LoadBackground()
 {
@@ -249,23 +240,6 @@ void CGameStateRun::LoadFloor()
 		}, RGB(255, 255, 255));
 	floor.SetTopLeft(0, 832);
 }
-
-void CGameStateRun::LoadBlock()
-{
-	block1.LoadBitmapByString({
-		"resources/block.bmp",
-		});
-	block2.LoadBitmapByString({
-		"resources/block.bmp",
-		});
-	block3.LoadBitmapByString({
-		"resources/block.bmp",
-		});
-	block1.SetTopLeft(512, floor.GetTop() - block1.GetWidth() * 1);
-	block2.SetTopLeft(512, floor.GetTop() - block2.GetWidth() * 2);
-	block3.SetTopLeft(256, floor.GetTop() - block3.GetWidth() * 3);
-}
-
 
 void CGameStateRun::ShowMarioPostion()
 {

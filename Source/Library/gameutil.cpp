@@ -25,23 +25,43 @@ namespace game_framework {
 	// 要懂得怎麼呼叫(運用)其各種能力，但是可以不懂下列的程式是什麼意思
 	/////////////////////////////////////////////////////////////////////////////
 
+	//! CMovingBitmap 建構子
+	/*!
+		用於創立一個尚未讀取圖片的物件。
+	*/
 	CMovingBitmap::CMovingBitmap()
 	{
 		isBitmapLoaded = false;
 	}
 
-	/* refresh */
-	void CMovingBitmap::UpData()
+	//! 取得 CMovingBitmap 物件的圖片高度。
+	/*!
+		需要先載入圖片。
+		\return 圖片高度，以像素為單位。
+	*/
+	int CMovingBitmap::GetHeight()
 	{
-		int dx = -horizontalSpeed;
-		int dy = -verticalSpeed;
-		location.left = location.left + horizontalSpeed;
-		location.right -= dx;
-		location.top = location.top + verticalSpeed;
-		location.bottom -= dy;
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
+		return locations[frameIndex].bottom - locations[frameIndex].top;
 	}
 
-	/* The function for loading the bitmap. */
+	//! 取得 CMovingBitmap 物件的左上角的 x 軸座標值。
+	/*!
+		需要先載入圖片。
+		\return 圖片左上角的 x 軸座標值。
+	*/
+	int CMovingBitmap::GetLeft()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
+		return locations[frameIndex].left;
+	}
+
+	//! 讀取圖片資源。
+	/*!
+		透過資源編號 `IDB_BITMAP` 來讀取對應的圖片，並且過濾特定顏色 `color`。
+		\param IDB_BITMAP 圖片資源編號
+		\param color 欲過濾的顏色（預設為 `CLR_INVALID`，可利用 `RGB(<R>, <G>, <B>`) 來設置顏色）
+	*/
 	void CMovingBitmap::LoadBitmap(int IDB_BITMAP, COLORREF color)
 	{
 		CBitmap bitmap;
@@ -144,8 +164,6 @@ namespace game_framework {
 		bmp->DeleteObject();
 	}
 
-
-	/* Unshow the bitmap. */
 	//! 停止顯示圖片。
 	/*!
 		@deprecated 從 v1.0.0 版本後棄用，停止顯示圖片請在 `OnShow()` 時不呼叫 `ShowBitmap()` 即可
@@ -158,7 +176,6 @@ namespace game_framework {
 		this->ShowBitmap(0);
 	}
 
-	/* Setter */
 	//! 設置圖片至畫布指定座標上。
 	/*!
 		將會把圖片左上角設置至指定座標上。
@@ -168,12 +185,51 @@ namespace game_framework {
 	void CMovingBitmap::SetTopLeft(int x, int y)
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
-		int dx = location.left - x;
-		int dy = location.top - y;
-		location.left = x;
-		location.top = y;
-		location.right -= dx;
-		location.bottom -= dy;
+
+		for (int i = 0; i < int(locations.size()); i++) {
+			int dx = locations[i].left - x;
+			int dy = locations[i].top - y;
+			locations[i].left = x;
+			locations[i].top = y;
+			locations[i].right -= dx;
+			locations[i].bottom -= dy;
+		}
+	}
+
+	//! 設置圖片是否為動畫。
+	/*!
+		若 CMovingBitmap 讀入多個圖片，則可以使用此函數來設定物件為動畫。
+		\param delay 動畫切換延遲（以毫秒為單位）
+		\param once 動畫是否為一次性動畫，若是則需要以 `ToggleAnimation()` 來呼叫動畫啟動。
+		\sa ToggleAnimation()
+	*/
+	void CMovingBitmap::SetAnimation(int delay, bool once) {
+		if (!once) isAnimation = true;
+		isOnce = once;
+		delayCount = delay;
+	}
+
+	//! 顯示圖片。
+	/*!
+		僅能在 `onShow()` 時呼叫，且圖片需要被讀取。
+	*/
+	void CMovingBitmap::ShowBitmap()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
+		CDDraw::BltBitmapToBack(surfaceID[frameIndex], locations[frameIndex].left, locations[frameIndex].top);
+		ShowBitmapBySetting();
+	}
+
+	//! 顯示圖片。
+	/*!
+		僅能在 `onShow()` 時呼叫，且圖片需要被讀取。
+		\param factor 放大倍率，需要 VGA 顯卡的支援，否則會變得異常慢。
+	*/
+	void CMovingBitmap::ShowBitmap(double factor)
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
+		CDDraw::BltBitmapToBack(surfaceID[frameIndex], locations[frameIndex].left, locations[frameIndex].top, factor);
+		ShowBitmapBySetting();
 	}
 
 	//! 設置當前圖片顯示幀的索引值。
@@ -186,76 +242,13 @@ namespace game_framework {
 		this->frameIndex = frameIndex;
 	}
 
-	//! 設置圖片是否為動畫。
+	//! 取得當前圖片顯示幀的索引值。
 	/*!
-		若 CMovingBitmap 讀入多個圖片，則可以使用此函數來設定物件為動畫。
-		\param delay 動畫切換延遲（以毫秒為單位）
-		\param once 動畫是否為一次性動畫，若是則需要以 `ToggleAnimation()` 來呼叫動畫啟動。
-		\sa ToggleAnimation()
+		\return 圖片顯示幀的索引值。
 	*/
-
-	void CMovingBitmap::SetAnimation(int delay, bool once) {
-		if (!once) isAnimation = true;
-		isOnce = once;
-		delayCount = delay;
+	int CMovingBitmap::GetFrameIndexOfBitmap() {
+		return frameIndex;
 	}
-
-	void CMovingBitmap::SetVerticalSpeed(int value)
-	{
-		verticalSpeed = value;
-	}
-
-	void CMovingBitmap::SetHorizontalSpeed(int value)
-	{
-		horizontalSpeed = value;
-	}
-
-	void CMovingBitmap::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void CMovingBitmap::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void CMovingBitmap::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
-
-	void CMovingBitmap::SetStatus(string action)
-	{
-		status = action;
-	}
-
-	/* Show the bitmap with or without factor. */
-	//! 顯示圖片。
-	/*!
-		僅能在 `onShow()` 時呼叫，且圖片需要被讀取。
-	*/
-	void CMovingBitmap::ShowBitmap()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top);
-		ShowBitmapBySetting();
-	}
-
-	//! 顯示圖片。
-	/*!
-		僅能在 `onShow()` 時呼叫，且圖片需要被讀取。
-		\param factor 放大倍率，需要 VGA 顯卡的支援，否則會變得異常慢。
-	*/
-	void CMovingBitmap::ShowBitmap(double factor)
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top, factor);
-		ShowBitmapBySetting();
-	}
-
-
-	/* Getter */
 
 	//! 取得當前圖片左上角 y 軸的座標值。
 	/*!
@@ -264,29 +257,7 @@ namespace game_framework {
 	int CMovingBitmap::GetTop()
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Top() is called !!!");
-		return location.top;
-	}
-
-	//! 取得 CMovingBitmap 物件的左上角的 x 軸座標值。
-	/*!
-		需要先載入圖片。
-		\return 圖片左上角的 x 軸座標值。
-	*/
-	int CMovingBitmap::GetLeft()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
-		return location.left;
-	}
-
-	//! 取得 CMovingBitmap 物件的圖片高度。
-	/*!
-		需要先載入圖片。
-		\return 圖片高度，以像素為單位。
-	*/
-	int CMovingBitmap::GetHeight()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
-		return location.bottom - location.top;
+		return locations[frameIndex].top;
 	}
 
 	//! 取得當前圖片寬度。
@@ -296,65 +267,9 @@ namespace game_framework {
 	int CMovingBitmap::GetWidth()
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Width() is called !!!");
-		return location.right - location.left;
+		return locations[frameIndex].right - locations[frameIndex].left;
 	}
 
-	
-
-	//! 取得當前圖片顯示幀的索引值。
-	/*!
-		\return 圖片顯示幀的索引值。
-	*/
-	int CMovingBitmap::GetFrameIndexOfBitmap() {
-		return frameIndex;
-	}
-
-	//! 回傳物件的幀數。
-	/*!
-		\return 回傳物件的幀數。
-	*/
-	int CMovingBitmap::GetFrameSizeOfBitmap() {
-		return (int)surfaceID.size();
-	}
-
-	int CMovingBitmap::GetVerticalSpeed()
-	{
-		return verticalSpeed;
-	}
-	int CMovingBitmap::GetHorizontalSpeed()
-	{
-		return horizontalSpeed;
-	}
-
-	int CMovingBitmap::GetPressedKey()
-	{
-		return pressedKey;
-	}
-
-	//! 取得物件載入圖片名稱。
-	/*!
-		\return 回傳圖片名稱，若圖片尚未載入，則回傳一空字串。
-	*/
-	string CMovingBitmap::GetImageFileName() 
-	{
-		return imageFileName;
-	}
-
-	//! 取得物件過濾顏色。
-	/*!
-		\return 回傳過濾顏色，若物件未設定過濾顏色，回傳 `CLR_INVALID`。
-	*/
-	COLORREF CMovingBitmap::GetFilterColor() 
-	{
-		return filterColor;
-	}
-
-	string CMovingBitmap::GetStatus()
-	{
-		return status;
-	}
-
-	/* Toggle function */
 	//! 啟動單次動畫。
 	/*!
 		將動畫設為初始幀，並且初始化單次動畫的參數值。
@@ -365,13 +280,11 @@ namespace game_framework {
 		isAnimationDone = false;
 	}
 
-	/* Is function */
 	//! 物件是否為動畫物件。
 	/*!
 		\return 布林值，表示物件是否為動畫物件。
 	*/
-	bool CMovingBitmap::IsAnimation()
-	{
+	bool CMovingBitmap::IsAnimation() {
 		return isAnimation;
 	}
 
@@ -379,8 +292,7 @@ namespace game_framework {
 	/*!
 		\return 布林值，表示動畫物件是否已執行完動畫。
 	*/
-	bool CMovingBitmap::IsAnimationDone()
-	{
+	bool CMovingBitmap::IsAnimationDone() {
 		return isAnimationDone;
 	}
 
@@ -388,8 +300,7 @@ namespace game_framework {
 	/*!
 		\return 布林值，表示動畫物件是否為單次動畫物件。
 	*/
-	bool CMovingBitmap::IsOnceAnimation()
-	{
+	bool CMovingBitmap::IsOnceAnimation() {
 		return isOnce;
 	}
 
@@ -401,33 +312,12 @@ namespace game_framework {
 		return isBitmapLoaded;
 	}
 
-	//! 兩物件是否交疊。
+	//! 回傳物件的幀數。
 	/*!
-		\param bmp1 第一個 CMovingBitmap 物件
-		\param bmp2 第二個 CMovingBitmap 物件
-		\return 回傳布林值，代表兩物件是否交疊。
+		\return 回傳物件的幀數。
 	*/
-	bool CMovingBitmap::IsOverlap(CMovingBitmap bmp1, CMovingBitmap bmp2)
-	{
-		CRect rect;
-		BOOL isOverlap = rect.IntersectRect(bmp1.location, bmp2.location);
-		return isOverlap;
-	}
-	bool CMovingBitmap::IsOverlap(Mario bmp1, CMovingBitmap bmp2)
-	{
-		CRect rect;
-		BOOL isOverlap = rect.IntersectRect(bmp1.location, bmp2.location);
-		return isOverlap;
-	}
-
-	bool CMovingBitmap::IsKeyPressed()
-	{
-		return isKeyPressed;
-	}
-
-	bool CMovingBitmap::IsCollision()
-	{
-		return isCollision;
+	int CMovingBitmap::GetFrameSizeOfBitmap() {
+		return (int)surfaceID.size();
 	}
 
 	//! 根據 BITMAP 來初始化 CMovingBitmap 內的 location 物件。
@@ -437,11 +327,12 @@ namespace game_framework {
 	void CMovingBitmap::InitializeRectByBITMAP(BITMAP bitmapSize) {
 		const unsigned NX = 0;
 		const unsigned NY = 0;
-
-		location.left = NX;
-		location.top = NY;
-		location.right = NX + bitmapSize.bmWidth;
-		location.bottom = NY + bitmapSize.bmHeight;
+		CRect newCrect;
+		newCrect.left = NX;
+		newCrect.top = NY;
+		newCrect.right = NX + bitmapSize.bmWidth;
+		newCrect.bottom = NY + bitmapSize.bmHeight;
+		locations.push_back(newCrect);
 	}
 
 	//! 根據使用者設定的參數來顯示圖片。
@@ -460,6 +351,34 @@ namespace game_framework {
 			}
 			frameIndex = frameIndex % surfaceID.size();
 		}
+	}
+
+	//! 取得物件載入圖片名稱。
+	/*!
+		\return 回傳圖片名稱，若圖片尚未載入，則回傳一空字串。
+	*/
+	string CMovingBitmap::GetImageFileName() {
+		return imageFileName;
+	}
+
+	//! 取得物件過濾顏色。
+	/*!
+		\return 回傳過濾顏色，若物件未設定過濾顏色，回傳 `CLR_INVALID`。
+	*/
+	COLORREF CMovingBitmap::GetFilterColor() {
+		return filterColor;
+	}
+
+	//! 兩物件是否交疊。
+	/*!
+		\param bmp1 第一個 CMovingBitmap 物件
+		\param bmp2 第二個 CMovingBitmap 物件
+		\return 回傳布林值，代表兩物件是否交疊。
+	*/
+	bool CMovingBitmap::IsOverlap(CMovingBitmap bmp1, CMovingBitmap bmp2) {
+		CRect rect;
+		BOOL isOverlap = rect.IntersectRect(bmp1.locations[bmp1.GetFrameIndexOfBitmap()], bmp2.locations[bmp2.GetFrameIndexOfBitmap()]);
+		return isOverlap;
 	}
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -507,307 +426,4 @@ namespace game_framework {
 		fp = pDC->SelectObject(&f);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////
-	// Mario:
-	// 這個 class 提供
-	// 
-	/////////////////////////////////////////////////////////////////////////////
-
-	Mario::Mario()
-	{
-		isBitmapLoaded = false;
-	}
-
-	/* refresh */
-	void Mario::UpData()
-	{
-		int dx = -horizontalSpeed;
-		int dy = -verticalSpeed;
-		location.left = location.left + horizontalSpeed;
-		location.right -= dx;
-		location.top = location.top + verticalSpeed;
-		location.bottom -= dy;
-	}
-
-	/* The function for loading the bitmap. */
-	void Mario::LoadBitmap(int IDB_BITMAP, COLORREF color)
-	{
-		CBitmap bitmap;
-		BOOL rval = bitmap.LoadBitmap(IDB_BITMAP);
-		GAME_ASSERT(rval, "Load bitmap failed !!! Please check bitmap ID (IDB_XXX).");
-		BITMAP bitmapSize;
-		bitmap.GetBitmap(&bitmapSize);
-
-		InitializeRectByBITMAP(bitmapSize);
-
-		surfaceID.push_back(CDDraw::RegisterBitmap(IDB_BITMAP, color));
-		filterColor = color;
-		isBitmapLoaded = true;
-	}
-
-	void Mario::LoadBitmap(char *filepath, COLORREF color)
-	{
-		HBITMAP hbitmap = (HBITMAP)LoadImage(NULL, filepath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-
-		if (hbitmap == NULL) {
-			char error_msg[300];
-			sprintf(error_msg, "Loading bitmap	from file \"%s\" failed !!!", filepath);
-			GAME_ASSERT(false, error_msg);
-		}
-
-		CBitmap *bmp = CBitmap::FromHandle(hbitmap); // memory will be deleted automatically
-		BITMAP bitmapSize;
-		bmp->GetBitmap(&bitmapSize);
-
-		InitializeRectByBITMAP(bitmapSize);
-
-		surfaceID.push_back(CDDraw::RegisterBitmap(filepath, color));
-		imageFileName = string(filepath);
-		filterColor = color;
-		isBitmapLoaded = true;
-
-		bmp->DeleteObject();
-	}
-
-	void Mario::LoadBitmap(vector<char*> filepaths, COLORREF color)
-	{
-		for (int i = 0; i < (int)filepaths.size(); i++) {
-			LoadBitmap(filepaths[i], color);
-		}
-	}
-
-	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
-	{
-
-		for (int i = 0; i < (int)filepaths.size(); i++) {
-			LoadBitmap((char*)filepaths[i].c_str(), color);
-		}
-	}
-
-	void Mario::LoadEmptyBitmap(int height, int width) {
-		HBITMAP hbitmap = CreateBitmap(width, height, 1, 32, NULL);
-		CBitmap *bmp = CBitmap::FromHandle(hbitmap); // memory will be deleted automatically
-
-		/* Fill white color to bitmap */
-		HDC hdc = CreateCompatibleDC(NULL);
-		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hdc, hbitmap);
-		PatBlt(hdc, 0, 0, width, height, WHITENESS);
-		SelectObject(hdc, hOldBitmap);
-		DeleteDC(hdc);
-
-		BITMAP bitmapSize;
-		bmp->GetBitmap(&bitmapSize);
-
-		InitializeRectByBITMAP(bitmapSize);
-
-		surfaceID.push_back(CDDraw::RegisterBitmapWithHBITMAP(hbitmap));
-		isBitmapLoaded = true;
-
-		bmp->DeleteObject();
-	}
-
-	void Mario::UnshowBitmap()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
-		isAnimation = false;
-		this->ShowBitmap(0);
-	}
-
-	void Mario::SetTopLeft(int x, int y)
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
-		int dx = location.left - x;
-		int dy = location.top - y;
-		location.left = x;
-		location.top = y;
-		location.right -= dx;
-		location.bottom -= dy;
-	}
-
-	void Mario::SetFrameIndexOfBitmap(int frameIndex) {
-		GAME_ASSERT(frameIndex < (int)surfaceID.size(), "選擇圖片時索引出界");
-		this->frameIndex = frameIndex;
-	}
-
-	void Mario::SetAnimation(int delay, bool once) {
-		if (!once) isAnimation = true;
-		isOnce = once;
-		delayCount = delay;
-	}
-
-	void Mario::SetVerticalSpeed(int value)
-	{
-		verticalSpeed = value;
-	}
-
-	void Mario::SetHorizontalSpeed(int value)
-	{
-		horizontalSpeed = value;
-	}
-
-	void Mario::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void Mario::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Mario::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
-
-	void Mario::SetDie(bool flag)
-	{
-		dead = flag;
-	}
-	void Mario::SetStatus(string action)
-	{
-		status = action;
-	}
-
-	void Mario::ShowBitmap()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top);
-		ShowBitmapBySetting();
-	}
-
-	void Mario::ShowBitmap(double factor)
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top, factor);
-		ShowBitmapBySetting();
-	}
-
-	int Mario::GetTop()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Top() is called !!!");
-		return location.top;
-	}
-
-	int Mario::GetLeft()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
-		return location.left;
-	}
-
-	int Mario::GetHeight()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
-		return location.bottom - location.top;
-	}
-
-	int Mario::GetWidth()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Width() is called !!!");
-		return location.right - location.left;
-	}
-
-	int Mario::GetFrameIndexOfBitmap() {
-		return frameIndex;
-	}
-
-	int Mario::GetFrameSizeOfBitmap() {
-		return (int)surfaceID.size();
-	}
-
-	int Mario::GetVerticalSpeed()
-	{
-		return verticalSpeed;
-	}
-	int Mario::GetHorizontalSpeed()
-	{
-		return horizontalSpeed;
-	}
-
-	bool Mario::GetDie()
-	{
-		return dead;
-	}
-
-	int Mario::GetPressedKey()
-	{
-		return pressedKey;
-	}
-
-	string Mario::GetImageFileName()
-	{
-		return imageFileName;
-	}
-
-	COLORREF Mario::GetFilterColor()
-	{
-		return filterColor;
-	}
-
-	string Mario::GetStatus()
-	{
-		return status;
-	}
-
-	void Mario::ToggleAnimation() {
-		frameIndex = 0;
-		isAnimation = true;
-		isAnimationDone = false;
-	}
-
-	bool Mario::IsAnimation()
-	{
-		return isAnimation;
-	}
-
-	bool Mario::IsAnimationDone()
-	{
-		return isAnimationDone;
-	}
-
-	bool Mario::IsOnceAnimation()
-	{
-		return isOnce;
-	}
-
-	bool Mario::IsBitmapLoaded() {
-		return isBitmapLoaded;
-	}
-
-	bool Mario::IsKeyPressed()
-	{
-		return isKeyPressed;
-	}
-
-	bool Mario::IsCollision()
-	{
-		return isCollision;
-	}
-
-	void Mario::InitializeRectByBITMAP(BITMAP bitmapSize) {
-		const unsigned NX = 0;
-		const unsigned NY = 0;
-
-		location.left = NX;
-		location.top = NY;
-		location.right = NX + bitmapSize.bmWidth;
-		location.bottom = NY + bitmapSize.bmHeight;
-	}
-
-	void Mario::ShowBitmapBySetting() {
-		if (isAnimation == true && clock() - last_time >= delayCount) {
-			frameIndex += 1;
-			last_time = clock();
-			if (frameIndex == surfaceID.size() && animationCount > 0) {
-				animationCount -= 1;
-			}
-			if (frameIndex == surfaceID.size() && (isOnce || animationCount == 0)) {
-				isAnimation = false;
-				isAnimationDone = true;
-				frameIndex = surfaceID.size() - 1;
-				return;
-			}
-			frameIndex = frameIndex % surfaceID.size();
-		}
-	}
-}         
+}

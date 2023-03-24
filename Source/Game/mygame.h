@@ -38,6 +38,7 @@
  *      3. Use ShowInitProgress(percent) to display loading progress.
 */
 
+#include "../Library/mario.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -104,7 +105,7 @@ namespace game_framework {
 		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
-		int GRAVITY = 12;
+		int GRAVITY = 24;
 		Mario mario;
 		CMovingBitmap monster;
 		CMovingBitmap background;
