@@ -6,6 +6,8 @@
 #include "../Library/gameutil.h"
 #include "../Library/gamecore.h"
 #include "../Library/mario.h"
+#include "../Library/goomba.h"
+#include "../Library/map.h"
 #include "mygame.h"
 #include "string"
 
@@ -29,21 +31,21 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
-	/*if (-10 <= mario.GetTop() + mario.GetHeight() - monster.GetTop() 
-		&& mario.GetTop() + mario.GetHeight() - monster.GetTop() <= 0 
-		&& mario.GetLeft()+ mario.GetWidth() > monster.GetLeft() 
-		&& mario.GetLeft() < monster.GetLeft() + monster.GetWidth()
+	if (-10 <= mario.GetTop() + mario.GetHeight() - goomba.GetTop()
+		&& mario.GetTop() + mario.GetHeight() - goomba.GetTop() <= 0
+		&& mario.GetLeft()+ mario.GetWidth() > goomba.GetLeft()
+		&& mario.GetLeft() < goomba.GetLeft() + goomba.GetWidth()
 		){
 		mario.SetDie(false);
-		monster.SetStatus("dead");
+		goomba.SetStatus("dead");
 	}
-	else if (mario.GetTop() > 900 || monster.IsOverlap(mario, monster) && monster.GetStatus() != "dead") 
+	else if (mario.GetTop() > 900 || goomba.charactor.IsOverlap(mario.charactor, goomba.charactor) && goomba.GetStatus() != "dead")
 	{
 		mario.SetDie(true);
 	}
 	if (mario.GetDie()) {
 		OnInit();
-	}*/
+	}
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -51,7 +53,8 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	LoadBackground();
 	LoadFloor();
 	LoadMario();
-	//LoadMonster();
+	LoadGoomba();
+	LoadMap();
 	mario.SetDie(false);
 }
 
@@ -123,15 +126,16 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 void CGameStateRun::OnShow()
 {
 	mario.UpData();
-	//monster.UpData();
+	goomba.UpData();
 	if (world == 1)
 	{
 		if (level == 1)
 		{
 			background.ShowBitmap();
-			floor.ShowBitmap();
-			//monster.ShowBitmap();
+			//floor.ShowBitmap();
+			goomba.ShowBitmap();
 			mario.ShowBitmap();
+			map.Show();
 			ShowMarioPostion();
 		}
 	}
@@ -180,25 +184,26 @@ void CGameStateRun::OnShow()
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
 		mario.SetTopLeft(384, mario.GetTop());
-	    //monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed(), monster.GetTop());
-		
+	    goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
+		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 	}
 	if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
-		//monster.SetTopLeft(monster.GetLeft() - mario.GetHorizontalSpeed(), monster.GetTop());
+		goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
+		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 		mario.SetTopLeft(512, mario.GetTop());
 	}
 	//-------------MonsterSet------------
-	/*if (monster.GetLeft()-mario.GetLeft() <= 512 && monster.GetStatus() != "dead")
+	if (goomba.GetLeft()-mario.GetLeft() <= 512 && goomba.GetStatus() != "dead")
 	{
-		monster.SetHorizontalSpeed(-4);
+		goomba.SetHorizontalSpeed(-4);
 	}
 	else
 	{
-		monster.SetHorizontalSpeed(0);
-	}*/
+		goomba.SetHorizontalSpeed(0);
+	}
 	//-------------floor-LIMIT-------------
 }
 
@@ -216,15 +221,15 @@ void CGameStateRun::LoadMario()
 	mario.SetVerticalSpeed(GRAVITY);
 }
 
-/*void CGameStateRun::LoadMonster()
+void CGameStateRun::LoadGoomba()
 {
-	monster.LoadBitmapByString({
+	goomba.LoadBitmapByString({
 		"resources/mario7.bmp",
 		}, RGB(146, 144, 255));
-	monster.SetTopLeft(2000, 768);
-	monster.SetHorizontalSpeed(0);
-	monster.SetStatus("appear");
-}*/
+	goomba.SetTopLeft(2000, 768);
+	goomba.SetHorizontalSpeed(0);
+	goomba.SetStatus("appear");
+}
 
 void CGameStateRun::LoadBackground()
 {
@@ -239,6 +244,12 @@ void CGameStateRun::LoadFloor()
 		"resources/1-1 floor.bmp"
 		}, RGB(255, 255, 255));
 	floor.SetTopLeft(0, 832);
+}
+
+
+void CGameStateRun::LoadMap()
+{
+	map.Load();
 }
 
 void CGameStateRun::ShowMarioPostion()

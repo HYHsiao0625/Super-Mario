@@ -39,6 +39,8 @@
 */
 
 #include "../Library/mario.h"
+#include "../Library/goomba.h"
+#include "../Library/map.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -97,17 +99,18 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
 		void LoadBackground();
-		void LoadMonster();
+		void LoadGoomba();
 		void LoadFloor();
 		void LoadMario();
+		void LoadMap();
 		void ShowMarioPostion();
-		void LoadBlock();
 		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
 		int GRAVITY = 24;
 		Mario mario;
-		CMovingBitmap monster;
+		Goomba goomba;
+		Map map;
 		CMovingBitmap background;
 		CMovingBitmap block1;
 		CMovingBitmap block2;
