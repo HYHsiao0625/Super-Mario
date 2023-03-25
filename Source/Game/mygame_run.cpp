@@ -64,13 +64,13 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x41)
 	{
 		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(-8);
+		mario.SetHorizontalSpeed(-20);
 		mario.SetStatus("leftwalk");
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
 		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(8);
+		mario.SetHorizontalSpeed(20);
 		mario.SetStatus("rightwalk");
 	}
 	if (nChar == VK_SPACE)

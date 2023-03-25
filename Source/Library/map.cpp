@@ -37,7 +37,7 @@ namespace game_framework
 	void Map::Load()
 	{
 		CMovingBitmap block;
-		for (int i = 0; i < 64; i++)
+		for (int i = 0; i < 211; i++)
 		{
 			array1.push_back(block);
 		}
@@ -48,19 +48,69 @@ namespace game_framework
 		array1.clear();
 		for (int i = 0; i < 15; i++)
 		{
-			for (int j = 0; j < 64; j++)
+			for (int j = 0; j < 211; j++)
 			{
 				switch (map1_1[i][j])
 				{
 				case 0:
 					charactor[i][j].LoadBitmapByString({
 						"resources/reject.bmp",
-						}, RGB(146, 144, 255));
+						}, RGB(92,148,252));
 					charactor[i][j].SetTopLeft(j * 64 , i * 64);
 				case 1:
 					charactor[i][j].LoadBitmapByString({
 						"resources/block.bmp"
 						});
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 2:
+					charactor[i][j].LoadBitmapByString({
+						"resources/block2.bmp"
+						});
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 3:
+					charactor[i][j].LoadBitmapByString({
+						"resources/block3.bmp"
+						});
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 4:
+					charactor[i][j].LoadBitmapByString({
+						"resources/pipe_1.bmp"
+						},RGB(92,148,252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 5:
+					charactor[i][j].LoadBitmapByString({
+						"resources/pipe_2.bmp"
+						}, RGB(92, 148, 252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 6:
+					charactor[i][j].LoadBitmapByString({
+						"resources/pipe_3.bmp"
+						}, RGB(92, 148, 252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 7:
+					charactor[i][j].LoadBitmapByString({
+						"resources/pipe_4.bmp"
+						}, RGB(92, 148, 252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 8:
+					charactor[i][j].LoadBitmapByString({
+						"resources/flag_1.bmp"
+						}, RGB(92, 148, 252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 9:
+					charactor[i][j].LoadBitmapByString({
+						"resources/flag_2.bmp"
+						}, RGB(92, 148, 252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 10:
+					charactor[i][j].LoadBitmapByString({
+						"resources/flag_3.bmp"
+						}, RGB(92, 148, 252));
+					charactor[i][j].SetTopLeft(j * 64, i * 64);
+				case 11:
+					charactor[i][j].LoadBitmapByString({
+						"resources/flag_4.bmp"
+						}, RGB(92, 148, 252));
 					charactor[i][j].SetTopLeft(j * 64, i * 64);
 				default:
 					break;
@@ -75,7 +125,7 @@ namespace game_framework
 	{
 		for (int i = 0; i < 15; i++)
 		{
-			for (int j = 0; j < 64; j++)
+			for (int j = 0; j < 211; j++)
 			{
 				charactor[i][j].ShowBitmap();
 			}
@@ -86,7 +136,7 @@ namespace game_framework
 	{
 		for (int i = 0; i < 15; i++)
 		{
-			for (int j = 0; j < 64; j++)
+			for (int j = 0; j < 211; j++)
 			{
 				charactor[i][j].SetTopLeft(charactor[i][j].GetLeft() - x, charactor[i][j].GetTop() - y);
 			}
