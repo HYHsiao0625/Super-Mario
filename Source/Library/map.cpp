@@ -142,4 +142,26 @@ namespace game_framework
 			}
 		}
 	}
+	bool Map::Isoverlamp(Mario mario ,CMovingBitmap floor)
+	{
+		int mario_y = mario.GetTop() / 64;
+		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft())/ 64;
+		if (mario.GetStatus()=="rightwalk") {
+			if (map1_1[mario_y][mario_x+1] == 0) {
+				return false;
+			}
+		}
+		if (mario.GetStatus() == "leftwalk") {
+			if (map1_1[mario_y][mario_x] == 0) {
+				return false;
+			}
+		}
+		if (mario.GetStatus() == "jump") {
+			if (map1_1[mario_y][mario_x-1] == 0 ||map1_1[mario_y][mario_x] == 0) {
+				return false;
+			}
+		}
+		return true;
+		
+	}
 }

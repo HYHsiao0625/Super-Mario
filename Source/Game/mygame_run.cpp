@@ -33,9 +33,9 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	if (-10 <= mario.GetTop() + mario.GetHeight() - goomba.GetTop()
 		&& mario.GetTop() + mario.GetHeight() - goomba.GetTop() <= 0
-		&& mario.GetLeft()+ mario.GetWidth() > goomba.GetLeft()
+		&& mario.GetLeft() + mario.GetWidth() > goomba.GetLeft()
 		&& mario.GetLeft() < goomba.GetLeft() + goomba.GetWidth()
-		){
+		) {
 		mario.SetDie(false);
 		goomba.SetStatus("dead");
 	}
@@ -45,6 +45,16 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	}
 	if (mario.GetDie()) {
 		OnInit();
+	}
+	if (mario.GetStatus() == "rightwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetHorizontalSpeed(0);
+	}
+	if (mario.GetStatus() == "leftwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetHorizontalSpeed(0);
+	}
+	if (mario.GetStatus() == "jump"     && map.Isoverlamp(mario, floor)){
+		mario.SetHorizontalSpeed(0);
+		mario.SetVerticalSpeed(12);
 	}
 }
 
@@ -63,15 +73,17 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == 0x41)
 	{
+		mario.SetStatus("leftwalk");
 		mario.SetKeyPressed(true);
 		mario.SetHorizontalSpeed(-20);
-		mario.SetStatus("leftwalk");
+		
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
+		mario.SetStatus("rightwalk");
 		mario.SetKeyPressed(true);
 		mario.SetHorizontalSpeed(20);
-		mario.SetStatus("rightwalk");
+			
 	}
 	if (nChar == VK_SPACE)
 	{
@@ -262,11 +274,11 @@ void CGameStateRun::ShowMarioPostion()
 		
 		CTextDraw::Print(pDC, 0, 0, "MARIO:");
 		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.GetLeft()));
-		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop()));
+		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop() / 64));
 		CTextDraw::Print(pDC, 0, 48, std::to_string(mario.GetVerticalSpeed()));
 
 		CTextDraw::Print(pDC, 0, 64, "floor:");
-		CTextDraw::Print(pDC, 0, 80, std::to_string(floor.GetLeft()));
+		CTextDraw::Print(pDC, 0, 80, std::to_string((-1*floor.GetLeft() + mario.GetLeft() )/ 64));
 		CTextDraw::Print(pDC, 0, 96, std::to_string(floor.GetTop()));
 	}
 	CDDraw::ReleaseBackCDC();
