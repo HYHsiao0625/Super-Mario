@@ -47,15 +47,32 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		OnInit();
 	}
 	if (mario.GetStatus() == "rightwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
 	}
 	if (mario.GetStatus() == "leftwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
 	}
 	if (mario.GetStatus() == "jump"     && map.Isoverlamp(mario, floor)){
+		mario.SetStatus("fall");
 		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
 		mario.SetVerticalSpeed(12);
 	}
+	if (mario.GetStatus() == "fall"     && (map.Isoverlamp(mario, floor))) {
+		mario.SetStatus("initial");
+		mario.SetKeyPressed(false);
+		mario.SetVerticalSpeed(0);
+	}
+	else if (mario.GetStatus() == "fall" && !(map.Isoverlamp(mario, floor))) {
+		mario.SetStatus("initial");
+		mario.SetKeyPressed(false);
+		mario.SetVerticalSpeed(12);
+	}
+	
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -109,7 +126,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_SPACE)
 	{
-		mario.SetStatus("initial");
+		mario.SetStatus("fall");
 		mario.SetVerticalSpeed(12);
 		mario.SetKeyPressed(false);
 	}

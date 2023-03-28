@@ -157,7 +157,12 @@ namespace game_framework
 			}
 		}
 		if (mario.GetStatus() == "jump") {
-			if (map1_1[mario_y][mario_x-1] == 0 ||map1_1[mario_y][mario_x] == 0) {
+			if (map1_1[mario_y][mario_x] == 0) {
+				return false;
+			}
+		}
+		if (mario.GetStatus() == "fall") {
+			if (map1_1[mario_y + 1][mario_x] == 0) {
 				return false;
 			}
 		}
