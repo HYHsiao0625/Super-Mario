@@ -49,4 +49,4 @@
         - 新增mario class
         - 新增goomba class
         - 新增map class
-        - 製作時間:1HR
+        - 製作時間:6HR
