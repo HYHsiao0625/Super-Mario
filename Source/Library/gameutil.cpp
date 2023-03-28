@@ -17,31 +17,52 @@
 #include <experimental/filesystem> // Header file for pre-standard implementation
 #include <comdef.h>
 
-namespace game_framework {
+namespace game_framework 
+{
 
 	/////////////////////////////////////////////////////////////////////////////
 	// CMovingBitmap: Moving Bitmap class
-	// ³o­Ó class ´£¨Ñ¥i¥H²¾°Êªº¹Ï§Î
-	// ­nÀ´±o«ç»ò©I¥s(¹B¥Î)¨ä¦UºØ¯à¤O¡A¦ı¬O¥i¥H¤£À´¤U¦Cªºµ{¦¡¬O¤°»ò·N«ä
+	// é€™å€‹ class æä¾›å¯ä»¥ç§»å‹•çš„åœ–å½¢
+	// è¦æ‡‚å¾—æ€éº¼å‘¼å«(é‹ç”¨)å…¶å„ç¨®èƒ½åŠ›ï¼Œä½†æ˜¯å¯ä»¥ä¸æ‡‚ä¸‹åˆ—çš„ç¨‹å¼æ˜¯ä»€éº¼æ„æ€
 	/////////////////////////////////////////////////////////////////////////////
 
+	//! CMovingBitmap å»ºæ§‹å­
+	/*!
+		ç”¨æ–¼å‰µç«‹ä¸€å€‹å°šæœªè®€å–åœ–ç‰‡çš„ç‰©ä»¶ã€‚
+	*/
 	CMovingBitmap::CMovingBitmap()
 	{
 		isBitmapLoaded = false;
 	}
 
-	/* refresh */
-	void CMovingBitmap::UpData()
+	//! å–å¾— CMovingBitmap ç‰©ä»¶çš„åœ–ç‰‡é«˜åº¦ã€‚
+	/*!
+		éœ€è¦å…ˆè¼‰å…¥åœ–ç‰‡ã€‚
+		\return åœ–ç‰‡é«˜åº¦ï¼Œä»¥åƒç´ ç‚ºå–®ä½ã€‚
+	*/
+	int CMovingBitmap::GetHeight()
 	{
-		int dx = -horizontalSpeed;
-		int dy = -verticalSpeed;
-		location.left = location.left + horizontalSpeed;
-		location.right -= dx;
-		location.top = location.top + verticalSpeed;
-		location.bottom -= dy;
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
+		return locations[frameIndex].bottom - locations[frameIndex].top;
 	}
 
-	/* The function for loading the bitmap. */
+	//! å–å¾— CMovingBitmap ç‰©ä»¶çš„å·¦ä¸Šè§’çš„ x è»¸åº§æ¨™å€¼ã€‚
+	/*!
+		éœ€è¦å…ˆè¼‰å…¥åœ–ç‰‡ã€‚
+		\return åœ–ç‰‡å·¦ä¸Šè§’çš„ x è»¸åº§æ¨™å€¼ã€‚
+	*/
+	int CMovingBitmap::GetLeft()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
+		return locations[frameIndex].left;
+	}
+
+	//! è®€å–åœ–ç‰‡è³‡æºã€‚
+	/*!
+		é€éè³‡æºç·¨è™Ÿ `IDB_BITMAP` ä¾†è®€å–å°æ‡‰çš„åœ–ç‰‡ï¼Œä¸¦ä¸”éæ¿¾ç‰¹å®šé¡è‰² `color`ã€‚
+		\param IDB_BITMAP åœ–ç‰‡è³‡æºç·¨è™Ÿ
+		\param color æ¬²éæ¿¾çš„é¡è‰²ï¼ˆé è¨­ç‚º `CLR_INVALID`ï¼Œå¯åˆ©ç”¨ `RGB(<R>, <G>, <B>`) ä¾†è¨­ç½®é¡è‰²ï¼‰
+	*/
 	void CMovingBitmap::LoadBitmap(int IDB_BITMAP, COLORREF color)
 	{
 		CBitmap bitmap;
@@ -57,11 +78,11 @@ namespace game_framework {
 		isBitmapLoaded = true;
 	}
 
-	//! Åª¨ú¹Ï¤ù¸ê·½¡C
+	//! è®€å–åœ–ç‰‡è³‡æºã€‚
 	/*!
-		³z¹L¹Ï¤ù¬Û¹ï¸ô®| `filepath` ¨ÓÅª¨ú¹ïÀ³ªº¹Ï¤ù¡A¨Ã¥B¹LÂo¯S©wÃC¦â `color`¡C
-		\param filepath ¹Ï¤ù¬Û¹ï¸ô®|
-		\param color ±ı¹LÂoªºÃC¦â¡]¹w³]¬° `CLR_INVALID`¡A¥i§Q¥Î `RGB(<R>, <G>, <B>`) ¨Ó³]¸m¹LÂoÃC¦â¡^
+		é€éåœ–ç‰‡ç›¸å°è·¯å¾‘ `filepath` ä¾†è®€å–å°æ‡‰çš„åœ–ç‰‡ï¼Œä¸¦ä¸”éæ¿¾ç‰¹å®šé¡è‰² `color`ã€‚
+		\param filepath åœ–ç‰‡ç›¸å°è·¯å¾‘
+		\param color æ¬²éæ¿¾çš„é¡è‰²ï¼ˆé è¨­ç‚º `CLR_INVALID`ï¼Œå¯åˆ©ç”¨ `RGB(<R>, <G>, <B>`) ä¾†è¨­ç½®éæ¿¾é¡è‰²ï¼‰
 	*/
 	void CMovingBitmap::LoadBitmap(char *filepath, COLORREF color)
 	{
@@ -87,11 +108,11 @@ namespace game_framework {
 		bmp->DeleteObject();
 	}
 
-	//! Åª¨ú¹Ï¤ù¸ê·½¡C
+	//! è®€å–åœ–ç‰‡è³‡æºã€‚
 	/*!
-		³z¹L¹Ï¤ù¬Û¹ï¸ô®|¶° `filepaths` ¨ÓÅª¨ú¦h­Ó¹Ï¤ù¡A¨Ã¥B¹LÂo¯S©wÃC¦â `color`¡C
-		\param filepaths ¹Ï¤ù¬Û¹ï¸ô®|¶°
-		\param color ±ı¹LÂoªºÃC¦â¡]¹w³]¬° `CLR_INVALID`¡A¥i§Q¥Î `RGB(<R>, <G>, <B>`) ¨Ó³]¸m¹LÂoÃC¦â¡^
+		é€éåœ–ç‰‡ç›¸å°è·¯å¾‘é›† `filepaths` ä¾†è®€å–å¤šå€‹åœ–ç‰‡ï¼Œä¸¦ä¸”éæ¿¾ç‰¹å®šé¡è‰² `color`ã€‚
+		\param filepaths åœ–ç‰‡ç›¸å°è·¯å¾‘é›†
+		\param color æ¬²éæ¿¾çš„é¡è‰²ï¼ˆé è¨­ç‚º `CLR_INVALID`ï¼Œå¯åˆ©ç”¨ `RGB(<R>, <G>, <B>`) ä¾†è¨­ç½®éæ¿¾é¡è‰²ï¼‰
 		\sa https://en.cppreference.com/w/cpp/container/vector
 	*/
 	void CMovingBitmap::LoadBitmap(vector<char*> filepaths, COLORREF color)
@@ -101,11 +122,11 @@ namespace game_framework {
 		}
 	}
 
-	//! Åª¨ú¹Ï¤ù¸ê·½¡C
+	//! è®€å–åœ–ç‰‡è³‡æºã€‚
 	/*!
-		³z¹L¹Ï¤ù¬Û¹ï¸ô®|¶° `filepaths` ¨ÓÅª¨ú¦h­Ó¹Ï¤ù¡A¨Ã¥B¹LÂo¯S©wÃC¦â `color`¡C
-		\param filepaths ¹Ï¤ù¬Û¹ï¸ô®|¶°
-		\param color ±ı¹LÂoªºÃC¦â¡]¹w³]¬° `CLR_INVALID`¡A¥i§Q¥Î `RGB(<R>, <G>, <B>`) ¨Ó³]¸m¹LÂoÃC¦â¡^
+		é€éåœ–ç‰‡ç›¸å°è·¯å¾‘é›† `filepaths` ä¾†è®€å–å¤šå€‹åœ–ç‰‡ï¼Œä¸¦ä¸”éæ¿¾ç‰¹å®šé¡è‰² `color`ã€‚
+		\param filepaths åœ–ç‰‡ç›¸å°è·¯å¾‘é›†
+		\param color æ¬²éæ¿¾çš„é¡è‰²ï¼ˆé è¨­ç‚º `CLR_INVALID`ï¼Œå¯åˆ©ç”¨ `RGB(<R>, <G>, <B>`) ä¾†è¨­ç½®éæ¿¾é¡è‰²ï¼‰
 		\sa https://en.cppreference.com/w/cpp/container/vector
 	*/
 	void CMovingBitmap::LoadBitmapByString(vector<string> filepaths, COLORREF color)
@@ -116,11 +137,11 @@ namespace game_framework {
 		}
 	}
 
-	//! Åª¨úªÅ¥Õ¹Ï¤ù¸ê·½¡C
+	//! è®€å–ç©ºç™½åœ–ç‰‡è³‡æºã€‚
 	/*!
-		Åª¨ú¤@­Ó¯S©w¤j¤pªº¥Õ¦âÂI°}¹Ï¡C
-		\param height ¹Ï¤ùªø«×
-		\param width ¹Ï¤ù¼e«×
+		è®€å–ä¸€å€‹ç‰¹å®šå¤§å°çš„ç™½è‰²é»é™£åœ–ã€‚
+		\param height åœ–ç‰‡é•·åº¦
+		\param width åœ–ç‰‡å¯¬åº¦
 	*/
 	void CMovingBitmap::LoadEmptyBitmap(int height, int width) {
 		HBITMAP hbitmap = CreateBitmap(width, height, 1, 32, NULL);
@@ -144,11 +165,9 @@ namespace game_framework {
 		bmp->DeleteObject();
 	}
 
-
-	/* Unshow the bitmap. */
-	//! °±¤îÅã¥Ü¹Ï¤ù¡C
+	//! åœæ­¢é¡¯ç¤ºåœ–ç‰‡ã€‚
 	/*!
-		@deprecated ±q v1.0.0 ª©¥»«á±ó¥Î¡A°±¤îÅã¥Ü¹Ï¤ù½Ğ¦b `OnShow()` ®É¤£©I¥s `ShowBitmap()` §Y¥i
+		@deprecated å¾ v1.0.0 ç‰ˆæœ¬å¾Œæ£„ç”¨ï¼Œåœæ­¢é¡¯ç¤ºåœ–ç‰‡è«‹åœ¨ `OnShow()` æ™‚ä¸å‘¼å« `ShowBitmap()` å³å¯
 		\sa ShowBitmap()
 	*/
 	void CMovingBitmap::UnshowBitmap()
@@ -158,206 +177,103 @@ namespace game_framework {
 		this->ShowBitmap(0);
 	}
 
-	/* Setter */
-	//! ³]¸m¹Ï¤ù¦Üµe¥¬«ü©w®y¼Ğ¤W¡C
+	//! è¨­ç½®åœ–ç‰‡è‡³ç•«å¸ƒæŒ‡å®šåº§æ¨™ä¸Šã€‚
 	/*!
-		±N·|§â¹Ï¤ù¥ª¤W¨¤³]¸m¦Ü«ü©w®y¼Ğ¤W¡C
-		\param x ¥ª¤W¨¤ x ®y¼Ğ
-		\param y ¥ª¤W¨¤ y ®y¼Ğ
+		å°‡æœƒæŠŠåœ–ç‰‡å·¦ä¸Šè§’è¨­ç½®è‡³æŒ‡å®šåº§æ¨™ä¸Šã€‚
+		\param x å·¦ä¸Šè§’ x åº§æ¨™
+		\param y å·¦ä¸Šè§’ y åº§æ¨™
 	*/
 	void CMovingBitmap::SetTopLeft(int x, int y)
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
-		int dx = location.left - x;
-		int dy = location.top - y;
-		location.left = x;
-		location.top = y;
-		location.right -= dx;
-		location.bottom -= dy;
+
+		for (int i = 0; i < int(locations.size()); i++) {
+			int dx = locations[i].left - x;
+			int dy = locations[i].top - y;
+			locations[i].left = x;
+			locations[i].top = y;
+			locations[i].right -= dx;
+			locations[i].bottom -= dy;
+		}
 	}
 
-	//! ³]¸m·í«e¹Ï¤ùÅã¥Ü´Vªº¯Á¤Ş­È¡C
+	//! è¨­ç½®åœ–ç‰‡æ˜¯å¦ç‚ºå‹•ç•«ã€‚
 	/*!
-		¹Ï¤ùÅã¥Ü´Vªº¯Á¤Ş­È¥H 0 ¶}©l¡C
-		\param frameIndex ¹Ï¤ùÅã¥Ü´Vªº¯Á¤Ş­È¡C
-	*/
-	void CMovingBitmap::SetFrameIndexOfBitmap(int frameIndex) {
-		GAME_ASSERT(frameIndex < (int)surfaceID.size(), "¿ï¾Ü¹Ï¤ù®É¯Á¤Ş¥X¬É");
-		this->frameIndex = frameIndex;
-	}
-
-	//! ³]¸m¹Ï¤ù¬O§_¬°°Êµe¡C
-	/*!
-		­Y CMovingBitmap Åª¤J¦h­Ó¹Ï¤ù¡A«h¥i¥H¨Ï¥Î¦¹¨ç¼Æ¨Ó³]©wª«¥ó¬°°Êµe¡C
-		\param delay °Êµe¤Á´«©µ¿ğ¡]¥H²@¬í¬°³æ¦ì¡^
-		\param once °Êµe¬O§_¬°¤@¦¸©Ê°Êµe¡A­Y¬O«h»İ­n¥H `ToggleAnimation()` ¨Ó©I¥s°Êµe±Ò°Ê¡C
+		è‹¥ CMovingBitmap è®€å…¥å¤šå€‹åœ–ç‰‡ï¼Œå‰‡å¯ä»¥ä½¿ç”¨æ­¤å‡½æ•¸ä¾†è¨­å®šç‰©ä»¶ç‚ºå‹•ç•«ã€‚
+		\param delay å‹•ç•«åˆ‡æ›å»¶é²ï¼ˆä»¥æ¯«ç§’ç‚ºå–®ä½ï¼‰
+		\param once å‹•ç•«æ˜¯å¦ç‚ºä¸€æ¬¡æ€§å‹•ç•«ï¼Œè‹¥æ˜¯å‰‡éœ€è¦ä»¥ `ToggleAnimation()` ä¾†å‘¼å«å‹•ç•«å•Ÿå‹•ã€‚
 		\sa ToggleAnimation()
 	*/
-
 	void CMovingBitmap::SetAnimation(int delay, bool once) {
 		if (!once) isAnimation = true;
 		isOnce = once;
 		delayCount = delay;
 	}
 
-	void CMovingBitmap::SetVerticalSpeed(int value)
-	{
-		verticalSpeed = value;
-	}
-
-	void CMovingBitmap::SetHorizontalSpeed(int value)
-	{
-		horizontalSpeed = value;
-	}
-
-	void CMovingBitmap::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void CMovingBitmap::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void CMovingBitmap::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
-
-	void CMovingBitmap::SetStatus(string action)
-	{
-		status = action;
-	}
-
-	/* Show the bitmap with or without factor. */
-	//! Åã¥Ü¹Ï¤ù¡C
+	//! é¡¯ç¤ºåœ–ç‰‡ã€‚
 	/*!
-		¶È¯à¦b `onShow()` ®É©I¥s¡A¥B¹Ï¤ù»İ­n³QÅª¨ú¡C
+		åƒ…èƒ½åœ¨ `onShow()` æ™‚å‘¼å«ï¼Œä¸”åœ–ç‰‡éœ€è¦è¢«è®€å–ã€‚
 	*/
 	void CMovingBitmap::ShowBitmap()
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top);
+		CDDraw::BltBitmapToBack(surfaceID[frameIndex], locations[frameIndex].left, locations[frameIndex].top);
 		ShowBitmapBySetting();
 	}
 
-	//! Åã¥Ü¹Ï¤ù¡C
+	//! é¡¯ç¤ºåœ–ç‰‡ã€‚
 	/*!
-		¶È¯à¦b `onShow()` ®É©I¥s¡A¥B¹Ï¤ù»İ­n³QÅª¨ú¡C
-		\param factor ©ñ¤j­¿²v¡A»İ­n VGA Åã¥dªº¤ä´©¡A§_«h·|ÅÜ±o²§±`ºC¡C
+		åƒ…èƒ½åœ¨ `onShow()` æ™‚å‘¼å«ï¼Œä¸”åœ–ç‰‡éœ€è¦è¢«è®€å–ã€‚
+		\param factor æ”¾å¤§å€ç‡ï¼Œéœ€è¦ VGA é¡¯å¡çš„æ”¯æ´ï¼Œå¦å‰‡æœƒè®Šå¾—ç•°å¸¸æ…¢ã€‚
 	*/
 	void CMovingBitmap::ShowBitmap(double factor)
 	{
 		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top, factor);
+		CDDraw::BltBitmapToBack(surfaceID[frameIndex], locations[frameIndex].left, locations[frameIndex].top, factor);
 		ShowBitmapBySetting();
 	}
 
-
-	/* Getter */
-
-	//! ¨ú±o·í«e¹Ï¤ù¥ª¤W¨¤ y ¶bªº®y¼Ğ­È¡C
+	//! è¨­ç½®ç•¶å‰åœ–ç‰‡é¡¯ç¤ºå¹€çš„ç´¢å¼•å€¼ã€‚
 	/*!
-		\return ¹Ï¤ù¥ª¤W¨¤ y ¶bªº®y¼Ğ­È¡C
+		åœ–ç‰‡é¡¯ç¤ºå¹€çš„ç´¢å¼•å€¼ä»¥ 0 é–‹å§‹ã€‚
+		\param frameIndex åœ–ç‰‡é¡¯ç¤ºå¹€çš„ç´¢å¼•å€¼ã€‚
 	*/
-	int CMovingBitmap::GetTop()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Top() is called !!!");
-		return location.top;
+	void CMovingBitmap::SetFrameIndexOfBitmap(int frameIndex) {
+		GAME_ASSERT(frameIndex < (int)surfaceID.size(), "é¸æ“‡åœ–ç‰‡æ™‚ç´¢å¼•å‡ºç•Œ");
+		this->frameIndex = frameIndex;
 	}
 
-	//! ¨ú±o CMovingBitmap ª«¥óªº¥ª¤W¨¤ªº x ¶b®y¼Ğ­È¡C
+	//! å–å¾—ç•¶å‰åœ–ç‰‡é¡¯ç¤ºå¹€çš„ç´¢å¼•å€¼ã€‚
 	/*!
-		»İ­n¥ı¸ü¤J¹Ï¤ù¡C
-		\return ¹Ï¤ù¥ª¤W¨¤ªº x ¶b®y¼Ğ­È¡C
-	*/
-	int CMovingBitmap::GetLeft()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
-		return location.left;
-	}
-
-	//! ¨ú±o CMovingBitmap ª«¥óªº¹Ï¤ù°ª«×¡C
-	/*!
-		»İ­n¥ı¸ü¤J¹Ï¤ù¡C
-		\return ¹Ï¤ù°ª«×¡A¥H¹³¯À¬°³æ¦ì¡C
-	*/
-	int CMovingBitmap::GetHeight()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
-		return location.bottom - location.top;
-	}
-
-	//! ¨ú±o·í«e¹Ï¤ù¼e«×¡C
-	/*!
-		\return ¨ú±o·í«e¹Ï¤ù¼e«×¡C
-	*/
-	int CMovingBitmap::GetWidth()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Width() is called !!!");
-		return location.right - location.left;
-	}
-
-	
-
-	//! ¨ú±o·í«e¹Ï¤ùÅã¥Ü´Vªº¯Á¤Ş­È¡C
-	/*!
-		\return ¹Ï¤ùÅã¥Ü´Vªº¯Á¤Ş­È¡C
+		\return åœ–ç‰‡é¡¯ç¤ºå¹€çš„ç´¢å¼•å€¼ã€‚
 	*/
 	int CMovingBitmap::GetFrameIndexOfBitmap() {
 		return frameIndex;
 	}
 
-	//! ¦^¶Çª«¥óªº´V¼Æ¡C
+	//! å–å¾—ç•¶å‰åœ–ç‰‡å·¦ä¸Šè§’ y è»¸çš„åº§æ¨™å€¼ã€‚
 	/*!
-		\return ¦^¶Çª«¥óªº´V¼Æ¡C
+		\return åœ–ç‰‡å·¦ä¸Šè§’ y è»¸çš„åº§æ¨™å€¼ã€‚
 	*/
-	int CMovingBitmap::GetFrameSizeOfBitmap() {
-		return (int)surfaceID.size();
+	int CMovingBitmap::GetTop()
+	{
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Top() is called !!!");
+		return locations[frameIndex].top;
 	}
 
-	int CMovingBitmap::GetVerticalSpeed()
-	{
-		return verticalSpeed;
-	}
-	int CMovingBitmap::GetHorizontalSpeed()
-	{
-		return horizontalSpeed;
-	}
-
-	int CMovingBitmap::GetPressedKey()
-	{
-		return pressedKey;
-	}
-
-	//! ¨ú±oª«¥ó¸ü¤J¹Ï¤ù¦WºÙ¡C
+	//! å–å¾—ç•¶å‰åœ–ç‰‡å¯¬åº¦ã€‚
 	/*!
-		\return ¦^¶Ç¹Ï¤ù¦WºÙ¡A­Y¹Ï¤ù©|¥¼¸ü¤J¡A«h¦^¶Ç¤@ªÅ¦r¦ê¡C
+		\return å–å¾—ç•¶å‰åœ–ç‰‡å¯¬åº¦ã€‚
 	*/
-	string CMovingBitmap::GetImageFileName() 
+	int CMovingBitmap::GetWidth()
 	{
-		return imageFileName;
+		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Width() is called !!!");
+		return locations[frameIndex].right - locations[frameIndex].left;
 	}
 
-	//! ¨ú±oª«¥ó¹LÂoÃC¦â¡C
+	//! å•Ÿå‹•å–®æ¬¡å‹•ç•«ã€‚
 	/*!
-		\return ¦^¶Ç¹LÂoÃC¦â¡A­Yª«¥ó¥¼³]©w¹LÂoÃC¦â¡A¦^¶Ç `CLR_INVALID`¡C
-	*/
-	COLORREF CMovingBitmap::GetFilterColor() 
-	{
-		return filterColor;
-	}
-
-	string CMovingBitmap::GetStatus()
-	{
-		return status;
-	}
-
-	/* Toggle function */
-	//! ±Ò°Ê³æ¦¸°Êµe¡C
-	/*!
-		±N°Êµe³]¬°ªì©l´V¡A¨Ã¥Bªì©l¤Æ³æ¦¸°Êµeªº°Ñ¼Æ­È¡C
+		å°‡å‹•ç•«è¨­ç‚ºåˆå§‹å¹€ï¼Œä¸¦ä¸”åˆå§‹åŒ–å–®æ¬¡å‹•ç•«çš„åƒæ•¸å€¼ã€‚
 	*/
 	void CMovingBitmap::ToggleAnimation() {
 		frameIndex = 0;
@@ -365,80 +281,62 @@ namespace game_framework {
 		isAnimationDone = false;
 	}
 
-	/* Is function */
-	//! ª«¥ó¬O§_¬°°Êµeª«¥ó¡C
+	//! ç‰©ä»¶æ˜¯å¦ç‚ºå‹•ç•«ç‰©ä»¶ã€‚
 	/*!
-		\return ¥¬ªL­È¡Aªí¥Üª«¥ó¬O§_¬°°Êµeª«¥ó¡C
+		\return å¸ƒæ—å€¼ï¼Œè¡¨ç¤ºç‰©ä»¶æ˜¯å¦ç‚ºå‹•ç•«ç‰©ä»¶ã€‚
 	*/
-	bool CMovingBitmap::IsAnimation()
-	{
+	bool CMovingBitmap::IsAnimation() {
 		return isAnimation;
 	}
 
-	//! °Êµeª«¥ó¬O§_¤w°õ¦æ§¹°Êµe¡C
+	//! å‹•ç•«ç‰©ä»¶æ˜¯å¦å·²åŸ·è¡Œå®Œå‹•ç•«ã€‚
 	/*!
-		\return ¥¬ªL­È¡Aªí¥Ü°Êµeª«¥ó¬O§_¤w°õ¦æ§¹°Êµe¡C
+		\return å¸ƒæ—å€¼ï¼Œè¡¨ç¤ºå‹•ç•«ç‰©ä»¶æ˜¯å¦å·²åŸ·è¡Œå®Œå‹•ç•«ã€‚
 	*/
-	bool CMovingBitmap::IsAnimationDone()
-	{
+	bool CMovingBitmap::IsAnimationDone() {
 		return isAnimationDone;
 	}
 
-	//! °Êµeª«¥ó¬O§_¬°³æ¦¸°Êµeª«¥ó¡C
+	//! å‹•ç•«ç‰©ä»¶æ˜¯å¦ç‚ºå–®æ¬¡å‹•ç•«ç‰©ä»¶ã€‚
 	/*!
-		\return ¥¬ªL­È¡Aªí¥Ü°Êµeª«¥ó¬O§_¬°³æ¦¸°Êµeª«¥ó¡C
+		\return å¸ƒæ—å€¼ï¼Œè¡¨ç¤ºå‹•ç•«ç‰©ä»¶æ˜¯å¦ç‚ºå–®æ¬¡å‹•ç•«ç‰©ä»¶ã€‚
 	*/
-	bool CMovingBitmap::IsOnceAnimation()
-	{
+	bool CMovingBitmap::IsOnceAnimation() {
 		return isOnce;
 	}
 
-	//! ª«¥ó¬O§_¤wÅª¨úÂI°}¹Ï¡C
+	//! ç‰©ä»¶æ˜¯å¦å·²è®€å–é»é™£åœ–ã€‚
 	/*!
-		\return ¥¬ªL­È¡Aªí¥Üª«¥ó¬O§_¤wÅª¨úÂI°}¹Ï¡C
+		\return å¸ƒæ—å€¼ï¼Œè¡¨ç¤ºç‰©ä»¶æ˜¯å¦å·²è®€å–é»é™£åœ–ã€‚
 	*/
 	bool CMovingBitmap::IsBitmapLoaded() {
 		return isBitmapLoaded;
 	}
 
-	//! ¨âª«¥ó¬O§_¥æÅ|¡C
+	//! å›å‚³ç‰©ä»¶çš„å¹€æ•¸ã€‚
 	/*!
-		\param bmp1 ²Ä¤@­Ó CMovingBitmap ª«¥ó
-		\param bmp2 ²Ä¤G­Ó CMovingBitmap ª«¥ó
-		\return ¦^¶Ç¥¬ªL­È¡A¥Nªí¨âª«¥ó¬O§_¥æÅ|¡C
+		\return å›å‚³ç‰©ä»¶çš„å¹€æ•¸ã€‚
 	*/
-	bool CMovingBitmap::IsOverlap(CMovingBitmap bmp1, CMovingBitmap bmp2)
-	{
-		CRect rect;
-		BOOL isOverlap = rect.IntersectRect(bmp1.location, bmp2.location);
-		return isOverlap;
+	int CMovingBitmap::GetFrameSizeOfBitmap() {
+		return (int)surfaceID.size();
 	}
 
-	bool CMovingBitmap::IsKeyPressed()
-	{
-		return isKeyPressed;
-	}
-
-	bool CMovingBitmap::IsCollision()
-	{
-		return isCollision;
-	}
-
-	//! ®Ú¾Ú BITMAP ¨Óªì©l¤Æ CMovingBitmap ¤ºªº location ª«¥ó¡C
+	//! æ ¹æ“š BITMAP ä¾†åˆå§‹åŒ– CMovingBitmap å…§çš„ location ç‰©ä»¶ã€‚
 	/*!
-		\param bitmapSize ¤wªì©l¤Æ¹Lªº BITMAP ª«¥ó¡A±a¦³ÂI°}¹Ïªº°ª»P¼e
+		\param bitmapSize å·²åˆå§‹åŒ–éçš„ BITMAP ç‰©ä»¶ï¼Œå¸¶æœ‰é»é™£åœ–çš„é«˜èˆ‡å¯¬
 	*/
 	void CMovingBitmap::InitializeRectByBITMAP(BITMAP bitmapSize) {
 		const unsigned NX = 0;
 		const unsigned NY = 0;
-
-		location.left = NX;
-		location.top = NY;
-		location.right = NX + bitmapSize.bmWidth;
-		location.bottom = NY + bitmapSize.bmHeight;
+		CRect newCrect;
+		newCrect.left = NX;
+		newCrect.top = NY;
+		newCrect.right = NX + bitmapSize.bmWidth;
+		newCrect.bottom = NY + bitmapSize.bmHeight;
+		locations.push_back(newCrect);
 	}
 
-	//! ®Ú¾Ú¨Ï¥ÎªÌ³]©wªº°Ñ¼Æ¨ÓÅã¥Ü¹Ï¤ù¡C
+	//! æ ¹æ“šä½¿ç”¨è€…è¨­å®šçš„åƒæ•¸ä¾†é¡¯ç¤ºåœ–ç‰‡ã€‚
 	void CMovingBitmap::ShowBitmapBySetting() {
 		if (isAnimation == true && clock() - last_time >= delayCount) {
 			frameIndex += 1;
@@ -456,19 +354,47 @@ namespace game_framework {
 		}
 	}
 
+	//! å–å¾—ç‰©ä»¶è¼‰å…¥åœ–ç‰‡åç¨±ã€‚
+	/*!
+		\return å›å‚³åœ–ç‰‡åç¨±ï¼Œè‹¥åœ–ç‰‡å°šæœªè¼‰å…¥ï¼Œå‰‡å›å‚³ä¸€ç©ºå­—ä¸²ã€‚
+	*/
+	string CMovingBitmap::GetImageFileName() {
+		return imageFileName;
+	}
+
+	//! å–å¾—ç‰©ä»¶éæ¿¾é¡è‰²ã€‚
+	/*!
+		\return å›å‚³éæ¿¾é¡è‰²ï¼Œè‹¥ç‰©ä»¶æœªè¨­å®šéæ¿¾é¡è‰²ï¼Œå›å‚³ `CLR_INVALID`ã€‚
+	*/
+	COLORREF CMovingBitmap::GetFilterColor() {
+		return filterColor;
+	}
+
+	//! å…©ç‰©ä»¶æ˜¯å¦äº¤ç–Šã€‚
+	/*!
+		\param bmp1 ç¬¬ä¸€å€‹ CMovingBitmap ç‰©ä»¶
+		\param bmp2 ç¬¬äºŒå€‹ CMovingBitmap ç‰©ä»¶
+		\return å›å‚³å¸ƒæ—å€¼ï¼Œä»£è¡¨å…©ç‰©ä»¶æ˜¯å¦äº¤ç–Šã€‚
+	*/
+	bool CMovingBitmap::IsOverlap(CMovingBitmap bmp1, CMovingBitmap bmp2) {
+		CRect rect;
+		BOOL isOverlap = rect.IntersectRect(bmp1.locations[bmp1.GetFrameIndexOfBitmap()], bmp2.locations[bmp2.GetFrameIndexOfBitmap()]);
+		return isOverlap;
+	}
+
 	/////////////////////////////////////////////////////////////////////////////
 	// CTextDraw: The class provide the ability to draw the text.
-	// ³o­Ó class ´£¨Ñ¤å¦rªº§e²{
-	// ­nÀ´±o«ç»ò©I¥s(¹B¥Î)¨ä¦UºØ¯à¤O¡A¦ı¬O¥i¥H¤£À´¤U¦Cªºµ{¦¡¬O¤°»ò·N«ä
+	// é€™å€‹ class æä¾›æ–‡å­—çš„å‘ˆç¾
+	// è¦æ‡‚å¾—æ€éº¼å‘¼å«(é‹ç”¨)å…¶å„ç¨®èƒ½åŠ›ï¼Œä½†æ˜¯å¯ä»¥ä¸æ‡‚ä¸‹åˆ—çš„ç¨‹å¼æ˜¯ä»€éº¼æ„æ€
 	/////////////////////////////////////////////////////////////////////////////
 
-	//! ¦bµe­±¤W¦L¥X¤å¦r¡C
+	//! åœ¨ç•«é¢ä¸Šå°å‡ºæ–‡å­—ã€‚
 	/*!
-		§Ú­Ì±N pDC ¨ú±oªº³d¥ô¥æµ¹ caller¡A§A¥²¶·­n¨ú±o·í«eªº pDC «ü¼Ğ¡AµM«á°O±oÄÀ©ñ¡C
-		\param pDC¡A¤@­Ó CDC «ü¼Ğ¡A¥i¨Ï¥Î `CDDraw::GetBackCDC()` ¨ú±o¡C
-		\param x ¤å¦rÅã¥Üªº¥ª¤W¨¤ x ®y¼Ğ
-		\param y ¤å¦rÅã¥Üªº¥ª¤W¨¤ y ®y¼Ğ
-		\param str ±ıÅã¥Üªº¤å¦r
+		æˆ‘å€‘å°‡ pDC å–å¾—çš„è²¬ä»»äº¤çµ¦ callerï¼Œä½ å¿…é ˆè¦å–å¾—ç•¶å‰çš„ pDC æŒ‡æ¨™ï¼Œç„¶å¾Œè¨˜å¾—é‡‹æ”¾ã€‚
+		\param pDCï¼Œä¸€å€‹ CDC æŒ‡æ¨™ï¼Œå¯ä½¿ç”¨ `CDDraw::GetBackCDC()` å–å¾—ã€‚
+		\param x æ–‡å­—é¡¯ç¤ºçš„å·¦ä¸Šè§’ x åº§æ¨™
+		\param y æ–‡å­—é¡¯ç¤ºçš„å·¦ä¸Šè§’ y åº§æ¨™
+		\param str æ¬²é¡¯ç¤ºçš„æ–‡å­—
 	*/
 	void CTextDraw::Print(CDC *pDC, int x, int y, string str) {
 		x = CDDraw::IsFullScreen() ? x + (RESOLUTION_X - SIZE_X) / 2 : x;
@@ -476,15 +402,15 @@ namespace game_framework {
 		pDC->TextOut(x, y, str.c_str());
 	}
 
-	//! ³]©w·í«e¤å¦rªºÄİ©Ê¡C
+	//! è¨­å®šç•¶å‰æ–‡å­—çš„å±¬æ€§ã€‚
 	/*!
-		§Ú­Ì±N pDC ¨ú±oªº³d¥ô¥æµ¹ caller¡A§A¥²¶·­n¨ú±o·í«eªº pDC «ü¼Ğ¡AµM«á°O±oÄÀ©ñ¡C
-		¦¹³]©w·|¦b³]©wªº pDC «ü¼Ğ³QÄÀ©ñ®É¥¢¥h³]©w­È¡C
-		\param pDC¡A¤@­Ó CDC «ü¼Ğ¡A¥i¨Ï¥Î `CDDraw::GetBackCDC()` ¨ú±o¡C
-		\param size ¤å¦rªº¤j¤p¡]¥H pt ¬°³æ¦ì¡A¦ı¦]§Ş³N¦³­­¡A¨Ã¤£¤@©w·|§¹¥ş²Å¦X pt ¬°³æ¦ìªº¤j¤p¡^
-		\param fontName ¦rÅé¦WºÙ
-		\param fontColor ¦rÅéÃC¦â
-		\param weight ¦rÅé²Ê«×¡]¹w³]¬° 500¡^
+		æˆ‘å€‘å°‡ pDC å–å¾—çš„è²¬ä»»äº¤çµ¦ callerï¼Œä½ å¿…é ˆè¦å–å¾—ç•¶å‰çš„ pDC æŒ‡æ¨™ï¼Œç„¶å¾Œè¨˜å¾—é‡‹æ”¾ã€‚
+		æ­¤è¨­å®šæœƒåœ¨è¨­å®šçš„ pDC æŒ‡æ¨™è¢«é‡‹æ”¾æ™‚å¤±å»è¨­å®šå€¼ã€‚
+		\param pDCï¼Œä¸€å€‹ CDC æŒ‡æ¨™ï¼Œå¯ä½¿ç”¨ `CDDraw::GetBackCDC()` å–å¾—ã€‚
+		\param size æ–‡å­—çš„å¤§å°ï¼ˆä»¥ pt ç‚ºå–®ä½ï¼Œä½†å› æŠ€è¡“æœ‰é™ï¼Œä¸¦ä¸ä¸€å®šæœƒå®Œå…¨ç¬¦åˆ pt ç‚ºå–®ä½çš„å¤§å°ï¼‰
+		\param fontName å­—é«”åç¨±
+		\param fontColor å­—é«”é¡è‰²
+		\param weight å­—é«”ç²—åº¦ï¼ˆé è¨­ç‚º 500ï¼‰
 	*/
 	void CTextDraw::ChangeFontLog(CDC *pDC, int size, string fontName, COLORREF fontColor, int weight) {
 		CFont* fp;
@@ -501,298 +427,4 @@ namespace game_framework {
 		fp = pDC->SelectObject(&f);
 	}
 
-	/////////////////////////////////////////////////////////////////////////////
-	// Mario:
-	// ³o­Ó class ´£¨Ñ
-	// 
-	/////////////////////////////////////////////////////////////////////////////
-
-	Mario::Mario()
-	{
-		isBitmapLoaded = false;
-	}
-
-	/* refresh */
-	void Mario::UpData()
-	{
-		int dx = -horizontalSpeed;
-		int dy = -verticalSpeed;
-		location.left = location.left + horizontalSpeed;
-		location.right -= dx;
-		location.top = location.top + verticalSpeed;
-		location.bottom -= dy;
-	}
-
-	/* The function for loading the bitmap. */
-	void Mario::LoadBitmap(int IDB_BITMAP, COLORREF color)
-	{
-		CBitmap bitmap;
-		BOOL rval = bitmap.LoadBitmap(IDB_BITMAP);
-		GAME_ASSERT(rval, "Load bitmap failed !!! Please check bitmap ID (IDB_XXX).");
-		BITMAP bitmapSize;
-		bitmap.GetBitmap(&bitmapSize);
-
-		InitializeRectByBITMAP(bitmapSize);
-
-		surfaceID.push_back(CDDraw::RegisterBitmap(IDB_BITMAP, color));
-		filterColor = color;
-		isBitmapLoaded = true;
-	}
-
-	void Mario::LoadBitmap(char *filepath, COLORREF color)
-	{
-		HBITMAP hbitmap = (HBITMAP)LoadImage(NULL, filepath, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-
-		if (hbitmap == NULL) {
-			char error_msg[300];
-			sprintf(error_msg, "Loading bitmap	from file \"%s\" failed !!!", filepath);
-			GAME_ASSERT(false, error_msg);
-		}
-
-		CBitmap *bmp = CBitmap::FromHandle(hbitmap); // memory will be deleted automatically
-		BITMAP bitmapSize;
-		bmp->GetBitmap(&bitmapSize);
-
-		InitializeRectByBITMAP(bitmapSize);
-
-		surfaceID.push_back(CDDraw::RegisterBitmap(filepath, color));
-		imageFileName = string(filepath);
-		filterColor = color;
-		isBitmapLoaded = true;
-
-		bmp->DeleteObject();
-	}
-
-	void Mario::LoadBitmap(vector<char*> filepaths, COLORREF color)
-	{
-		for (int i = 0; i < (int)filepaths.size(); i++) {
-			LoadBitmap(filepaths[i], color);
-		}
-	}
-
-	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
-	{
-
-		for (int i = 0; i < (int)filepaths.size(); i++) {
-			LoadBitmap((char*)filepaths[i].c_str(), color);
-		}
-	}
-
-	void Mario::LoadEmptyBitmap(int height, int width) {
-		HBITMAP hbitmap = CreateBitmap(width, height, 1, 32, NULL);
-		CBitmap *bmp = CBitmap::FromHandle(hbitmap); // memory will be deleted automatically
-
-		/* Fill white color to bitmap */
-		HDC hdc = CreateCompatibleDC(NULL);
-		HBITMAP hOldBitmap = (HBITMAP)SelectObject(hdc, hbitmap);
-		PatBlt(hdc, 0, 0, width, height, WHITENESS);
-		SelectObject(hdc, hOldBitmap);
-		DeleteDC(hdc);
-
-		BITMAP bitmapSize;
-		bmp->GetBitmap(&bitmapSize);
-
-		InitializeRectByBITMAP(bitmapSize);
-
-		surfaceID.push_back(CDDraw::RegisterBitmapWithHBITMAP(hbitmap));
-		isBitmapLoaded = true;
-
-		bmp->DeleteObject();
-	}
-
-	void Mario::UnshowBitmap()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
-		isAnimation = false;
-		this->ShowBitmap(0);
-	}
-
-	void Mario::SetTopLeft(int x, int y)
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before SetTopLeft() is called !!!");
-		int dx = location.left - x;
-		int dy = location.top - y;
-		location.left = x;
-		location.top = y;
-		location.right -= dx;
-		location.bottom -= dy;
-	}
-
-	void Mario::SetFrameIndexOfBitmap(int frameIndex) {
-		GAME_ASSERT(frameIndex < (int)surfaceID.size(), "¿ï¾Ü¹Ï¤ù®É¯Á¤Ş¥X¬É");
-		this->frameIndex = frameIndex;
-	}
-
-	void Mario::SetAnimation(int delay, bool once) {
-		if (!once) isAnimation = true;
-		isOnce = once;
-		delayCount = delay;
-	}
-
-	void Mario::SetVerticalSpeed(int value)
-	{
-		verticalSpeed = value;
-	}
-
-	void Mario::SetHorizontalSpeed(int value)
-	{
-		horizontalSpeed = value;
-	}
-
-	void Mario::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void Mario::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Mario::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
-
-	void Mario::SetStatus(string action)
-	{
-		status = action;
-	}
-
-	void Mario::ShowBitmap()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top);
-		ShowBitmapBySetting();
-	}
-
-	void Mario::ShowBitmap(double factor)
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before ShowBitmap() is called !!!");
-		CDDraw::BltBitmapToBack(surfaceID[frameIndex], location.left, location.top, factor);
-		ShowBitmapBySetting();
-	}
-
-	int Mario::GetTop()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Top() is called !!!");
-		return location.top;
-	}
-
-	int Mario::GetLeft()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Left() is called !!!");
-		return location.left;
-	}
-
-	int Mario::GetHeight()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Height() is called !!!");
-		return location.bottom - location.top;
-	}
-
-	int Mario::GetWidth()
-	{
-		GAME_ASSERT(isBitmapLoaded, "A bitmap must be loaded before Width() is called !!!");
-		return location.right - location.left;
-	}
-
-	int Mario::GetFrameIndexOfBitmap() {
-		return frameIndex;
-	}
-
-	int Mario::GetFrameSizeOfBitmap() {
-		return (int)surfaceID.size();
-	}
-
-	int Mario::GetVerticalSpeed()
-	{
-		return verticalSpeed;
-	}
-	int Mario::GetHorizontalSpeed()
-	{
-		return horizontalSpeed;
-	}
-
-	int Mario::GetPressedKey()
-	{
-		return pressedKey;
-	}
-
-	string Mario::GetImageFileName()
-	{
-		return imageFileName;
-	}
-
-	COLORREF Mario::GetFilterColor()
-	{
-		return filterColor;
-	}
-
-	string Mario::GetStatus()
-	{
-		return status;
-	}
-
-	void Mario::ToggleAnimation() {
-		frameIndex = 0;
-		isAnimation = true;
-		isAnimationDone = false;
-	}
-
-	bool Mario::IsAnimation()
-	{
-		return isAnimation;
-	}
-
-	bool Mario::IsAnimationDone()
-	{
-		return isAnimationDone;
-	}
-
-	bool Mario::IsOnceAnimation()
-	{
-		return isOnce;
-	}
-
-	bool Mario::IsBitmapLoaded() {
-		return isBitmapLoaded;
-	}
-
-	bool Mario::IsKeyPressed()
-	{
-		return isKeyPressed;
-	}
-
-	bool Mario::IsCollision()
-	{
-		return isCollision;
-	}
-
-	void Mario::InitializeRectByBITMAP(BITMAP bitmapSize) {
-		const unsigned NX = 0;
-		const unsigned NY = 0;
-
-		location.left = NX;
-		location.top = NY;
-		location.right = NX + bitmapSize.bmWidth;
-		location.bottom = NY + bitmapSize.bmHeight;
-	}
-
-	void Mario::ShowBitmapBySetting() {
-		if (isAnimation == true && clock() - last_time >= delayCount) {
-			frameIndex += 1;
-			last_time = clock();
-			if (frameIndex == surfaceID.size() && animationCount > 0) {
-				animationCount -= 1;
-			}
-			if (frameIndex == surfaceID.size() && (isOnce || animationCount == 0)) {
-				isAnimation = false;
-				isAnimationDone = true;
-				frameIndex = surfaceID.size() - 1;
-				return;
-			}
-			frameIndex = frameIndex % surfaceID.size();
-		}
-	}
 }         

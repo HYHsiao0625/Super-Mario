@@ -5,13 +5,16 @@
 #include "../Library/audio.h"
 #include "../Library/gameutil.h"
 #include "../Library/gamecore.h"
+#include "../Library/mario.h"
+#include "../Library/goomba.h"
+#include "../Library/map.h"
 #include "mygame.h"
 #include "string"
 
 using namespace game_framework;
 
 /////////////////////////////////////////////////////////////////////////////
-// ³o­Óclass¬°¹CÀ¸ªº¹CÀ¸°õ¦æª«¥ó¡A¥D­nªº¹CÀ¸µ{¦¡³£¦b³o¸Ì
+// é€™å€‹classç‚ºéŠæˆ²çš„éŠæˆ²åŸ·è¡Œç‰©ä»¶ï¼Œä¸»è¦çš„éŠæˆ²ç¨‹å¼éƒ½åœ¨é€™è£¡
 /////////////////////////////////////////////////////////////////////////////
 
 CGameStateRun::CGameStateRun(CGame *g) : CGameState(g)
@@ -26,17 +29,43 @@ void CGameStateRun::OnBeginState()
 {
 }
 
-void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
+void CGameStateRun::OnMove()							// ç§»å‹•éŠæˆ²å…ƒç´ 
 {
-
+	if (-10 <= mario.GetTop() + mario.GetHeight() - goomba.GetTop()
+		&& mario.GetTop() + mario.GetHeight() - goomba.GetTop() <= 0
+		&& mario.GetLeft() + mario.GetWidth() > goomba.GetLeft()
+		&& mario.GetLeft() < goomba.GetLeft() + goomba.GetWidth()
+		) {
+		mario.SetDie(false);
+		goomba.SetStatus("dead");
+	}
+	else if (mario.GetTop() > 900 || goomba.charactor.IsOverlap(mario.charactor, goomba.charactor) && goomba.GetStatus() != "dead")
+	{
+		mario.SetDie(true);
+	}
+	if (mario.GetDie()) {
+		OnInit();
+	}
+	if (mario.GetStatus() == "rightwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetHorizontalSpeed(0);
+	}
+	if (mario.GetStatus() == "leftwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetHorizontalSpeed(0);
+	}
+	if (mario.GetStatus() == "jump"     && map.Isoverlamp(mario, floor)){
+		mario.SetHorizontalSpeed(0);
+		mario.SetVerticalSpeed(12);
+	}
 }
 
-void CGameStateRun::OnInit()  								// ¹CÀ¸ªºªì­È¤Î¹Ï§Î³]©w
+void CGameStateRun::OnInit()  								// éŠæˆ²çš„åˆå€¼åŠåœ–å½¢è¨­å®š
 {
 	LoadBackground();
 	LoadFloor();
 	LoadMario();
-	LoadBlock();
+	LoadGoomba();
+	LoadMap();
+	mario.SetDie(false);
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -44,15 +73,17 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == 0x41)
 	{
+		mario.SetStatus("leftwalk");
 		mario.SetKeyPressed(true);
 		mario.SetHorizontalSpeed(-20);
-		mario.SetStatus("leftwalk");
+		
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
+		mario.SetStatus("rightwalk");
 		mario.SetKeyPressed(true);
 		mario.SetHorizontalSpeed(20);
-		mario.SetStatus("rightwalk");
+			
 	}
 	if (nChar == VK_SPACE)
 	{
@@ -84,39 +115,39 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 }
 
-void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
 void CGameStateRun::OnShow()
 {
 	mario.UpData();
+	goomba.UpData();
 	if (world == 1)
 	{
 		if (level == 1)
 		{
 			background.ShowBitmap();
-			floor.ShowBitmap();
-			block1.ShowBitmap();
-			block2.ShowBitmap();
-			block3.ShowBitmap();
+			//floor.ShowBitmap();
+			goomba.ShowBitmap();
 			mario.ShowBitmap();
+			map.Show();
 			ShowMarioPostion();
 		}
 	}
@@ -163,19 +194,26 @@ void CGameStateRun::OnShow()
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
-		block1.SetTopLeft(block1.GetLeft() - mario.GetHorizontalSpeed(), block1.GetTop());
-		block2.SetTopLeft(block2.GetLeft() - mario.GetHorizontalSpeed(), block2.GetTop());
-		block3.SetTopLeft(block3.GetLeft() - mario.GetHorizontalSpeed(), block3.GetTop());
 		mario.SetTopLeft(384, mario.GetTop());
+	    goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
+		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 	}
 	if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
-		block1.SetTopLeft(block1.GetLeft() - mario.GetHorizontalSpeed(), block1.GetTop());
-		block2.SetTopLeft(block2.GetLeft() - mario.GetHorizontalSpeed(), block2.GetTop());
-		block3.SetTopLeft(block3.GetLeft() - mario.GetHorizontalSpeed(), block3.GetTop());
+		goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
+		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 		mario.SetTopLeft(512, mario.GetTop());
+	}
+	//-------------MonsterSet------------
+	if (goomba.GetLeft()-mario.GetLeft() <= 512 && goomba.GetStatus() != "dead")
+	{
+		goomba.SetHorizontalSpeed(-4);
+	}
+	else
+	{
+		goomba.SetHorizontalSpeed(0);
 	}
 	//-------------floor-LIMIT-------------
 }
@@ -187,10 +225,20 @@ void CGameStateRun::LoadMario()
 		"resources/mario2.bmp",
 		"resources/mario3.bmp",
 		"resources/mario4.bmp",
+		
 		}, RGB(146, 144, 255));
 	mario.SetTopLeft(0, 0);
 	mario.SetHorizontalSpeed(0);
 	mario.SetVerticalSpeed(GRAVITY);
+}
+void CGameStateRun::LoadGoomba()
+{
+	goomba.LoadBitmapByString({
+		"resources/mario7.bmp",
+		}, RGB(146, 144, 255));
+	goomba.SetTopLeft(2000, 768);
+	goomba.SetHorizontalSpeed(0);
+	goomba.SetStatus("appear");
 }
 
 void CGameStateRun::LoadBackground()
@@ -208,20 +256,9 @@ void CGameStateRun::LoadFloor()
 	floor.SetTopLeft(0, 832);
 }
 
-void CGameStateRun::LoadBlock()
+void CGameStateRun::LoadMap()
 {
-	block1.LoadBitmapByString({
-		"resources/block.bmp",
-		});
-	block2.LoadBitmapByString({
-		"resources/block.bmp",
-		});
-	block3.LoadBitmapByString({
-		"resources/block.bmp",
-		});
-	block1.SetTopLeft(512, floor.GetTop() - block1.GetWidth() * 1);
-	block2.SetTopLeft(512, floor.GetTop() - block2.GetWidth() * 2);
-	block3.SetTopLeft(256, floor.GetTop() - block3.GetWidth() * 3);
+	map.Load();
 }
 
 
@@ -231,15 +268,15 @@ void CGameStateRun::ShowMarioPostion()
 	if (world == 1 && level == 1)
 	{
 
-		CTextDraw::ChangeFontLog(pDC, 21, "·L³n¥¿¶ÂÅé", RGB(0, 0, 0), 800);
+		CTextDraw::ChangeFontLog(pDC, 21, "å¾®è»Ÿæ­£é»‘é«”", RGB(0, 0, 0), 800);
 		
 		CTextDraw::Print(pDC, 0, 0, "MARIO:");
 		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.GetLeft()));
-		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop()));
+		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop() / 64));
 		CTextDraw::Print(pDC, 0, 48, std::to_string(mario.GetVerticalSpeed()));
 
 		CTextDraw::Print(pDC, 0, 64, "floor:");
-		CTextDraw::Print(pDC, 0, 80, std::to_string(floor.GetLeft()));
+		CTextDraw::Print(pDC, 0, 80, std::to_string((-1*floor.GetLeft() + mario.GetLeft() )/ 64));
 		CTextDraw::Print(pDC, 0, 96, std::to_string(floor.GetTop()));
 	}
 	CDDraw::ReleaseBackCDC();
