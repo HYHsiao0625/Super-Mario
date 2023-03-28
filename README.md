@@ -41,3 +41,12 @@
         - 更改遊戲框架為1.1.2
         - 修改了一些小BUG
         - 製作時間:1HR
+
+- 0321
+    - [name=蕭宏元]
+        - 更改遊戲框架為1.1.3
+        - 修改了一些小BUG
+        - 新增mario class
+        - 新增goomba class
+        - 新增map class
+        - 製作時間:1HR
