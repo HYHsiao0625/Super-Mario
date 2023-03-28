@@ -1,3 +1,4 @@
+#pragma once
 /*
  * gamelib.h: 本檔案儲遊戲相關的class的interface
  * Copyright (C) 2002-2008 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
@@ -74,113 +75,14 @@ using namespace std;
 namespace game_framework {
 
 	/////////////////////////////////////////////////////////////////////////////
-	//
-	//
-	/////////////////////////////////////////////////////////////////////////////
-
-	class Mario
-	{
-	friend class CMovingBitmap;
-	public:
-		Mario();
-		void  UpData();
-		void  LoadBitmap(int, COLORREF = CLR_INVALID);
-		void  LoadBitmap(char*, COLORREF = CLR_INVALID);
-		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);
-		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
-		void  LoadEmptyBitmap(int height, int weight);
-		void  SetAnimation(int delay, bool _once);
-		void  SetFrameIndexOfBitmap(int frame);
-		void  SetTopLeft(int, int);
-		void  UnshowBitmap();
-		void  ShowBitmap();
-		void  ShowBitmap(double factor);
-		int   GetFrameIndexOfBitmap();
-		int   GetFrameSizeOfBitmap();
-		int   GetTop();
-		int   GetLeft();
-		int   GetHeight();
-		int   GetWidth();
-		string GetImageFileName();
-		COLORREF GetFilterColor();
-		void  ToggleAnimation();
-		bool  IsAnimation();
-		bool  IsAnimationDone();
-		bool  IsBitmapLoaded();
-		bool  IsOnceAnimation();
-
-		//---------------------------------------------------
-		void  SetVerticalSpeed(int);
-		void  SetHorizontalSpeed(int);
-		void  SetKeyPressed(bool);
-		void  SetPressedKey(int);
-		void  SetCollision(bool);
-		void  SetDie(bool);
-		void  SetStatus(string);
-		
-		int   GetVerticalSpeed();
-		int   GetHorizontalSpeed();
-		int   GetPressedKey();
-		bool   GetDie();
-		string GetStatus();
-
-		bool  IsKeyPressed();
-		bool  IsCollision();
-
-
-	protected:
-		int frameIndex = 0;
-		int delayCount = 10;
-		int animationCount = -1;
-		bool isAnimation = false;
-		bool isAnimationDone = true;
-		bool isBitmapLoaded = false;
-		bool isOnce = false;
-		CRect location;
-		vector<unsigned> surfaceID;
-		clock_t last_time = clock();
-		string   imageFileName = "";
-		COLORREF filterColor = CLR_INVALID;
-		vector<unsigned> SurfaceID;
-		//---------------------------------------------------
-		bool crouching;
-		bool dead = false;
-		bool flipped;
-		bool on_ground;
-		int x;
-		int y;
-
-		unsigned char jump_timer;
-
-		unsigned short death_timer;
-		unsigned short growth_timer;
-		unsigned short invincible_timer;
-
-		int horizontalSpeed = 0;
-		int verticalSpeed = 0;
-		int pressedKey = 0;
-		string status = "initial";
-		bool isKeyPressed = false;
-		bool isCollision = false;
-
-	private:
-		void InitializeRectByBITMAP(BITMAP bitmap);
-		void ShowBitmapBySetting();
-
-	};
-
-	/////////////////////////////////////////////////////////////////////////////
 	// 這個class提供動態(可以移動)的圖形
 	// 每個Public Interface的用法都要懂，Implementation可以不懂
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CMovingBitmap {
-	
 	public:
 		CMovingBitmap();
-		/* refresh */
-		void  UpData();
-		
+
 		/* The function for loading the bitmap. */
 		void  LoadBitmap(int, COLORREF = CLR_INVALID);		// 載入圖，指定圖的編號(resource)及透明色
 		void  LoadBitmap(char*, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
@@ -188,47 +90,27 @@ namespace game_framework {
 		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);	// 載入圖，指定圖的檔名及透明色
 		void  LoadEmptyBitmap(int height, int weight);
 
+		/* Unshow the bitmap. */
+		void  UnshowBitmap();
+
 		/* Setter */
 		void  SetAnimation(int delay, bool _once);
 		void  SetFrameIndexOfBitmap(int frame);
 		void  SetTopLeft(int, int);			// 將圖的左上角座標移至 (x,y)
-		void  SetVerticalSpeed(int);
-		void  SetHorizontalSpeed(int);
-		void  SetKeyPressed(bool);
-		void  SetPressedKey(int);
-		void  SetCollision(bool);
-		void  SetStatus(string);
 
-		
-
-		/* Unshow the bitmap. */
-		void  UnshowBitmap();
-
-		
 		/* Show the bitmap with or without factor. */
 		void  ShowBitmap();					// 將圖貼到螢幕
 		void  ShowBitmap(double factor);	// 將圖貼到螢幕 factor < 1時縮小，>1時放大。注意：需要VGA卡硬體的支援，否則會很慢
 
-
 		/* Getter */
 		int   GetFrameIndexOfBitmap();
 		int   GetFrameSizeOfBitmap();
-
 		int   GetTop();
 		int   GetLeft();
 		int   GetHeight();
 		int   GetWidth();
-		
 		string GetImageFileName();
 		COLORREF GetFilterColor();
-		int   GetVerticalSpeed();
-		int   GetHorizontalSpeed();
-		int   GetPressedKey();
-		string GetStatus();
-		
-
-		/* Toggle function */
-		void  ToggleAnimation();
 
 		/* Is function */
 		bool  IsAnimation();
@@ -236,48 +118,42 @@ namespace game_framework {
 		bool  IsBitmapLoaded();
 		bool  IsOnceAnimation();
 		static bool IsOverlap(CMovingBitmap bmp1, CMovingBitmap bmp2);
-		static bool IsOverlap(Mario bmp1, CMovingBitmap bmp2);
 
-
-		bool  IsKeyPressed();
-		bool  IsCollision();
+		/* Toggle function */
+		void  ToggleAnimation();
 
 	protected:
-		
-		int frameIndex = 0;						//! 當前幀的索引值。
-		int delayCount = 10;					//! 當前幀切換的延遲。
-		int animationCount = -1;				//! 儲存當前動畫的次數。
-		bool isAnimation = false;				//! 儲存物件是否為動畫。
-		bool isAnimationDone = true;			//! 儲存物件動畫是否已結束
-		bool isBitmapLoaded = false;			//! 儲存圖片是否已讀取
-		bool isOnce = false;					//! 儲存物件動畫是否為單次動畫
-		CRect location;							// location of the bitmap
+		//! 當前幀的索引值。
+		int frameIndex = 0;
+		//! 當前幀切換的延遲。
+		int delayCount = 10;
+		//! 儲存當前動畫的次數。
+		int animationCount = -1;
+		//! 儲存物件是否為動畫。
+		bool isAnimation = false;
+		//! 儲存物件動畫是否已結束
+		bool isAnimationDone = true;
+		//! 儲存圖片是否已讀取
+		bool isBitmapLoaded = false;	// whether a bitmap has been loaded
+		//! 儲存物件動畫是否為單次動畫
+		bool isOnce = false;
+		vector<CRect>    locations;			// location of the bitmap
 		vector<unsigned> surfaceID;
 		clock_t last_time = clock();
-		string   imageFileName = "";			//! 儲存物件讀取的圖片路徑
-		COLORREF filterColor = CLR_INVALID;		//! 儲存物件過濾的圖片顏色
-		vector<unsigned> SurfaceID;
-
-		int horizontalSpeed = 0;
-		int verticalSpeed = 0;
-		int pressedKey = 0;
-
-		string status = "initial";
-		bool isKeyPressed = false;
-		bool isCollision = false;
+		//! 儲存物件讀取的圖片路徑
+		string   imageFileName = "";
+		//! 儲存物件過濾的圖片顏色
+		COLORREF filterColor = CLR_INVALID;
 
 	private:
 		void InitializeRectByBITMAP(BITMAP bitmap);
 		void ShowBitmapBySetting();
 	};
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 	class CTextDraw {
 	public:
 		void static Print(CDC *pdc, int x, int y, string str);
 		void static ChangeFontLog(CDC *pdc, int size, string fontName, COLORREF fontColor, int weight = 500);
 	};
+
 }
