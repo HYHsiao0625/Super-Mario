@@ -161,11 +161,6 @@ namespace game_framework
 				return false;
 			}
 		}
-		if (mario.GetStatus() == "fall") {
-			if (map1_1[mario_y + 1][mario_x] == 0) {
-				return false;
-			}
-		}
 		return true;
 		
 	}

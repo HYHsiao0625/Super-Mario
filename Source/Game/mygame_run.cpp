@@ -62,16 +62,6 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 		mario.SetKeyPressed(false);
 		mario.SetVerticalSpeed(12);
 	}
-	if (mario.GetStatus() == "fall"     && (map.Isoverlamp(mario, floor))) {
-		mario.SetStatus("initial");
-		mario.SetKeyPressed(false);
-		mario.SetVerticalSpeed(0);
-	}
-	else if (mario.GetStatus() == "fall" && !(map.Isoverlamp(mario, floor))) {
-		mario.SetStatus("initial");
-		mario.SetKeyPressed(false);
-		mario.SetVerticalSpeed(12);
-	}
 	
 }
 
