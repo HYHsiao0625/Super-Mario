@@ -112,9 +112,6 @@ namespace game_framework {
 		Goomba goomba;
 		Map map;
 		CMovingBitmap background;
-		CMovingBitmap block1;
-		CMovingBitmap block2;
-		CMovingBitmap block3;
 		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;
 	};

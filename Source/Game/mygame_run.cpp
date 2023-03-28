@@ -27,6 +27,10 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+	map.initalize();
+	background.SetTopLeft(0, 0);
+	floor.SetTopLeft(0, 832);
+	mario.SetTopLeft(0, 0);
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -44,7 +48,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		mario.SetDie(true);
 	}
 	if (mario.GetDie()) {
-		OnInit();
+		OnBeginState();
+		mario.SetDie(false);
 	}
 }
 
@@ -64,19 +69,19 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x41)
 	{
 		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(-8);
+		mario.SetHorizontalSpeed(-20);
 		mario.SetStatus("leftwalk");
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
 		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(8);
+		mario.SetHorizontalSpeed(20);
 		mario.SetStatus("rightwalk");
 	}
 	if (nChar == VK_SPACE)
 	{
 		mario.SetKeyPressed(true);
-		mario.SetVerticalSpeed(-12);
+		mario.SetVerticalSpeed(-24);
 		mario.SetStatus("jump");
 	}
 }
@@ -98,7 +103,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == VK_SPACE)
 	{
 		mario.SetStatus("initial");
-		mario.SetVerticalSpeed(12);
+		mario.SetVerticalSpeed(24);
 		mario.SetKeyPressed(false);
 	}
 }
@@ -133,9 +138,9 @@ void CGameStateRun::OnShow()
 		{
 			background.ShowBitmap();
 			//floor.ShowBitmap();
-			goomba.ShowBitmap();
-			mario.ShowBitmap();
 			map.Show();
+			mario.ShowBitmap();
+			goomba.ShowBitmap();
 			ShowMarioPostion();
 		}
 	}
@@ -185,14 +190,14 @@ void CGameStateRun::OnShow()
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
 		mario.SetTopLeft(384, mario.GetTop());
 	    goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
-		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
+		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), 0);
 	}
 	if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
 		goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
-		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
+		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), 0);
 		mario.SetTopLeft(512, mario.GetTop());
 	}
 	//-------------MonsterSet------------
