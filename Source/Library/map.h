@@ -47,3 +47,4 @@ namespace game_framework
 	};
 }
 #endif // !GOOMBA_H
+ 
