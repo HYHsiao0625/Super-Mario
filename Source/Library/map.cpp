@@ -161,21 +161,32 @@ namespace game_framework
 		int mario_y = mario.GetTop() / 64;
 		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
 		if (mario.GetStatus() == "rightwalk") {
-			if (map1_1[mario_y][mario_x + 1] == 0) {
-				return false;
+			if (map1_1[mario_y][mario_x + 1] != 0) { 
+				return true;
 			}
 		}
 		if (mario.GetStatus() == "leftwalk") {
-			if (map1_1[mario_y][mario_x] == 0) {
-				return false;
+			if (map1_1[mario_y][mario_x] != 0) {
+				return true;
 			}
 		}
-		if (mario.GetStatus() == "jump") {
-			if (map1_1[mario_y][mario_x] == 0) {
-				return false;
+		if (mario.GetJump()) {
+			if (map1_1[mario_y][mario_x+1] != 0 || map1_1[mario_y][mario_x] != 0) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 
+	}
+	bool Map::Ontheground(Mario mario, CMovingBitmap floor)
+	{
+		int mario_y = mario.GetTop() / 64;
+		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
+		if (map1_1[mario_y+1][mario_x+1] != 0 || map1_1[mario_y+1][mario_x] != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

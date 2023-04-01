@@ -76,6 +76,10 @@ namespace game_framework
 	{
 		return charactor.GetWidth();
 	}
+	bool Mario::GetJump()
+	{
+		return jump;
+	}
 
 	void Mario::SetVerticalSpeed(int value)
 	{
@@ -109,6 +113,9 @@ namespace game_framework
 	void Mario::SetStatus(string action)
 	{
 		status = action;
+	}
+	void Mario::SetJump(bool status) {
+		jump = status;
 	}
 
 	int Mario::GetVerticalSpeed()

@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "goomba.h"
+#include "enemy.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,132 +20,132 @@
 
 namespace game_framework
 {
-	Goomba::Goomba()
+	Enemy::Enemy()
 	{
 
 	}
 
-	Goomba::~Goomba()
+	Enemy::~Enemy()
 	{
 
 	}
 
-	void Goomba::UpData()
+	void Enemy::UpData()
 	{
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 	}
 
-	void Goomba::ShowBitmap()
+	void Enemy::ShowBitmap()
 	{
 		charactor.ShowBitmap();
 	}
 
-	void Goomba::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	void Enemy::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
 
-	int Goomba::GetFrameIndexOfBitmap()
+	int Enemy::GetFrameIndexOfBitmap()
 	{
 		return charactor.GetFrameIndexOfBitmap();
 	}
 
-	void Goomba::SetFrameIndexOfBitmap(int frameIndex)
+	void Enemy::SetFrameIndexOfBitmap(int frameIndex)
 	{
 		charactor.SetFrameIndexOfBitmap(frameIndex);
 	}
 
-	void Goomba::SetAnimation(int delay, bool _once)
+	void Enemy::SetAnimation(int delay, bool _once)
 	{
 		charactor.SetAnimation(delay, _once);
 	}
-	void Goomba::SetTopLeft(int x, int y)
+	void Enemy::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
 	}
-	int Goomba::GetTop()
+	int Enemy::GetTop()
 	{
 		return charactor.GetTop();
 	}
 
-	int Goomba::GetLeft()
+	int Enemy::GetLeft()
 	{
 		return charactor.GetLeft();
 	}
-	int Goomba::GetHeight()
+	int Enemy::GetHeight()
 	{
 		return charactor.GetHeight();
 	}
 
-	int Goomba::GetWidth()
+	int Enemy::GetWidth()
 	{
 		return charactor.GetWidth();
 	}
 
-	void Goomba::SetVerticalSpeed(int value)
+	void Enemy::SetVerticalSpeed(int value)
 	{
 		verticalSpeed = value;
 	}
 
-	void Goomba::SetHorizontalSpeed(int value)
+	void Enemy::SetHorizontalSpeed(int value)
 	{
 		horizontalSpeed = value;
 	}
 
-	void Goomba::SetPressedKey(int value)
+	void Enemy::SetPressedKey(int value)
 	{
 		pressedKey = value;
 	}
 
-	void Goomba::SetCollision(bool value)
+	void Enemy::SetCollision(bool value)
 	{
 		isCollision = value;
 	}
 
-	void Goomba::SetKeyPressed(bool flags)
+	void Enemy::SetKeyPressed(bool flags)
 	{
 		isKeyPressed = flags;
 	}
 
-	void Goomba::SetDie(bool flag)
+	void Enemy::SetDie(bool flag)
 	{
 		dead = flag;
 	}
-	void Goomba::SetStatus(string action)
+	void Enemy::SetStatus(string action)
 	{
 		status = action;
 	}
 
-	int Goomba::GetVerticalSpeed()
+	int Enemy::GetVerticalSpeed()
 	{
 		return verticalSpeed;
 	}
-	int Goomba::GetHorizontalSpeed()
+	int Enemy::GetHorizontalSpeed()
 	{
 		return horizontalSpeed;
 	}
 
-	bool Goomba::GetDie()
+	bool Enemy::GetDie()
 	{
 		return dead;
 	}
 
-	int Goomba::GetPressedKey()
+	int Enemy::GetPressedKey()
 	{
 		return pressedKey;
 	}
 
-	string Goomba::GetStatus()
+	string Enemy::GetStatus()
 	{
 		return status;
 	}
 
-	bool Goomba::IsKeyPressed()
+	bool Enemy::IsKeyPressed()
 	{
 		return isKeyPressed;
 	}
 
-	bool Goomba::IsCollision()
+	bool Enemy::IsCollision()
 	{
 		return isCollision;
 	}

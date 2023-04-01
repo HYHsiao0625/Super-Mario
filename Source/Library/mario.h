@@ -33,12 +33,14 @@ namespace game_framework
 		void	SetCollision(bool);
 		void	SetDie(bool);
 		void	SetStatus(string);
+		void	SetJump(bool);
 
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
 		int		GetPressedKey();
 		bool	GetDie();
 		string	GetStatus();
+		bool	GetJump();
 
 		bool	IsKeyPressed();
 		bool	IsCollision();
@@ -49,6 +51,7 @@ namespace game_framework
 		bool	dead = false;
 		bool	flipped;
 		bool	on_ground;
+		bool	jump;
 		int		x;
 		int		y;
 

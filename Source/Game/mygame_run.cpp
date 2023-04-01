@@ -31,15 +31,16 @@ void CGameStateRun::OnBeginState()
 	background.SetTopLeft(0, 0);
 	floor.SetTopLeft(0, 832);
 	mario.SetTopLeft(0, 0);
+	mario.SetVerticalSpeed(12);
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
 {
 	if (-10 <= mario.GetTop() + mario.GetHeight() - goomba.GetTop()
 		&& mario.GetTop() + mario.GetHeight() - goomba.GetTop() <= 0
-		&& mario.GetLeft()+ mario.GetWidth() > goomba.GetLeft()
+		&& mario.GetLeft() + mario.GetWidth() > goomba.GetLeft()
 		&& mario.GetLeft() < goomba.GetLeft() + goomba.GetWidth()
-		){
+		) {
 		mario.SetDie(false);
 		goomba.SetStatus("dead");
 	}
@@ -50,6 +51,31 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 	if (mario.GetDie()) {
 		OnBeginState();
 		mario.SetDie(false);
+	}
+	
+	if (mario.GetStatus() == "rightwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
+		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
+	}
+	if (mario.GetStatus() == "leftwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
+		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
+	}
+	if (mario.GetJump() && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
+		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
+		mario.SetVerticalSpeed(24);
+	}
+	else if (mario.GetJump()==false && !(map.Ontheground(mario, floor))) {
+		
+		mario.SetVerticalSpeed(24);
+	}
+	if (mario.GetJump() == false && map.Ontheground(mario, floor)) {
+		mario.SetTopLeft(mario.GetLeft(), mario.GetTop());
+		mario.SetVerticalSpeed(0);
 	}
 }
 
@@ -82,7 +108,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		mario.SetKeyPressed(true);
 		mario.SetVerticalSpeed(-24);
-		mario.SetStatus("jump");
+		mario.SetJump(true);
 	}
 }
 
@@ -102,7 +128,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_SPACE)
 	{
-		mario.SetStatus("initial");
+		mario.SetJump(false);
 		mario.SetVerticalSpeed(24);
 		mario.SetKeyPressed(false);
 	}
@@ -130,6 +156,7 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 
 void CGameStateRun::OnShow()
 {
+	
 	mario.UpData();
 	goomba.UpData();
 	if (world == 1)
@@ -220,7 +247,7 @@ void CGameStateRun::LoadMario()
 		"resources/mario3.bmp",
 		"resources/mario4.bmp",
 		
-		}, RGB(146, 144, 255));
+		}/*, RGB(146, 144, 255)*/);
 	mario.SetTopLeft(0, 0);
 	mario.SetHorizontalSpeed(0);
 	mario.SetVerticalSpeed(GRAVITY);
@@ -266,13 +293,14 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::ChangeFontLog(pDC, 21, "微軟正黑體", RGB(0, 0, 0), 800);
 		
 		CTextDraw::Print(pDC, 0, 0, "MARIO:");
-		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.GetLeft()));
-		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop()));
-		CTextDraw::Print(pDC, 0, 48, std::to_string(mario.GetVerticalSpeed()));
+		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.GetTop() / 64));
+		CTextDraw::Print(pDC, 0, 32, std::to_string((-1 * floor.GetLeft() + mario.GetLeft()) / 64));
+		//CTextDraw::Print(pDC, 0, 48, std::to_string(map.Ontheground(mario, floor)));
+		//CTextDraw::Print(pDC, 0, 64, mario.GetStatus());
 
-		CTextDraw::Print(pDC, 0, 64, "floor:");
-		CTextDraw::Print(pDC, 0, 80, std::to_string(floor.GetLeft()));
-		CTextDraw::Print(pDC, 0, 96, std::to_string(floor.GetTop()));
+		CTextDraw::Print(pDC, 0, 80, "floor:");
+		CTextDraw::Print(pDC, 0, 96, std::to_string(floor.GetLeft()));
+		CTextDraw::Print(pDC, 0, 112, std::to_string(floor.GetTop()));
 	}
 	CDDraw::ReleaseBackCDC();
 	

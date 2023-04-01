@@ -25,6 +25,7 @@ namespace game_framework
 		void	initalize();
 		void	SetTopLeft(int, int);
 		bool    Isoverlamp(Mario mario, CMovingBitmap floor);
+		bool    Ontheground(Mario mario, CMovingBitmap floor);
 	private:
 		int width, height = 15;
 		vector<CMovingBitmap> array1;
