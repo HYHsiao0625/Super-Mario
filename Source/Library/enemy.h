@@ -15,18 +15,18 @@ namespace game_framework
 	protected:
 		bool dead;
 
-		float horizontal_speed;
-		float vertical_speed;
-		float x;
-		float y;
+		int horizontal_speed;
+		int vertical_speed;
+		int x;
+		int y;
 	public:
-		Enemy(const float i_x, const float i_y);
+		Enemy(const int i_x, const int i_y);
 
-		virtual bool get_dead(const bool i_deletion) const;
+		virtual bool get_dead(const bool i_deletion) const = 0;
 
-		virtual void die(const unsigned char i_death_type);
-		//Apparently, we can set the function declaration to 0 and that's called a pure virtual function. Again, C++ is weird.
-		virtual void draw() = 0;
+		virtual void die(const unsigned char i_death_type) = 0;
+
+		virtual void show() = 0;
 		virtual void update() = 0;
 
 	};

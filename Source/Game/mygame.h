@@ -107,7 +107,6 @@ namespace game_framework {
 		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
-		int GRAVITY = 24;
 		Mario mario;
 		Goomba goomba;
 		Map map;

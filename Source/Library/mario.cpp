@@ -20,22 +20,71 @@
 
 namespace game_framework
 {
-	Mario::Mario()
+	Mario::Mario() :
+		crouching(false),
+		dead(false),
+		flipped(false),
+		onGround(false),
+		horizontalSpeed(0),
+		verticalSpeed(0),
+		jump_timer(0),
+		growth_timer(0),
+		invincible_timer(0)
 	{
 
 	}
 
-	void Mario::UpData()
+	bool Mario::GetDead() const
 	{
+		return dead;
+	}
+
+	int Mario::GetX()
+	{
+		return charactor.GetLeft();
+	}
+
+	int Mario::GetY()
+	{
+		return charactor.GetTop();
+	}
+
+	void Mario::UpData(Mario mario, Map map)
+	{
+		Collision(mario, map);
+		if (onGround == true)
+		{
+			verticalSpeed = 0;
+		}
+		else
+		{
+			if (mario.GetStatus() == "jump")
+			{
+				verticalSpeed = -16;
+			}
+			else
+			{
+				verticalSpeed += GRAVITY;
+			}
+		}
+
+		if (isCollision == true)
+		{
+			horizontalSpeed = 0;
+		}
+		if (mario.GetTop() > 960)
+		{
+			mario.SetDie(true);
+		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 	}
 
-	void Mario::ShowBitmap()
+	void Mario::Show()
 	{
 		charactor.ShowBitmap();
 	}
 
-	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	void Mario::Load(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
@@ -91,20 +140,6 @@ namespace game_framework
 		horizontalSpeed = value;
 	}
 
-	void Mario::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void Mario::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Mario::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
 
 	void Mario::SetDie(bool flag)
 	{
@@ -147,8 +182,62 @@ namespace game_framework
 		return isKeyPressed;
 	}
 
-	bool Mario::IsCollision()
+	void Mario::Collision(Mario mario, Map map)
 	{
-		return isCollision;
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+		int mario_y = mario.GetTop() / 64;
+
+		if (mario.GetStatus() == "rightwalk") 
+		{
+			if (map_vector[mario_y][mario_x + 1] != 0)
+			{
+				isCollision = true;
+			}
+		}
+		else if (mario.GetStatus() == "leftwalk")
+		{
+			if (map_vector[mario_y][mario_x] != 0)
+			{
+				isCollision = true;
+			}
+		}
+		else
+		{
+			isCollision = false;
+		}
+		if (mario.GetStatus() != "jump")
+		{
+			if (map_vector[mario_y + 1][mario_x] != 0)
+			{
+				onGround = true;
+			}
+			else if (map_vector[mario_y + 1][mario_x + 1] != 0)
+			{
+				onGround = true;
+			}
+			else
+			{
+				onGround = false;
+			}
+		}
+		
+	}
+
+	void Mario::SetOnGround(bool status)
+	{
+		onGround = status;
+	}
+
+	string Mario::GetOnGround()
+	{
+		if (onGround == true)
+		{
+			return "true";
+		}
+		else
+		{
+			return "false";
+		}
 	}
 }
