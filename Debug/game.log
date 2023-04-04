@@ -1,3 +1,21 @@
 ﻿cl : 命令列 warning D9035: 選項 'Gm' 已被取代，在未來的發行版本中將會移除
+  StdAfx.cpp
+cl : 命令列 warning D9035: 選項 'Gm' 已被取代，在未來的發行版本中將會移除
+  mario.cpp
   map.cpp
-  game.vcxproj -> D:\game-framework-practice\.\Debug\game.exe
+  goomba.cpp
+  gameutil.cpp
+  gamecore.cpp
+  enemyfactor.cpp
+  enemy.cpp
+  audio.cpp
+  mygame_run.cpp
+  mygame_over.cpp
+  mygame_initialize.cpp
+  MainFrm.cpp
+  gameView.cpp
+  gameDoc.cpp
+  game.cpp
+  正在產生程式碼...
+game.obj : warning LNK4075: 忽略 '/EDITANDCONTINUE'，由於 '/SAFESEH' 規格
+  game.vcxproj -> C:\Users\User\Desktop\game-framework-practice\.\Debug\game.exe

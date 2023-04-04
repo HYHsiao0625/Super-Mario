@@ -7,9 +7,12 @@
 #include "../Library/gamecore.h"
 #include "../Library/mario.h"
 #include "../Library/goomba.h"
+#include "../Library/enemy.h"
+#include "../Library/enemyfactor.h"
 #include "../Library/map.h"
 #include "mygame.h"
 #include "string"
+
 
 using namespace game_framework;
 
@@ -27,6 +30,11 @@ CGameStateRun::~CGameStateRun()
 
 void CGameStateRun::OnBeginState()
 {
+	map.initalize();
+	background.SetTopLeft(0, 0);
+	floor.SetTopLeft(0, 832);
+	mario.SetTopLeft(0, 0);
+	mario.SetVerticalSpeed(12);
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -44,18 +52,34 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 		mario.SetDie(true);
 	}
 	if (mario.GetDie()) {
-		OnInit();
+		OnBeginState();
+		mario.SetDie(false);
 	}
+	/*
 	if (mario.GetStatus() == "rightwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
 	}
 	if (mario.GetStatus() == "leftwalk" && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
+		mario.SetKeyPressed(false);
 	}
-	if (mario.GetStatus() == "jump"     && map.Isoverlamp(mario, floor)){
+	if (mario.GetJump() && map.Isoverlamp(mario, floor)) {
+		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
-		mario.SetVerticalSpeed(12);
+		mario.SetKeyPressed(false);
+		mario.SetVerticalSpeed(24);
 	}
+	else if (mario.GetJump()==false && !(map.Ontheground(mario, floor))) {
+
+		mario.SetVerticalSpeed(24);
+	}
+	if (mario.GetJump() == false && map.Ontheground(mario, floor)) {
+		mario.SetTopLeft(mario.GetLeft(), mario.GetTop());
+		mario.SetVerticalSpeed(0);
+	}*/
 }
 
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
@@ -74,22 +98,22 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x41)
 	{
 		mario.SetStatus("leftwalk");
-		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(-20);
-		
+		mario.SetHorizontalSpeed(-16);
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
 		mario.SetStatus("rightwalk");
-		mario.SetKeyPressed(true);
-		mario.SetHorizontalSpeed(20);
-			
+		mario.SetHorizontalSpeed(16);
 	}
 	if (nChar == VK_SPACE)
 	{
-		mario.SetKeyPressed(true);
-		mario.SetVerticalSpeed(-12);
-		mario.SetStatus("jump");
+		if (mario.GetOnGround() == "true" ) {
+			mario.SetStatus("jump");
+			mario.SetOnGround(false);
+		}
+		else {
+			mario.SetStatus("stand");
+		}
 	}
 }
 
@@ -97,21 +121,18 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if (nChar == 0x41)
 	{
-		mario.SetStatus("initial");
 		mario.SetHorizontalSpeed(0);
-		mario.SetKeyPressed(false);
+		mario.SetStatus("stand");
 	}
 	if (nChar == 0x44) //key(2)== D
-	{	
-		mario.SetStatus("initial");
+	{
 		mario.SetHorizontalSpeed(0);
-		mario.SetKeyPressed(false);
+		mario.SetStatus("stand");
 	}
 	if (nChar == VK_SPACE)
 	{
-		mario.SetStatus("initial");
-		mario.SetVerticalSpeed(12);
-		mario.SetKeyPressed(false);
+		mario.SetOnGround(false);
+		mario.SetStatus("stand");
 	}
 }
 
@@ -137,46 +158,21 @@ void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// 處理滑鼠的動作
 
 void CGameStateRun::OnShow()
 {
-	mario.UpData();
-	goomba.UpData();
+
+	mario.UpData(mario, map);
+	goomba.UpData(mario ,map);
+	goomba1.UpData(mario, map);
 	if (world == 1)
 	{
 		if (level == 1)
 		{
 			background.ShowBitmap();
 			//floor.ShowBitmap();
-			goomba.ShowBitmap();
-			mario.ShowBitmap();
 			map.Show();
+			mario.Show();
+			goomba.ShowBitmap();
 			ShowMarioPostion();
 		}
-	}
-	if (mario.GetStatus() == "initial")
-	{
-		mario.SetFrameIndexOfBitmap(0);
-	}
-	if (mario.GetStatus() == "rightwalk")
-	{
-		mario.SetAnimation(120, false);
-	}
-
-
-	if(floor.GetLeft() + 4416 <= mario.GetLeft() && mario.GetLeft() + mario.GetWidth() <= floor.GetLeft() + 4543)
-	{
-		mario.SetCollision(false);
-		mario.SetVerticalSpeed(24);
-	}
-	else
-	{
-		mario.SetCollision(true);
-	}
-
-	if (mario.GetTop() + mario.GetHeight() >= floor.GetTop() && mario.IsCollision())
-	{   
-		mario.SetVerticalSpeed(0);
-		mario.SetTopLeft(mario.GetLeft(), floor.GetTop() - mario.GetHeight());
-
-		//mario.SetTopLeft(0, 0);
 	}
 	//----------MARIO-floor-LIMIT----------
 	if (mario.GetLeft() <= floor.GetLeft())
@@ -196,51 +192,52 @@ void CGameStateRun::OnShow()
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
 		mario.SetTopLeft(384, mario.GetTop());
-	    goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
-		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
+		goomba.Limit(floor, mario);
+		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), 0);
 	}
 	if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
 	{
 		background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		floor.SetTopLeft(floor.GetLeft() - mario.GetHorizontalSpeed(), floor.GetTop());
-		goomba.SetTopLeft(goomba.GetLeft() - mario.GetHorizontalSpeed(), goomba.GetTop());
-		map.SetTopLeft(mario.GetHorizontalSpeed(), 0);
+		goomba.Limit(floor, mario);
+		map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), 0);
 		mario.SetTopLeft(512, mario.GetTop());
 	}
+
 	//-------------MonsterSet------------
-	if (goomba.GetLeft()-mario.GetLeft() <= 512 && goomba.GetStatus() != "dead")
-	{
-		goomba.SetHorizontalSpeed(-4);
-	}
-	else
-	{
-		goomba.SetHorizontalSpeed(0);
-	}
-	//-------------floor-LIMIT-------------
+	
+
 }
 
 void CGameStateRun::LoadMario()
 {
-	mario.LoadBitmapByString({
+	mario.Load({
 		"resources/mario1.bmp",
 		"resources/mario2.bmp",
 		"resources/mario3.bmp",
 		"resources/mario4.bmp",
-		
-		}, RGB(146, 144, 255));
-	mario.SetTopLeft(0, 0);
-	mario.SetHorizontalSpeed(0);
-	mario.SetVerticalSpeed(GRAVITY);
+		}/*, RGB(146, 144, 255)*/);
 }
 
 void CGameStateRun::LoadGoomba()
 {
 	goomba.LoadBitmapByString({
-		"resources/mario7.bmp",
+		"resources/goomba1.bmp",
+		"resources/goomba2.bmp",
+		"resources/goomba3.bmp",
 		}, RGB(146, 144, 255));
-	goomba.SetTopLeft(2000, 768);
+	goomba.SetTopLeft(2368, 768);
 	goomba.SetHorizontalSpeed(0);
 	goomba.SetStatus("appear");
+
+	goomba1.LoadBitmapByString({
+		"resources/goomba1.bmp",
+		"resources/goomba2.bmp",
+		"resources/goomba3.bmp",
+		}, RGB(146, 144, 255));
+	goomba1.SetTopLeft(2000, 768);
+	goomba1.SetHorizontalSpeed(0);
+	goomba1.SetStatus("appear");
 }
 
 void CGameStateRun::LoadBackground()
@@ -261,7 +258,7 @@ void CGameStateRun::LoadFloor()
 
 void CGameStateRun::LoadMap()
 {
-	map.Load();
+	map.Load(1, 1);
 }
 
 void CGameStateRun::ShowMarioPostion()
@@ -271,16 +268,18 @@ void CGameStateRun::ShowMarioPostion()
 	{
 
 		CTextDraw::ChangeFontLog(pDC, 21, "微軟正黑體", RGB(0, 0, 0), 800);
-		
-		CTextDraw::Print(pDC, 0, 0, "MARIO:");
-		CTextDraw::Print(pDC, 0, 16, std::to_string(mario.GetLeft()));
-		CTextDraw::Print(pDC, 0, 32, std::to_string(mario.GetTop() / 64));
-		CTextDraw::Print(pDC, 0, 48, std::to_string(mario.GetVerticalSpeed()));
 
-		CTextDraw::Print(pDC, 0, 64, "floor:");
-		CTextDraw::Print(pDC, 0, 80, std::to_string((-1*floor.GetLeft() + mario.GetLeft() )/ 64));
-		CTextDraw::Print(pDC, 0, 96, std::to_string(floor.GetTop()));
+		CTextDraw::Print(pDC, 0, 0, "MARIO:");
+		CTextDraw::Print(pDC, 0, 16, "x:" + std::to_string(mario.GetLeft() / 64));
+		CTextDraw::Print(pDC, 0, 32, "y:" + std::to_string((mario.GetTop()) / 64));
+		CTextDraw::Print(pDC, 0, 48, "OnGround"+mario.GetOnGround());
+		CTextDraw::Print(pDC, 0, 64, "GetHitbox"+mario.GetHitbox());
+		CTextDraw::Print(pDC, 0, 80, "GetStatus"+mario.GetStatus());
+
+		CTextDraw::Print(pDC, 0, 96, "floor:");
+		CTextDraw::Print(pDC, 0, 112, "x:" + std::to_string(floor.GetLeft()));
+		CTextDraw::Print(pDC, 0, 128, "y:" + std::to_string(floor.GetTop()));
 	}
 	CDDraw::ReleaseBackCDC();
-	
+
 }

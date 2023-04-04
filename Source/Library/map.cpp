@@ -17,6 +17,8 @@
 #include <filesystem>
 #include <experimental/filesystem> // Header file for pre-standard implementation
 #include <comdef.h>
+#include <fstream>
+
 
 namespace game_framework
 {
@@ -31,94 +33,97 @@ namespace game_framework
 	}
 	void Map::Updata()
 	{
-		
+
 	}
 
-	void Map::Load()
+	vector<vector<int>> Map::GetMap()
+	{
+		return map;
+	}
+
+	void Map::Load(int world, int level)
 	{
 		CMovingBitmap block;
-		for (int i = 0; i < 211; i++)
+		if (world == 1 && level == 1)
 		{
-			array1.push_back(block);
-		}
-		for (int i = 0; i < 15; i++)
-		{
-			charactor.push_back(array1);
-		}
-		array1.clear();
-		for (int i = 0; i < 15; i++)
-		{
-			for (int j = 0; j < 211; j++)
+			for (int i = 0; i < 211; i++)
 			{
-				switch (map1_1[i][j])
-				{
-				case 0:
-					charactor[i][j].LoadBitmapByString({
-						"resources/reject.bmp",
-						}, RGB(92,148,252));
-					charactor[i][j].SetTopLeft(j * 64 , i * 64);
-				case 1:
-					charactor[i][j].LoadBitmapByString({
-						"resources/block.bmp"
-						});
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 2:
-					charactor[i][j].LoadBitmapByString({
-						"resources/block2.bmp"
-						});
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 3:
-					charactor[i][j].LoadBitmapByString({
-						"resources/block3.bmp"
-						});
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 4:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe_1.bmp"
-						},RGB(92,148,252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 5:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe_2.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 6:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe_3.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 7:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe_4.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 8:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag_1.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 9:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag_2.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 10:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag_3.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				case 11:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag_4.bmp"
-						}, RGB(92, 148, 252));
-					charactor[i][j].SetTopLeft(j * 64, i * 64);
-				default:
-					break;
-				}
-				wight = j;
+				map_temp.push_back(0);
+				array1.push_back(block);
 			}
+			for (int i = 0; i < 17; i++)
+			{
+				map.push_back(map_temp);
+				charactor.push_back(array1);
+			}
+			array1.clear();
+			map_temp.clear();
+			ifstream ifs("resources/map/1-1.map");
+
+			for (int i = 0; i < 17; i++)
+			{
+				for (int j = 0; j < 211; j++)
+				{
+					ifs >> map[i][j];
+					switch (map[i][j])
+					{
+					case 0:
+						charactor[i][j].LoadBitmapByString({
+							"resources/empty.bmp",
+							}, RGB(146, 144, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 1:
+						charactor[i][j].LoadBitmapByString({
+							"resources/block.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 2:
+						charactor[i][j].LoadBitmapByString({
+							"resources/block2.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 3:
+						charactor[i][j].LoadBitmapByString({
+							"resources/block3.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 4:
+						charactor[i][j].LoadBitmapByString({
+							"resources/pipe1.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 5:
+						charactor[i][j].LoadBitmapByString({
+							"resources/pipe2.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 6:
+						charactor[i][j].LoadBitmapByString({
+							"resources/pipe3.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 7:
+						charactor[i][j].LoadBitmapByString({
+							"resources/pipe_4.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 8:
+						charactor[i][j].LoadBitmapByString({
+							"resources/flag1.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					case 9:
+						charactor[i][j].LoadBitmapByString({
+							"resources/flag2.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 64, i * 64);
+					default:
+						break;
+					}
+				}
+			}
+			ifs.close();
 		}
-		
 	}
 
 	void Map::Show()
@@ -131,37 +136,71 @@ namespace game_framework
 			}
 		}
 	}
-
-	void Map::SetTopLeft(int x, int y)
+	void Map::initalize()
 	{
-		for (int i = 0; i < 15; i++)
+		for (int i = 0; i < 17; i++)
 		{
 			for (int j = 0; j < 211; j++)
 			{
-				charactor[i][j].SetTopLeft(charactor[i][j].GetLeft() - x, charactor[i][j].GetTop() - y);
+				charactor[i][j].SetTopLeft(j * 64, i * 64);
 			}
 		}
 	}
-	bool Map::Isoverlamp(Mario mario ,CMovingBitmap floor)
+	int Map::GetTop()
+	{
+		return charactor[0][0].GetTop();
+	}
+
+	int Map::GetLeft()
+	{
+		return charactor[0][0].GetLeft();
+	}
+
+	int Map::GetWidth()
+	{
+		return width * 64;
+	}
+
+	void Map::SetTopLeft(int x, int y)
+	{
+		for (int i = 0; i < 17; i++)
+		{
+			for (int j = 0; j < 211; j++)
+			{
+				charactor[i][j].SetTopLeft(x + j * 64, y + i * 64);
+			}
+		}
+	}
+	/*bool Map::Isoverlamp(Mario mario, CMovingBitmap floor)
 	{
 		int mario_y = mario.GetTop() / 64;
-		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft())/ 64;
-		if (mario.GetStatus()=="rightwalk") {
-			if (map1_1[mario_y][mario_x+1] == 0) {
-				return false;
+		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
+		if (mario.GetStatus() == "rightwalk") {
+			if (map1_1[mario_y][mario_x + 1] != 0) {
+				return true;
 			}
 		}
 		if (mario.GetStatus() == "leftwalk") {
-			if (map1_1[mario_y][mario_x] == 0) {
-				return false;
+			if (map1_1[mario_y][mario_x] != 0) {
+				return true;
 			}
 		}
-		if (mario.GetStatus() == "jump") {
-			if (map1_1[mario_y][mario_x-1] == 0 ||map1_1[mario_y][mario_x] == 0) {
-				return false;
+		if (mario.GetJump()) {
+			if (map1_1[mario_y][mario_x+1] != 0 || map1_1[mario_y][mario_x] != 0) {
+				return true;
 			}
 		}
-		return true;
-		
+		return false;
 	}
+	bool Map::Ontheground(Mario mario, CMovingBitmap floor)
+	{
+		int mario_y = mario.GetTop() / 64;
+		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
+		if (map1_1[mario_y+1][mario_x+1] != 0 || map1_1[mario_y+1][mario_x] != 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}*/
 }
