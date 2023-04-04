@@ -1,5 +1,5 @@
-#ifndef MARIO_H
-#define MARIO_H
+#ifndef Enemy_H
+#define Enemy_H
 
 #pragma
 #include "gameutil.h"
@@ -11,20 +11,20 @@ using namespace std;
 
 namespace game_framework
 {
-	class Mario
+	class Enemy
 	{
 	public:
-		Mario();
-		void	UpData(Mario mario, Map map);
-		void	Reset();
+		Enemy();
+		~Enemy();
 
-		void	Show();
-		void	Load(vector<string>, COLORREF = CLR_INVALID);
-
+		virtual  void UpData(Mario mario, Map map)=0;
+		virtual void Collision(Map map)=0;
+		void	ShowBitmap();
+		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
 		void	SetAnimation(int delay, bool _once);
-		void	SetFrameIndexOfBitmap(int);
-
+		void	Limit(CMovingBitmap floor, Mario mario);
 		int		GetFrameIndexOfBitmap();
+		void	SetFrameIndexOfBitmap(int);
 		int		GetTop();
 		int		GetLeft();
 		int		GetHeight();
@@ -33,37 +33,23 @@ namespace game_framework
 		void	SetTopLeft(int, int);
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
-
+		void	SetCollision(bool);
 		void	SetDie(bool);
 		void	SetStatus(string);
-		void	SetJump(bool);
-		void	SetOnGround(bool status);
-		void	SetHitbox(bool status);
-
-		int		GetX();
-		int		GetY();
 
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
-		bool	GetDead() const;
-		int		GetPressedKey();
+
 		bool	GetDie();
 		string	GetStatus();
-		bool	GetJump();
-		string	GetOnGround();
-		string	GetHitbox();
+		
 
-		bool	IsKeyPressed();
-
-		void	Collision(Mario mario, Map map);
 		CMovingBitmap charactor;
-	private:
+	protected:
 		bool	crouching;
 		bool	dead = false;
 		bool	flipped;
-		bool	onGround;
-		bool	hitbox;
-		bool	jump;
+		bool	on_ground;
 		int		x;
 		int		y;
 
@@ -74,13 +60,8 @@ namespace game_framework
 
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;
-		int		pressedKey = 0;
 		string	status = "initial";
-		bool	isKeyPressed = false;
 		bool	isCollision = false;
-
-		int const GRAVITY = 2;
 	};
-
 }
-#endif // !MARIO_H
+#endif // !Enemy_H

@@ -20,22 +20,82 @@
 
 namespace game_framework
 {
-	Mario::Mario()
+	Mario::Mario() :
+		crouching(false),
+		dead(false),
+		flipped(false),
+		onGround(false),
+		horizontalSpeed(0),
+		verticalSpeed(0),
+		jump_timer(0),
+		growth_timer(0),
+		invincible_timer(0)
 	{
 
 	}
 
-	void Mario::UpData()
+	bool Mario::GetDead() const
 	{
-		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+		return dead;
 	}
 
-	void Mario::ShowBitmap()
+	int Mario::GetX()
+	{
+		return charactor.GetLeft();
+	}
+
+	int Mario::GetY()
+	{
+		return charactor.GetTop();
+	}
+
+	void Mario::UpData(Mario mario, Map map)
+	{
+		int mario_y = mario.GetTop() / 64;
+		Collision(mario, map);
+		if (onGround == true)
+		{
+			verticalSpeed = 0;
+		}
+		else
+		{
+			if (mario.GetStatus() == "jump" && mario.GetHitbox()=="false")
+			{
+				verticalSpeed = -16;
+			}
+			else if (mario.GetStatus() == "jump" && mario.GetHitbox() != "false") 
+			{
+				verticalSpeed = 16;
+			}
+			else
+			{
+				verticalSpeed += GRAVITY;
+			}
+		}
+
+		if (isCollision == true)
+		{
+			horizontalSpeed = 0;
+		}
+		if (mario.GetTop() > 960)
+		{
+			mario.SetDie(true);
+		}
+		if (onGround == true && mario.GetStatus() != "jump") {
+			y = (charactor.GetTop() + verticalSpeed) / 64 * 64;
+		}
+		else {
+			y = charactor.GetTop() + verticalSpeed;
+		}
+		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, y);
+	}
+
+	void Mario::Show()
 	{
 		charactor.ShowBitmap();
 	}
 
-	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	void Mario::Load(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
@@ -54,7 +114,7 @@ namespace game_framework
 	{
 		charactor.SetAnimation(delay, _once);
 	}
-	void Mario::SetTopLeft(int x,int y)
+	void Mario::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
 	}
@@ -76,6 +136,10 @@ namespace game_framework
 	{
 		return charactor.GetWidth();
 	}
+	bool Mario::GetJump()
+	{
+		return jump;
+	}
 
 	void Mario::SetVerticalSpeed(int value)
 	{
@@ -87,20 +151,6 @@ namespace game_framework
 		horizontalSpeed = value;
 	}
 
-	void Mario::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void Mario::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Mario::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
 
 	void Mario::SetDie(bool flag)
 	{
@@ -109,6 +159,9 @@ namespace game_framework
 	void Mario::SetStatus(string action)
 	{
 		status = action;
+	}
+	void Mario::SetJump(bool status) {
+		jump = status;
 	}
 
 	int Mario::GetVerticalSpeed()
@@ -140,8 +193,89 @@ namespace game_framework
 		return isKeyPressed;
 	}
 
-	bool Mario::IsCollision()
+	void Mario::Collision(Mario mario, Map map)
 	{
-		return isCollision;
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+		int mario_y = mario.GetTop() / 64;
+
+		if (mario.GetHorizontalSpeed() > 0)
+		{
+			if (map_vector[mario_y][mario_x + 1] != 0)
+			{
+				isCollision = true;
+			}
+
+		}
+		else if (mario.GetHorizontalSpeed() < 0)
+		{
+			if (map_vector[mario_y][mario_x] != 0)
+			{
+				isCollision = true;
+			}
+		}
+		else
+		{
+			isCollision = false;
+		}
+		if (mario.GetStatus() != "jump")
+		{
+			if (map_vector[mario_y + 1][mario_x] != 0 && map_vector[mario_y ][mario_x] == 0)
+			{
+				onGround = true;
+			}
+			else if (map_vector[mario_y + 1][mario_x + 1] != 0 && map_vector[mario_y ][mario_x + 1]==0)
+			{
+				onGround = true;
+			}
+			else
+			{
+				onGround = false;
+			}
+		}
+		if (mario.GetStatus() == "jump" )
+		{
+			if (map_vector[mario_y-1 ][mario_x] != 0)
+			{
+				hitbox = true;
+			}
+			else
+			{
+				hitbox = false;
+			}
+		}
+	}
+
+	void Mario::SetOnGround(bool status)
+	{
+		onGround = status;
+	}
+
+	string Mario::GetOnGround()
+	{
+		if (onGround == true)
+		{
+			return "true";
+		}
+		else
+		{
+			return "false";
+		}
+	}
+	void Mario::SetHitbox(bool status)
+	{
+		hitbox = status;
+	}
+
+	string Mario::GetHitbox()
+	{
+		if (hitbox == true)
+		{
+			return "true";
+		}
+		else
+		{
+			return "false";
+		}
 	}
 }

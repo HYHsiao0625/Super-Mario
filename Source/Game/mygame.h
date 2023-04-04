@@ -1,5 +1,5 @@
 /*
- * mygame.h: æœ¬æª”æ¡ˆå„²éŠæˆ²æœ¬èº«çš„classçš„interface
+ * mygame.h: ¥»ÀÉ®×Àx¹CÀ¸¥»¨­ªºclassªºinterface
  * Copyright (C) 2002-2008 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
  *
  * This file is part of game, a free game development framework for windows.
@@ -39,6 +39,8 @@
 */
 
 #include "../Library/mario.h"
+#include "../Library/enemy.h"
+#include "../Library/enemyfactor.h"
 #include "../Library/goomba.h"
 #include "../Library/map.h"
 
@@ -47,27 +49,27 @@ namespace game_framework {
 	// Constants
 	/////////////////////////////////////////////////////////////////////////////
 
-	enum AUDIO_ID {				// å®šç¾©å„ç¨®éŸ³æ•ˆçš„ç·¨è™Ÿ
+	enum AUDIO_ID {				// ©w¸q¦UºØ­µ®Äªº½s¸¹
 		AUDIO_DING,				// 0
 		AUDIO_LAKE,				// 1
 		AUDIO_NTUT				// 2
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
-	// é€™å€‹classç‚ºéŠæˆ²çš„éŠæˆ²é–‹é ­ç•«é¢ç‰©ä»¶
-	// æ¯å€‹Member functionçš„Implementationéƒ½è¦å¼„æ‡‚
+	// ³o­Óclass¬°¹CÀ¸ªº¹CÀ¸¶}ÀYµe­±ª«¥ó
+	// ¨C­ÓMember functionªºImplementation³£­n§ËÀ´
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CGameStateInit : public CGameState {
 	public:
 		CGameStateInit(CGame *g);
-		void OnInit();  								// éŠæˆ²çš„åˆå€¼åŠåœ–å½¢è¨­å®š
-		void OnBeginState();							// è¨­å®šæ¯æ¬¡é‡ç©æ‰€éœ€çš„è®Šæ•¸
+		void OnInit();  								// ¹CÀ¸ªºªì­È¤Î¹Ï§Î³]©w
+		void OnBeginState();							// ³]©w¨C¦¸­«ª±©Ò»İªºÅÜ¼Æ
 		void OnKeyDown(UINT, UINT, UINT);
-		void OnKeyUp(UINT, UINT, UINT); 				// è™•ç†éµç›¤Upçš„å‹•ä½œ
-		void OnLButtonDown(UINT nFlags, CPoint point);  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
+		void OnKeyUp(UINT, UINT, UINT); 				// ³B²zÁä½LUpªº°Ê§@
+		void OnLButtonDown(UINT nFlags, CPoint point);  // ³B²z·Æ¹«ªº°Ê§@
 	protected:
-		void OnShow();									// é¡¯ç¤ºé€™å€‹ç‹€æ…‹çš„éŠæˆ²ç•«é¢
+		void OnShow();									// Åã¥Ü³o­Óª¬ºAªº¹CÀ¸µe­±
 	private:
 		void LoadTitle();
 		CMovingBitmap title;
@@ -77,26 +79,26 @@ namespace game_framework {
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
-	// é€™å€‹classç‚ºéŠæˆ²çš„éŠæˆ²åŸ·è¡Œç‰©ä»¶ï¼Œä¸»è¦çš„éŠæˆ²ç¨‹å¼éƒ½åœ¨é€™è£¡
-	// æ¯å€‹Member functionçš„Implementationéƒ½è¦å¼„æ‡‚
+	// ³o­Óclass¬°¹CÀ¸ªº¹CÀ¸°õ¦æª«¥ó¡A¥D­nªº¹CÀ¸µ{¦¡³£¦b³o¸Ì
+	// ¨C­ÓMember functionªºImplementation³£­n§ËÀ´
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CGameStateRun : public CGameState {
 	public:
 		CGameStateRun(CGame *g);
 		~CGameStateRun();
-		void OnBeginState();							// è¨­å®šæ¯æ¬¡é‡ç©æ‰€éœ€çš„è®Šæ•¸
-		void OnInit();  								// éŠæˆ²çš„åˆå€¼åŠåœ–å½¢è¨­å®š
+		void OnBeginState();							// ³]©w¨C¦¸­«ª±©Ò»İªºÅÜ¼Æ
+		void OnInit();  								// ¹CÀ¸ªºªì­È¤Î¹Ï§Î³]©w
 		void OnKeyDown(UINT, UINT, UINT);
 		void OnKeyUp(UINT, UINT, UINT);
-		void OnLButtonDown(UINT nFlags, CPoint point);  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
-		void OnLButtonUp(UINT nFlags, CPoint point);	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
-		void OnMouseMove(UINT nFlags, CPoint point);	// è™•ç†æ»‘é¼ çš„å‹•ä½œ 
-		void OnRButtonDown(UINT nFlags, CPoint point);  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
-		void OnRButtonUp(UINT nFlags, CPoint point);	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
+		void OnLButtonDown(UINT nFlags, CPoint point);  // ³B²z·Æ¹«ªº°Ê§@
+		void OnLButtonUp(UINT nFlags, CPoint point);	// ³B²z·Æ¹«ªº°Ê§@
+		void OnMouseMove(UINT nFlags, CPoint point);	// ³B²z·Æ¹«ªº°Ê§@ 
+		void OnRButtonDown(UINT nFlags, CPoint point);  // ³B²z·Æ¹«ªº°Ê§@
+		void OnRButtonUp(UINT nFlags, CPoint point);	// ³B²z·Æ¹«ªº°Ê§@
 	protected:
-		void OnMove();									// ç§»å‹•éŠæˆ²å…ƒç´ 
-		void OnShow();									// é¡¯ç¤ºé€™å€‹ç‹€æ…‹çš„éŠæˆ²ç•«é¢
+		void OnMove();									// ²¾°Ê¹CÀ¸¤¸¯À
+		void OnShow();									// Åã¥Ü³o­Óª¬ºAªº¹CÀ¸µe­±
 	private:
 		void LoadBackground();
 		void LoadGoomba();
@@ -107,34 +109,30 @@ namespace game_framework {
 		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
-		int GRAVITY = 24;
 		Mario mario;
 		Goomba goomba;
+		Goomba goomba1;
 		Map map;
-
 		CMovingBitmap background;
-		CMovingBitmap block1;
-		CMovingBitmap block2;
-		CMovingBitmap block3;
 		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
-	// é€™å€‹classç‚ºéŠæˆ²çš„çµæŸç‹€æ…‹(Game Over)
-	// æ¯å€‹Member functionçš„Implementationéƒ½è¦å¼„æ‡‚
+	// ³o­Óclass¬°¹CÀ¸ªºµ²§ôª¬ºA(Game Over)
+	// ¨C­ÓMember functionªºImplementation³£­n§ËÀ´
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CGameStateOver : public CGameState {
 	public:
 		CGameStateOver(CGame *g);
-		void OnBeginState();							// è¨­å®šæ¯æ¬¡é‡ç©æ‰€éœ€çš„è®Šæ•¸
+		void OnBeginState();							// ³]©w¨C¦¸­«ª±©Ò»İªºÅÜ¼Æ
 		void OnInit();
 	protected:
-		void OnMove();									// ç§»å‹•éŠæˆ²å…ƒç´ 
-		void OnShow();									// é¡¯ç¤ºé€™å€‹ç‹€æ…‹çš„éŠæˆ²ç•«é¢
+		void OnMove();									// ²¾°Ê¹CÀ¸¤¸¯À
+		void OnShow();									// Åã¥Ü³o­Óª¬ºAªº¹CÀ¸µe­±
 	private:
-		int counter;	// å€’æ•¸ä¹‹è¨ˆæ•¸å™¨
+		int counter;	// ­Ë¼Æ¤§­p¼Æ¾¹
 	};
 
 }

@@ -1,6 +1,6 @@
 #pragma once
 /*
- * gamelib.h: æœ¬æª”æ¡ˆå„²éŠæˆ²ç›¸é—œçš„classçš„interface
+ * gamelib.h: ¥»ÀÉ®×Àx¹CÀ¸¬ÛÃöªºclassªºinterface
  * Copyright (C) 2002-2008 Woei-Kae Chen <wkc@csie.ntut.edu.tw>
  *
  * This file is part of game, a free game development framework for windows.
@@ -75,100 +75,8 @@ using namespace std;
 namespace game_framework {
 
 	/////////////////////////////////////////////////////////////////////////////
-	//
-	//
-	/////////////////////////////////////////////////////////////////////////////
-
-	class Mario
-	{
-	public:
-		Mario();
-		void  UpData();
-		void  LoadBitmap(int, COLORREF = CLR_INVALID);
-		void  LoadBitmap(char*, COLORREF = CLR_INVALID);
-		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);
-		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
-		void  LoadEmptyBitmap(int height, int weight);
-		void  SetAnimation(int delay, bool _once);
-		void  SetFrameIndexOfBitmap(int frame);
-		void  SetTopLeft(int, int);
-		void  UnshowBitmap();
-		void  ShowBitmap();
-		void  ShowBitmap(double factor);
-		int   GetFrameIndexOfBitmap();
-		int   GetFrameSizeOfBitmap();
-		int   GetTop();
-		int   GetLeft();
-		int   GetHeight();
-		int   GetWidth();
-		string GetImageFileName();
-		COLORREF GetFilterColor();
-		void  ToggleAnimation();
-		bool  IsAnimation();
-		bool  IsAnimationDone();
-		bool  IsBitmapLoaded();
-		bool  IsOnceAnimation();
-
-		//---------------------------------------------------
-		void  SetVerticalSpeed(int);
-		void  SetHorizontalSpeed(int);
-		void  SetKeyPressed(bool);
-		void  SetPressedKey(int);
-		void  SetCollision(bool);
-		void  SetStatus(string);
-		
-		int   GetVerticalSpeed();
-		int   GetHorizontalSpeed();
-		int   GetPressedKey();
-		string GetStatus();
-
-		bool  IsKeyPressed();
-		bool  IsCollision();
-
-	protected:
-		int frameIndex = 0;
-		int delayCount = 10;
-		int animationCount = -1;
-		bool isAnimation = false;
-		bool isAnimationDone = true;
-		bool isBitmapLoaded = false;
-		bool isOnce = false;
-		CRect location;
-		vector<unsigned> surfaceID;
-		clock_t last_time = clock();
-		string   imageFileName = "";
-		COLORREF filterColor = CLR_INVALID;
-		vector<unsigned> SurfaceID;
-		//---------------------------------------------------
-		bool crouching;
-		bool dead;
-		bool flipped;
-		bool on_ground;
-		int x;
-		int y;
-
-		unsigned char jump_timer;
-
-		unsigned short death_timer;
-		unsigned short growth_timer;
-		unsigned short invincible_timer;
-
-		int horizontalSpeed = 0;
-		int verticalSpeed = 0;
-		int pressedKey = 0;
-		string status = "initial";
-		bool isKeyPressed = false;
-		bool isCollision = false;
-
-	private:
-		void InitializeRectByBITMAP(BITMAP bitmap);
-		void ShowBitmapBySetting();
-
-	};
-
-	/////////////////////////////////////////////////////////////////////////////
-	// é€™å€‹classæä¾›å‹•æ…‹(å¯ä»¥ç§»å‹•)çš„åœ–å½¢
-	// æ¯å€‹Public Interfaceçš„ç”¨æ³•éƒ½è¦æ‡‚ï¼ŒImplementationå¯ä»¥ä¸æ‡‚
+	// ³o­Óclass´£¨Ñ°ÊºA(¥i¥H²¾°Ê)ªº¹Ï§Î
+	// ¨C­ÓPublic Interfaceªº¥Îªk³£­nÀ´¡AImplementation¥i¥H¤£À´
 	/////////////////////////////////////////////////////////////////////////////
 
 	class CMovingBitmap {
@@ -176,10 +84,10 @@ namespace game_framework {
 		CMovingBitmap();
 
 		/* The function for loading the bitmap. */
-		void  LoadBitmap(int, COLORREF = CLR_INVALID);		// è¼‰å…¥åœ–ï¼ŒæŒ‡å®šåœ–çš„ç·¨è™Ÿ(resource)åŠé€æ˜è‰²
-		void  LoadBitmap(char*, COLORREF = CLR_INVALID);	// è¼‰å…¥åœ–ï¼ŒæŒ‡å®šåœ–çš„æª”ååŠé€æ˜è‰²
-		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);	// è¼‰å…¥åœ–ï¼ŒæŒ‡å®šåœ–çš„æª”ååŠé€æ˜è‰²
-		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);	// è¼‰å…¥åœ–ï¼ŒæŒ‡å®šåœ–çš„æª”ååŠé€æ˜è‰²
+		void  LoadBitmap(int, COLORREF = CLR_INVALID);		// ¸ü¤J¹Ï¡A«ü©w¹Ïªº½s¸¹(resource)¤Î³z©ú¦â
+		void  LoadBitmap(char*, COLORREF = CLR_INVALID);	// ¸ü¤J¹Ï¡A«ü©w¹ÏªºÀÉ¦W¤Î³z©ú¦â
+		void  LoadBitmap(vector<char*>, COLORREF = CLR_INVALID);	// ¸ü¤J¹Ï¡A«ü©w¹ÏªºÀÉ¦W¤Î³z©ú¦â
+		void  LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);	// ¸ü¤J¹Ï¡A«ü©w¹ÏªºÀÉ¦W¤Î³z©ú¦â
 		void  LoadEmptyBitmap(int height, int weight);
 
 		/* Unshow the bitmap. */
@@ -188,11 +96,11 @@ namespace game_framework {
 		/* Setter */
 		void  SetAnimation(int delay, bool _once);
 		void  SetFrameIndexOfBitmap(int frame);
-		void  SetTopLeft(int, int);			// å°‡åœ–çš„å·¦ä¸Šè§’åº§æ¨™ç§»è‡³ (x,y)
+		void  SetTopLeft(int, int);			// ±N¹Ïªº¥ª¤W¨¤®y¼Ğ²¾¦Ü (x,y)
 
 		/* Show the bitmap with or without factor. */
-		void  ShowBitmap();					// å°‡åœ–è²¼åˆ°è¢å¹•
-		void  ShowBitmap(double factor);	// å°‡åœ–è²¼åˆ°è¢å¹• factor < 1æ™‚ç¸®å°ï¼Œ>1æ™‚æ”¾å¤§ã€‚æ³¨æ„ï¼šéœ€è¦VGAå¡ç¡¬é«”çš„æ”¯æ´ï¼Œå¦å‰‡æœƒå¾ˆæ…¢
+		void  ShowBitmap();					// ±N¹Ï¶K¨ì¿Ã¹õ
+		void  ShowBitmap(double factor);	// ±N¹Ï¶K¨ì¿Ã¹õ factor < 1®ÉÁY¤p¡A>1®É©ñ¤j¡Cª`·N¡G»İ­nVGA¥dµwÅéªº¤ä´©¡A§_«h·|«ÜºC
 
 		/* Getter */
 		int   GetFrameIndexOfBitmap();
@@ -215,36 +123,32 @@ namespace game_framework {
 		void  ToggleAnimation();
 
 	protected:
-		//! ç•¶å‰å¹€çš„ç´¢å¼•å€¼ã€‚
+		//! ·í«e´Vªº¯Á¤Ş­È¡C
 		int frameIndex = 0;
-		//! ç•¶å‰å¹€åˆ‡æ›çš„å»¶é²ã€‚
+		//! ·í«e´V¤Á´«ªº©µ¿ğ¡C
 		int delayCount = 10;
-		//! å„²å­˜ç•¶å‰å‹•ç•«çš„æ¬¡æ•¸ã€‚
+		//! Àx¦s·í«e°Êµeªº¦¸¼Æ¡C
 		int animationCount = -1;
-		//! å„²å­˜ç‰©ä»¶æ˜¯å¦ç‚ºå‹•ç•«ã€‚
+		//! Àx¦sª«¥ó¬O§_¬°°Êµe¡C
 		bool isAnimation = false;
-		//! å„²å­˜ç‰©ä»¶å‹•ç•«æ˜¯å¦å·²çµæŸ
+		//! Àx¦sª«¥ó°Êµe¬O§_¤wµ²§ô
 		bool isAnimationDone = true;
-		//! å„²å­˜åœ–ç‰‡æ˜¯å¦å·²è®€å–
+		//! Àx¦s¹Ï¤ù¬O§_¤wÅª¨ú
 		bool isBitmapLoaded = false;	// whether a bitmap has been loaded
-		//! å„²å­˜ç‰©ä»¶å‹•ç•«æ˜¯å¦ç‚ºå–®æ¬¡å‹•ç•«
+		//! Àx¦sª«¥ó°Êµe¬O§_¬°³æ¦¸°Êµe
 		bool isOnce = false;
 		vector<CRect>    locations;			// location of the bitmap
 		vector<unsigned> surfaceID;
 		clock_t last_time = clock();
-		//! å„²å­˜ç‰©ä»¶è®€å–çš„åœ–ç‰‡è·¯å¾‘
+		//! Àx¦sª«¥óÅª¨úªº¹Ï¤ù¸ô®|
 		string   imageFileName = "";
-		//! å„²å­˜ç‰©ä»¶éæ¿¾çš„åœ–ç‰‡é¡è‰²
+		//! Àx¦sª«¥ó¹LÂoªº¹Ï¤ùÃC¦â
 		COLORREF filterColor = CLR_INVALID;
 
 	private:
 		void InitializeRectByBITMAP(BITMAP bitmap);
 		void ShowBitmapBySetting();
 	};
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	class CTextDraw {
 	public:
