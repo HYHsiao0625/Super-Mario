@@ -1,8 +1,9 @@
-#ifndef ENEMY_H
-#define ENEMY_H
+#ifndef Enemy_H
+#define Enemy_H
 
 #pragma
 #include "gameutil.h"
+#include "map.h"
 #include <list>
 #include <vector>
 #include <map>
@@ -12,23 +13,55 @@ namespace game_framework
 {
 	class Enemy
 	{
-	protected:
-		bool dead;
-
-		int horizontal_speed;
-		int vertical_speed;
-		int x;
-		int y;
 	public:
-		Enemy(const int i_x, const int i_y);
+		Enemy();
+		~Enemy();
 
-		virtual bool get_dead(const bool i_deletion) const = 0;
+		virtual  void UpData(Mario mario, Map map)=0;
+		virtual void Collision(Map map)=0;
+		void	ShowBitmap();
+		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
+		void	SetAnimation(int delay, bool _once);
+		void	Limit(CMovingBitmap floor, Mario mario);
+		int		GetFrameIndexOfBitmap();
+		void	SetFrameIndexOfBitmap(int);
+		int		GetTop();
+		int		GetLeft();
+		int		GetHeight();
+		int		GetWidth();
 
-		virtual void die(const unsigned char i_death_type) = 0;
+		void	SetTopLeft(int, int);
+		void	SetVerticalSpeed(int);
+		void	SetHorizontalSpeed(int);
+		void	SetCollision(bool);
+		void	SetDie(bool);
+		void	SetStatus(string);
 
-		virtual void show() = 0;
-		virtual void update() = 0;
+		int		GetVerticalSpeed();
+		int		GetHorizontalSpeed();
 
+		bool	GetDie();
+		string	GetStatus();
+		
+
+		CMovingBitmap charactor;
+	protected:
+		bool	crouching;
+		bool	dead = false;
+		bool	flipped;
+		bool	on_ground;
+		int		x;
+		int		y;
+
+		unsigned char jump_timer;
+		unsigned short death_timer;
+		unsigned short growth_timer;
+		unsigned short invincible_timer;
+
+		int		horizontalSpeed = 0;
+		int		verticalSpeed = 0;
+		string	status = "initial";
+		bool	isCollision = false;
 	};
 }
-#endif // !GOOMBA_H
+#endif // !Enemy_H

@@ -38,6 +38,7 @@ namespace game_framework
 		void	SetStatus(string);
 		void	SetJump(bool);
 		void	SetOnGround(bool status);
+		void	SetHitbox(bool status);
 
 		int		GetX();
 		int		GetY();
@@ -50,6 +51,7 @@ namespace game_framework
 		string	GetStatus();
 		bool	GetJump();
 		string	GetOnGround();
+		string	GetHitbox();
 
 		bool	IsKeyPressed();
 
@@ -60,6 +62,7 @@ namespace game_framework
 		bool	dead = false;
 		bool	flipped;
 		bool	onGround;
+		bool	hitbox;
 		bool	jump;
 		int		x;
 		int		y;
@@ -76,7 +79,7 @@ namespace game_framework
 		bool	isKeyPressed = false;
 		bool	isCollision = false;
 
-		int const GRAVITY = 2;
+		int const GRAVITY = 4;
 	};
 
 }

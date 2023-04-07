@@ -1,21 +1,20 @@
-#ifndef GOOMBA_H
-#define GOOMBA_H
+#ifndef ENEMYFACTOR_H
+#define ENEMYFACTOR_H
 
 #pragma
 #include "gameutil.h"
 #include <list>
 #include <vector>
 #include <map>
-#include "enemy.h"
 using namespace std;
 
 namespace game_framework
 {
-	class Goomba : public Enemy
+	class Enemyfactor
 	{
 	public:
-		void UpData(Mario mario, Map map) ;
-		void Collision(Map map);
+		Enemyfactor(); 
+		~Enemyfactor();
 	};
 }
 #endif // !GOOMBA_H

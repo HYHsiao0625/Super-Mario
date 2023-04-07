@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "enemy.h"
+#include "Enemy.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,12 +20,117 @@
 
 namespace game_framework
 {
-	Enemy::Enemy(const int i_x, const int i_y)
+	Enemy::Enemy()
 	{
-		dead = false;
-		horizontal_speed = 0;
-		vertical_speed = 0;
-		x = i_x;
-		y = i_y;
+
 	}
+
+	Enemy::~Enemy()
+	{
+
+	}
+
+
+	void Enemy::ShowBitmap()
+	{
+		charactor.ShowBitmap();
+	}
+
+	void Enemy::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	{
+		charactor.LoadBitmapByString(filepaths, color);
+	}
+	void Enemy::Limit(CMovingBitmap floor, Mario mario)
+	{
+		if (floor.GetLeft() < 0 && mario.GetLeft() <= 384)
+		{
+			this->SetTopLeft(this->GetLeft() - mario.GetHorizontalSpeed(), this->GetTop());
+		}
+		if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
+		{
+			this->SetTopLeft(this->GetLeft() - mario.GetHorizontalSpeed(), this->GetTop());
+		}
+	}
+
+	int Enemy::GetFrameIndexOfBitmap()
+	{
+		return charactor.GetFrameIndexOfBitmap();
+	}
+
+	void Enemy::SetFrameIndexOfBitmap(int frameIndex)
+	{
+		charactor.SetFrameIndexOfBitmap(frameIndex);
+	}
+
+	void Enemy::SetAnimation(int delay, bool _once)
+	{
+		charactor.SetAnimation(delay, _once);
+	}
+	void Enemy::SetTopLeft(int x, int y)
+	{
+		charactor.SetTopLeft(x, y);
+	}
+	int Enemy::GetTop()
+	{
+		return charactor.GetTop();
+	}
+
+	int Enemy::GetLeft()
+	{
+		return charactor.GetLeft();
+	}
+	int Enemy::GetHeight()
+	{
+		return charactor.GetHeight();
+	}
+
+	int Enemy::GetWidth()
+	{
+		return charactor.GetWidth();
+	}
+
+	void Enemy::SetVerticalSpeed(int value)
+	{
+		verticalSpeed = value;
+	}
+
+	void Enemy::SetHorizontalSpeed(int value)
+	{
+		horizontalSpeed = value;
+	}
+
+	void Enemy::SetCollision(bool value)
+	{
+		isCollision = value;
+	}
+
+	void Enemy::SetDie(bool flag)
+	{
+		dead = flag;
+	}
+	void Enemy::SetStatus(string action)
+	{
+		status = action;
+	}
+
+	int Enemy::GetVerticalSpeed()
+	{
+		return verticalSpeed;
+	}
+	int Enemy::GetHorizontalSpeed()
+	{
+		return horizontalSpeed;
+	}
+
+	bool Enemy::GetDie()
+	{
+		return dead;
+	}
+
+	string Enemy::GetStatus()
+	{
+		return status;
+	}
+
+	
 }

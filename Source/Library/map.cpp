@@ -120,7 +120,9 @@ namespace game_framework
 					default:
 						break;
 					}
+					width = j;
 				}
+				
 			}
 			ifs.close();
 		}
@@ -167,7 +169,7 @@ namespace game_framework
 		{
 			for (int j = 0; j < 211; j++)
 			{
-				charactor[i][j].SetTopLeft(x + j *64, y + i* 64);
+				charactor[i][j].SetTopLeft(x + j * 64, y + i * 64);
 			}
 		}
 	}
@@ -176,7 +178,7 @@ namespace game_framework
 		int mario_y = mario.GetTop() / 64;
 		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
 		if (mario.GetStatus() == "rightwalk") {
-			if (map1_1[mario_y][mario_x + 1] != 0) { 
+			if (map1_1[mario_y][mario_x + 1] != 0) {
 				return true;
 			}
 		}
@@ -191,7 +193,6 @@ namespace game_framework
 			}
 		}
 		return false;
-
 	}
 	bool Map::Ontheground(Mario mario, CMovingBitmap floor)
 	{

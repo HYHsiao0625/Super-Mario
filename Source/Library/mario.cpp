@@ -51,6 +51,7 @@ namespace game_framework
 
 	void Mario::UpData(Mario mario, Map map)
 	{
+		int mario_y = mario.GetTop() / 64;
 		Collision(mario, map);
 		if (onGround == true)
 		{
@@ -58,9 +59,14 @@ namespace game_framework
 		}
 		else
 		{
-			if (mario.GetStatus() == "jump")
+			if (GetStatus() == "jump" && GetHitbox() == "false")
 			{
-				verticalSpeed = -16;
+				verticalSpeed = -32;
+			}
+			else if (mario.GetHitbox() == "true")
+			{
+				SetStatus("stand");
+				verticalSpeed = 32;
 			}
 			else
 			{
@@ -72,11 +78,21 @@ namespace game_framework
 		{
 			horizontalSpeed = 0;
 		}
+
 		if (mario.GetTop() > 960)
 		{
 			mario.SetDie(true);
 		}
-		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+		if (onGround == true && mario.GetStatus() != "jump") {
+			y = (charactor.GetTop() + verticalSpeed) / 64 * 64;
+		}
+		else 
+		{
+			y = charactor.GetTop() + verticalSpeed;
+		}
+
+		x = charactor.GetLeft() + horizontalSpeed;
+		charactor.SetTopLeft(x, y);
 	}
 
 	void Mario::Show()
@@ -103,7 +119,7 @@ namespace game_framework
 	{
 		charactor.SetAnimation(delay, _once);
 	}
-	void Mario::SetTopLeft(int x,int y)
+	void Mario::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
 	}
@@ -188,15 +204,17 @@ namespace game_framework
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
 		int mario_y = mario.GetTop() / 64;
 
-		if (mario.GetStatus() == "rightwalk") 
+		if (mario.GetHorizontalSpeed() > 0)
 		{
+			int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
 			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
 			}
 		}
-		else if (mario.GetStatus() == "leftwalk")
+		else if (mario.GetHorizontalSpeed() < 0)
 		{
+			int mario_x = (mario.GetLeft() - map.GetLeft() - 16) / 64;
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
@@ -208,11 +226,11 @@ namespace game_framework
 		}
 		if (mario.GetStatus() != "jump")
 		{
-			if (map_vector[mario_y + 1][mario_x] != 0)
+			if (map_vector[mario_y + 1][mario_x] != 0 && map_vector[mario_y ][mario_x] == 0)
 			{
 				onGround = true;
 			}
-			else if (map_vector[mario_y + 1][mario_x + 1] != 0)
+			else if (map_vector[mario_y + 1][mario_x + 1] != 0 && map_vector[mario_y ][mario_x + 1]==0)
 			{
 				onGround = true;
 			}
@@ -221,7 +239,19 @@ namespace game_framework
 				onGround = false;
 			}
 		}
-		
+		mario_y = (mario.GetTop() - 16) / 64;
+		if (map_vector[mario_y][mario_x] != 0)
+		{
+			hitbox = true;
+		}
+		else if (map_vector[mario_y][mario_x + 1] != 0)
+		{
+			hitbox = true;
+		}
+		else
+		{
+			hitbox = false;
+		}
 	}
 
 	void Mario::SetOnGround(bool status)
@@ -232,6 +262,22 @@ namespace game_framework
 	string Mario::GetOnGround()
 	{
 		if (onGround == true)
+		{
+			return "true";
+		}
+		else
+		{
+			return "false";
+		}
+	}
+	void Mario::SetHitbox(bool status)
+	{
+		hitbox = status;
+	}
+
+	string Mario::GetHitbox()
+	{
+		if (hitbox == true)
 		{
 			return "true";
 		}
