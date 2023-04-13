@@ -120,7 +120,9 @@ namespace game_framework
 					default:
 						break;
 					}
+					width = j;
 				}
+				
 			}
 			ifs.close();
 		}

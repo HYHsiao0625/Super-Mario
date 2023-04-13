@@ -79,7 +79,7 @@ namespace game_framework
 		bool	isKeyPressed = false;
 		bool	isCollision = false;
 
-		int const GRAVITY = 2;
+		int const GRAVITY = 4;
 	};
 
 }
