@@ -16,16 +16,18 @@ namespace game_framework
 		Map();
 		~Map();
 
-		void	Updata();
+		void	Updata(int mario_x, int mario_y);
 		void	Show();
 		void	Load(int world, int level);
 		int		GetTop();
 		int		GetLeft();
 		int		GetWidth();
 		void	initalize();
-
+		
 		void	SetTopLeft(int, int);
 		vector<vector<int>>	GetMap();
+		vector<vector<CMovingBitmap>> GetMapCharactor();
+
 	private:
 		int width, height = 15;
 		vector<int> map_temp;

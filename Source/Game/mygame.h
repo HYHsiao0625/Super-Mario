@@ -112,6 +112,7 @@ namespace game_framework {
 		Mario mario;
 		Goomba goomba;
 		Goomba goomba1;
+		Enemyfactor enemyfactor;
 		Map map;
 		CMovingBitmap background;
 		CMovingBitmap floor;

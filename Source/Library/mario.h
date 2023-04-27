@@ -33,13 +33,9 @@ namespace game_framework
 		void	SetTopLeft(int, int);
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
-
-		void	SetDie(bool);
 		void	SetStatus(string);
-		void	SetJump(bool);
-		void	SetOnGround(bool status);
-		void	SetHitbox(bool status);
 
+		void	Die();
 		int		GetX();
 		int		GetY();
 
@@ -47,23 +43,25 @@ namespace game_framework
 		int		GetHorizontalSpeed();
 		bool	GetDead() const;
 		int		GetPressedKey();
-		bool	GetDie();
 		string	GetStatus();
-		bool	GetJump();
-		string	GetOnGround();
-		string	GetHitbox();
+		
 
 		bool	IsKeyPressed();
-
+		bool	IsOnGround();
+		bool	IsHitbox();
 		void	Collision(Mario mario, Map map);
+		void	OnGround(Mario mario, Map map);
+		void	HitBox(Mario mario, Map map);
+
 		CMovingBitmap charactor;
 	private:
-		bool	crouching;
+		bool	isCrouching;
 		bool	dead = false;
-		bool	flipped;
-		bool	onGround;
-		bool	hitbox;
-		bool	jump;
+		bool	isFlipped = false;
+		bool	isOnGround = false;
+		bool	isHitbox = false;
+		bool	isJump = false;
+		bool	isCollision = false;
 		int		x;
 		int		y;
 
@@ -77,9 +75,9 @@ namespace game_framework
 		int		pressedKey = 0;
 		string	status = "initial";
 		bool	isKeyPressed = false;
-		bool	isCollision = false;
+		
 
-		int const GRAVITY = 4;
+		int const GRAVITY = 1;
 	};
 
 }

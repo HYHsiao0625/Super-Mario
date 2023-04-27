@@ -18,6 +18,7 @@
 #include <experimental/filesystem> // Header file for pre-standard implementation
 #include <comdef.h>
 #include <fstream>
+#include <random>
 
 
 namespace game_framework
@@ -31,7 +32,7 @@ namespace game_framework
 	{
 
 	}
-	void Map::Updata()
+	void Map::Updata(int mario_x,int mario_y)
 	{
 
 	}
@@ -39,6 +40,10 @@ namespace game_framework
 	vector<vector<int>> Map::GetMap()
 	{
 		return map;
+	}
+	vector<vector<CMovingBitmap>> Map::GetMapCharactor()
+	{
+		return charactor;
 	}
 
 	void Map::Load(int world, int level)
@@ -59,7 +64,6 @@ namespace game_framework
 			array1.clear();
 			map_temp.clear();
 			ifstream ifs("resources/map/1-1.map");
-
 			for (int i = 0; i < 17; i++)
 			{
 				for (int j = 0; j < 211; j++)
@@ -70,6 +74,7 @@ namespace game_framework
 					case 0:
 						charactor[i][j].LoadBitmapByString({
 							"resources/empty.bmp",
+							"resources/mushroom.bmp"
 							}, RGB(146, 144, 255));
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 1:
@@ -79,7 +84,8 @@ namespace game_framework
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 2:
 						charactor[i][j].LoadBitmapByString({
-							"resources/block2.bmp"
+							"resources/block2.bmp",
+							"resources/block2_2.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 3:
@@ -130,7 +136,7 @@ namespace game_framework
 
 	void Map::Show()
 	{
-		for (int i = 0; i < 15; i++)
+		for (int i = 0; i < 17; i++)
 		{
 			for (int j = 0; j < 211; j++)
 			{
@@ -173,36 +179,4 @@ namespace game_framework
 			}
 		}
 	}
-	/*bool Map::Isoverlamp(Mario mario, CMovingBitmap floor)
-	{
-		int mario_y = mario.GetTop() / 64;
-		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
-		if (mario.GetStatus() == "rightwalk") {
-			if (map1_1[mario_y][mario_x + 1] != 0) {
-				return true;
-			}
-		}
-		if (mario.GetStatus() == "leftwalk") {
-			if (map1_1[mario_y][mario_x] != 0) {
-				return true;
-			}
-		}
-		if (mario.GetJump()) {
-			if (map1_1[mario_y][mario_x+1] != 0 || map1_1[mario_y][mario_x] != 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-	bool Map::Ontheground(Mario mario, CMovingBitmap floor)
-	{
-		int mario_y = mario.GetTop() / 64;
-		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
-		if (map1_1[mario_y+1][mario_x+1] != 0 || map1_1[mario_y+1][mario_x] != 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}*/
 }

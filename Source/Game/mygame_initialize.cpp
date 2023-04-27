@@ -85,10 +85,10 @@ void CGameStateInit::OnLButtonDown(UINT nFlags, CPoint point)
 
 void CGameStateInit::OnShow()
 {
-	title.ShowBitmap(4);
-	coin.ShowBitmap(4);
+	title.ShowBitmap();
+	coin.ShowBitmap();
 	coin.SetAnimation(150, false);
-	select.ShowBitmap(4);
+	select.ShowBitmap();
 	//draw_text();
 }
 
@@ -102,18 +102,18 @@ void CGameStateInit::LoadTitle() {
 		"resources/coin_overworld3.bmp",
 		"resources/coin_overworld1.bmp",
 		});
-	coin.SetTopLeft(88 * 4 + 1, 24 * 4);
+	coin.SetTopLeft(352, 96);
 	select.LoadBitmapByString({
 		"resources/select.bmp",
 		"resources/reject.bmp"
 		});
 	if (player == 1)
 	{
-		select.SetTopLeft(72 * 4 + 1, 144 * 4 + 2);
+		select.SetTopLeft(288, 576);
 	}
 	else
 	{
-		select.SetTopLeft(72 * 4 + 1, 160 * 4 + 2);
+		select.SetTopLeft(288, 640);
 	}
 
 }
