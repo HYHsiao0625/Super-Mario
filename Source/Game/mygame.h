@@ -39,6 +39,8 @@
 */
 
 #include "../Library/mario.h"
+#include "../Library/enemy.h"
+#include "../Library/enemyfactor.h"
 #include "../Library/goomba.h"
 #include "../Library/map.h"
 
@@ -107,14 +109,12 @@ namespace game_framework {
 		string prestatus = "initial";
 		int world = 1;
 		int level = 1;
-		int GRAVITY = 24;
 		Mario mario;
 		Goomba goomba;
+		Goomba goomba1;
+		Enemyfactor enemyfactor;
 		Map map;
 		CMovingBitmap background;
-		CMovingBitmap block1;
-		CMovingBitmap block2;
-		CMovingBitmap block3;
 		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;
 	};
