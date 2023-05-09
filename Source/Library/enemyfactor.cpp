@@ -9,7 +9,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "Enemy.h"
+#include "enemy.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -28,25 +28,44 @@ namespace game_framework
 	Enemyfactor::~Enemyfactor()
 	{
 	}
+	vector<Goomba> Enemyfactor::GetMonsterlist()
+	{
+		return monster_list;
+	}
 	void Enemyfactor::Load()
 	{
 		Goomba monster;
 
+		for (int i = 0; i < 2; i++)
+		{
+			monster_temp.push_back(0);
+			
+		}
 		for (int i = 0; i < 5; i++)
 		{
-			//monster_temp.push_back(0);
 			monster_list.push_back(monster);
+			monster_position.push_back(monster_temp);
 		}
+		monster_temp.clear();
+		ifstream ifs("resources/enemyposition.txt");
 		for (int i = 0; i < 5; i++)
 		{
-			//monster_temp.push_back(0);
-			monster_list[i].LoadBitmapByString({
-						"resources/block.bmp"
-				}, RGB(148, 148, 255));
-			monster_list[i].SetTopLeft(monster_position[i], 768);
-			monster_list[i].SetHorizontalSpeed(0);
-			monster_list[i].SetStatus("appear");
+			for (int j = 0; j < 2; j++)
+			{
+				ifs >> monster_position[i][j];
+				switch (monster_position[i][0])
+				{
+					case 1:
+						monster_list[i].Load();
+						monster_list[i].SetTopLeft(monster_position[i][1], 768);
+						monster_list[i].SetHorizontalSpeed(-4);
+						monster_list[i].SetStatus("appear");
+					default:
+						break;
+				}
+			}
 		}
+		ifs.close();
 	}
 
 	void Enemyfactor::Show()
@@ -62,14 +81,8 @@ namespace game_framework
 		//Collision(map);
 
 		for (int i = 0; i < 5; i++) {
-			monster_list[i].UpData(mario,map);
+			monster_list[i].UpData(monster_list[i], mario,map);
 		}
-	}
-	vector<Goomba> Enemyfactor::Get_List()
-	{
-		
-		return monster_list;
-
 	}
 	// ! ENEMYFACTO
 }

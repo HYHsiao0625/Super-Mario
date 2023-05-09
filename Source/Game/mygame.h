@@ -111,7 +111,6 @@ namespace game_framework {
 		int level = 1;
 		Mario mario;
 		Goomba goomba;
-		Goomba goomba1;
 		Enemyfactor enemyfactor;
 		Map map;
 		CMovingBitmap background;

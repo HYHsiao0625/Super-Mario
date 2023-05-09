@@ -32,18 +32,32 @@ namespace game_framework
 	{
 
 	}
-	void Map::Updata(int mario_x,int mario_y)
+	void Map::Updata(Mario mario, Map map)
 	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+		int mario_y = (mario.GetTop() - 4) / 64;
+		if (mario.IsHitbox() == true)
+		{
+			if (map_vector[mario_y][mario_x] == 2) {
+				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
+				charactor[mario_y - 1][mario_x].SetFrameIndexOfBitmap(1);
+			}
+			else if (map_vector[mario_y][mario_x + 1] == 2) {
+				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
+				charactor[mario_y - 1][mario_x + 1].SetFrameIndexOfBitmap(1);
 
+			}
+		}
 	}
 
 	vector<vector<int>> Map::GetMap()
 	{
 		return map;
 	}
-	vector<vector<CMovingBitmap>> Map::GetMapCharactor()
+	CMovingBitmap Map::GetMapCharactor(int x, int y)
 	{
-		return charactor;
+		return charactor[x][y];
 	}
 
 	void Map::Load(int world, int level)

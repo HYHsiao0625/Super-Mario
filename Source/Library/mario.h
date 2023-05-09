@@ -7,6 +7,8 @@
 #include <list>
 #include <vector>
 #include <map>
+#include "enemyfactor.h"
+#include "goomba.h"
 using namespace std;
 
 namespace game_framework
@@ -15,7 +17,7 @@ namespace game_framework
 	{
 	public:
 		Mario();
-		void	UpData(Mario mario, Map map);
+		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor);
 		void	Reset();
 
 		void	Show();
@@ -50,6 +52,8 @@ namespace game_framework
 		bool	IsOnGround();
 		bool	IsHitbox();
 		void	Collision(Mario mario, Map map);
+		void	Collision(Mario mario, Goomba goomba);
+		void    Collision(Enemyfactor enemyfactor);
 		void	OnGround(Mario mario, Map map);
 		void	HitBox(Mario mario, Map map);
 

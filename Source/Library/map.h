@@ -16,7 +16,7 @@ namespace game_framework
 		Map();
 		~Map();
 
-		void	Updata(int mario_x, int mario_y);
+		void	Updata(Mario mario, Map map);
 		void	Show();
 		void	Load(int world, int level);
 		int		GetTop();
@@ -26,7 +26,7 @@ namespace game_framework
 		
 		void	SetTopLeft(int, int);
 		vector<vector<int>>	GetMap();
-		vector<vector<CMovingBitmap>> GetMapCharactor();
+		CMovingBitmap GetMapCharactor(int x, int y);
 
 	private:
 		int width, height = 15;

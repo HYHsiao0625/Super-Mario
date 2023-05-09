@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include "enemy.h"
 #include "goomba.h"
 using namespace std;
 
@@ -20,10 +21,9 @@ namespace game_framework
 		void Load();
 		void Show();
 		void UpData(Mario mario, Map map);
-		vector<Goomba> Get_List();
-		vector<int> monster_temp = {1,1,1,1,1};
-		vector<int> monster_position = {1468,2036,2456,3500,3800};
-		//vector<vector<int>> monster_position;
+		vector<Goomba> GetMonsterlist();
+		vector<int> monster_temp;
+		vector<vector<int>> monster_position;
 		vector<Goomba> monster_list;
 	};
 }

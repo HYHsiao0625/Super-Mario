@@ -22,7 +22,6 @@ namespace game_framework
 {
 	Enemy::Enemy()
 	{
-
 	}
 
 	Enemy::~Enemy()

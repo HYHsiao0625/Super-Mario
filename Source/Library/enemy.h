@@ -17,8 +17,7 @@ namespace game_framework
 		Enemy();
 		~Enemy();
 
-		virtual  void UpData(Mario mario, Map map)=0;
-		virtual void Collision(Map map)=0;
+
 		void	ShowBitmap();
 		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
 		void	SetAnimation(int delay, bool _once);

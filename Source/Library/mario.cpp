@@ -11,7 +11,9 @@
 #include "gameutil.h"
 #include "gamecore.h"
 #include "mario.h"
+#include "goomba.h"
 #include "Shlwapi.h"
+#include "Enemyfactor.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
 #include <filesystem>
@@ -49,10 +51,13 @@ namespace game_framework
 		return charactor.GetTop();
 	}
 
-	void Mario::UpData(Mario mario, Map map)
+	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor)
 	{
+		int mario_x = (map.GetLeft() - mario.GetLeft()) / 64;
 		int mario_y = mario.GetTop() / 64;
 		Collision(mario, map);
+		//Collision(mario, goomba);
+		Collision(enemyfactor);
 		OnGround(mario, map);
 		HitBox(mario, map);
 
@@ -229,7 +234,49 @@ namespace game_framework
 			isCollision = false;
 		}
 	}
+	/*void Mario::Collision(Mario mario, Goomba goomba)
+	{
+		if (goomba.charactor.IsOverlap(charactor, goomba.charactor) && goomba.GetStatus() != "dead") {
+			if (-10 <= GetTop() + GetHeight() - goomba.GetTop()
+				&& GetTop() + GetHeight() - goomba.GetTop() <= 0
+				&& GetLeft() + GetWidth() > goomba.GetLeft()
+				&& GetLeft() < goomba.GetLeft() + goomba.GetWidth()
+				) 
+			{
+				goomba.SetStatus("dead");
+				goomba.SetFrameIndexOfBitmap(2);
+			}
+			else 
+			{
+				Die();
+			}
+		}
+	}
+	*/
+	void Mario::Collision(Enemyfactor enemyfactor){
+		std::vector<Goomba>enemylist = enemyfactor.GetMonsterlist();
+		if (GetY() > 960)
+		{
+			Die();
+		}
 
+		else {
+			for (int i = 0; i < 5; i++) {
+				if (enemylist[i].charactor.IsOverlap(charactor,enemylist[i].charactor) && enemylist[i].GetStatus() != "dead") {
+					if (-10 <= GetTop() +GetHeight() - enemylist[i].GetTop()
+						&& GetTop() + GetHeight() - enemylist[i].GetTop() <= 0
+						&& GetLeft() + GetWidth() > enemylist[i].GetLeft()
+						&& GetLeft() < enemylist[i].GetLeft() + enemylist[i].GetWidth()
+						) {
+					}
+					else {
+						Die();
+					}
+				}
+			}
+		}
+	}
+	
 	void Mario::OnGround(Mario mario, Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
