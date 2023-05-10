@@ -79,7 +79,11 @@ namespace game_framework
 		bool	isKeyPressed = false;
 		bool	isCollision = false;
 
+<<<<<<< HEAD
 		int const GRAVITY = 2;
+=======
+		int const GRAVITY = 4;
+>>>>>>> origin/yulun
 	};
 
 }

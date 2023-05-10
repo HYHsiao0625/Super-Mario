@@ -120,7 +120,13 @@ namespace game_framework
 					default:
 						break;
 					}
+<<<<<<< HEAD
 				}
+=======
+					width = j;
+				}
+				
+>>>>>>> origin/yulun
 			}
 			ifs.close();
 		}
