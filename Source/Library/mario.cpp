@@ -11,7 +11,9 @@
 #include "gameutil.h"
 #include "gamecore.h"
 #include "mario.h"
+#include "goomba.h"
 #include "Shlwapi.h"
+#include "Enemyfactor.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
 #include <filesystem>
@@ -21,10 +23,10 @@
 namespace game_framework
 {
 	Mario::Mario() :
-		crouching(false),
+		isCrouching(false),
 		dead(false),
-		flipped(false),
-		onGround(false),
+		isFlipped(false),
+		isOnGround(false),
 		horizontalSpeed(0),
 		verticalSpeed(0),
 		jump_timer(0),
@@ -49,72 +51,67 @@ namespace game_framework
 		return charactor.GetTop();
 	}
 
-	void Mario::UpData(Mario mario, Map map)
+	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor)
 	{
+		int mario_x = (map.GetLeft() - mario.GetLeft()) / 64;
 		int mario_y = mario.GetTop() / 64;
 		Collision(mario, map);
-		if (onGround == true)
+		//Collision(mario, goomba);
+		Collision(enemyfactor);
+		OnGround(mario, map);
+		HitBox(mario, map);
+
+		if (isHitbox == true)
+		{
+			verticalSpeed = 0;
+			verticalSpeed += GRAVITY;
+		}
+
+		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
 		}
 		else
 		{
-<<<<<<< HEAD
-			if (mario.GetStatus() == "jump" && mario.GetHitbox()=="false")
+			if (GetStatus() == "jump")
 			{
 				verticalSpeed = -16;
-			}
-			else if (mario.GetStatus() == "jump" && mario.GetHitbox() != "false") 
-			{
-				verticalSpeed = 16;
-=======
-			if (GetStatus() == "jump" && GetHitbox() == "false")
-			{
-				verticalSpeed = -32;
-			}
-			else if (mario.GetHitbox() == "true")
-			{
-				SetStatus("stand");
-				verticalSpeed = 32;
->>>>>>> origin/yulun
 			}
 			else
 			{
 				verticalSpeed += GRAVITY;
+				//verticalSpeed = 16;
 			}
 		}
+
+
 
 		if (isCollision == true)
 		{
 			horizontalSpeed = 0;
 		}
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/yulun
-		if (mario.GetTop() > 960)
-		{
-			mario.SetDie(true);
+		if (isOnGround == true && mario.GetStatus() != "jump") {
+			y = ((charactor.GetTop() + verticalSpeed) / 64) * 64;
 		}
-		if (onGround == true && mario.GetStatus() != "jump") {
-			y = (charactor.GetTop() + verticalSpeed) / 64 * 64;
-		}
-<<<<<<< HEAD
-		else {
-			y = charactor.GetTop() + verticalSpeed;
-		}
-		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, y);
-=======
 		else
 		{
 			y = charactor.GetTop() + verticalSpeed;
 		}
 
+		if (mario.GetTop() > 960)
+		{
+			mario.Die();
+		}
+
 		x = charactor.GetLeft() + horizontalSpeed;
 		charactor.SetTopLeft(x, y);
->>>>>>> origin/yulun
 	}
 
+	void Mario::Reset()
+	{
+		dead = false;
+	}
 	void Mario::Show()
 	{
 		charactor.ShowBitmap();
@@ -143,6 +140,12 @@ namespace game_framework
 	{
 		charactor.SetTopLeft(x, y);
 	}
+
+	void Mario::SetStatus(string flags)
+	{
+		status = flags;
+	}
+
 	int Mario::GetTop()
 	{
 		return charactor.GetTop();
@@ -161,10 +164,6 @@ namespace game_framework
 	{
 		return charactor.GetWidth();
 	}
-	bool Mario::GetJump()
-	{
-		return jump;
-	}
 
 	void Mario::SetVerticalSpeed(int value)
 	{
@@ -177,16 +176,9 @@ namespace game_framework
 	}
 
 
-	void Mario::SetDie(bool flag)
+	void Mario::Die()
 	{
-		dead = flag;
-	}
-	void Mario::SetStatus(string action)
-	{
-		status = action;
-	}
-	void Mario::SetJump(bool status) {
-		jump = status;
+		dead = true;
 	}
 
 	int Mario::GetVerticalSpeed()
@@ -196,11 +188,6 @@ namespace game_framework
 	int Mario::GetHorizontalSpeed()
 	{
 		return horizontalSpeed;
-	}
-
-	bool Mario::GetDie()
-	{
-		return dead;
 	}
 
 	int Mario::GetPressedKey()
@@ -221,30 +208,22 @@ namespace game_framework
 	void Mario::Collision(Mario mario, Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
+
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
 		int mario_y = mario.GetTop() / 64;
 
+		//left collision
 		if (mario.GetHorizontalSpeed() > 0)
 		{
-<<<<<<< HEAD
-=======
 			int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
->>>>>>> origin/yulun
 			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
 			}
-<<<<<<< HEAD
-
-		}
-		else if (mario.GetHorizontalSpeed() < 0)
-		{
-=======
-		}
+		}//right collision
 		else if (mario.GetHorizontalSpeed() < 0)
 		{
 			int mario_x = (mario.GetLeft() - map.GetLeft() - 16) / 64;
->>>>>>> origin/yulun
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
@@ -254,120 +233,107 @@ namespace game_framework
 		{
 			isCollision = false;
 		}
+	}
+	/*void Mario::Collision(Mario mario, Goomba goomba)
+	{
+		if (goomba.charactor.IsOverlap(charactor, goomba.charactor) && goomba.GetStatus() != "dead") {
+			if (-10 <= GetTop() + GetHeight() - goomba.GetTop()
+				&& GetTop() + GetHeight() - goomba.GetTop() <= 0
+				&& GetLeft() + GetWidth() > goomba.GetLeft()
+				&& GetLeft() < goomba.GetLeft() + goomba.GetWidth()
+				)
+			{
+				goomba.SetStatus("dead");
+				goomba.SetFrameIndexOfBitmap(2);
+			}
+			else
+			{
+				Die();
+			}
+		}
+	}
+	*/
+	void Mario::Collision(Enemyfactor enemyfactor) {
+		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
+		if (GetY() > 960)
+		{
+			Die();
+		}
+
+		else {
+			for (int i = 0; i < 5; i++) {
+				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->GetStatus() != "dead") {
+					if (-10 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
+						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
+						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
+						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
+						) {
+					}
+					else {
+						Die();
+					}
+				}
+			}
+		}
+	}
+
+	void Mario::OnGround(Mario mario, Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+		int mario_y = mario.GetTop() / 64;
 		if (mario.GetStatus() != "jump")
 		{
-<<<<<<< HEAD
-			if (map_vector[mario_y + 1][mario_x] != 0 && map_vector[mario_y ][mario_x] == 0)
+			if (map_vector[mario_y + 1][mario_x] != 0)
 			{
-				onGround = true;
-			}
-			else if (map_vector[mario_y + 1][mario_x + 1] != 0 && map_vector[mario_y ][mario_x + 1]==0)
-=======
-			if (map_vector[mario_y + 1][mario_x] != 0 && map_vector[mario_y][mario_x] == 0)
-			{
-				onGround = true;
+				isOnGround = true;
 			}
 			else if (map_vector[mario_y + 1][mario_x + 1] != 0 && map_vector[mario_y][mario_x + 1] == 0)
->>>>>>> origin/yulun
 			{
-				onGround = true;
+				isOnGround = true;
 			}
 			else
 			{
-				onGround = false;
+				isOnGround = false;
 			}
 		}
-<<<<<<< HEAD
-		if (mario.GetStatus() == "jump" )
+		else
 		{
-			if (map_vector[mario_y-1 ][mario_x] != 0)
+			isOnGround = false;
+		}
+	}
+
+	void Mario::HitBox(Mario mario, Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+		int mario_y = (mario.GetTop() - 4) / 64;
+		if (isOnGround == false)
+		{
+			if (map_vector[mario_y][mario_x] != 0)
 			{
-				hitbox = true;
+				isHitbox = true;
+				SetStatus("hitbox");
+			}
+			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
+			{
+				isHitbox = true;
+				SetStatus("hitbox");
 			}
 			else
 			{
-				hitbox = false;
+				isHitbox = false;
 			}
 		}
 	}
 
-	void Mario::SetOnGround(bool status)
+	bool Mario::IsOnGround()
 	{
-		onGround = status;
+		return isOnGround;
 	}
 
-	string Mario::GetOnGround()
+	bool Mario::IsHitbox()
 	{
-		if (onGround == true)
-		{
-			return "true";
-		}
-		else
-		{
-			return "false";
-		}
-	}
-	void Mario::SetHitbox(bool status)
-	{
-		hitbox = status;
-	}
-
-	string Mario::GetHitbox()
-	{
-		if (hitbox == true)
-		{
-			return "true";
-		}
-		else
-		{
-			return "false";
-=======
-		mario_y = (mario.GetTop() - 16) / 64;
-		if (map_vector[mario_y][mario_x] != 0)
-		{
-			hitbox = true;
-		}
-		else if (map_vector[mario_y][mario_x + 1] != 0)
-		{
-			hitbox = true;
-		}
-		else
-		{
-			hitbox = false;
->>>>>>> origin/yulun
-		}
-	}
-
-	void Mario::SetOnGround(bool status)
-	{
-		onGround = status;
-	}
-
-	string Mario::GetOnGround()
-	{
-		if (onGround == true)
-		{
-			return "true";
-		}
-		else
-		{
-			return "false";
-		}
-	}
-	void Mario::SetHitbox(bool status)
-	{
-		hitbox = status;
-	}
-
-	string Mario::GetHitbox()
-	{
-		if (hitbox == true)
-		{
-			return "true";
-		}
-		else
-		{
-			return "false";
-		}
+		return isHitbox;
 	}
 }

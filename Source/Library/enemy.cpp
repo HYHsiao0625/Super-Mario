@@ -22,7 +22,6 @@ namespace game_framework
 {
 	Enemy::Enemy()
 	{
-
 	}
 
 	Enemy::~Enemy()
@@ -132,5 +131,5 @@ namespace game_framework
 		return status;
 	}
 
-	
+
 }

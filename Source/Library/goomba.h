@@ -14,8 +14,12 @@ namespace game_framework
 	class Goomba : public Enemy
 	{
 	public:
-		void UpData(Mario mario, Map map) ;
+		void UpData(Mario mario, Map map);
 		void Collision(Map map);
+		void ToggleAnimation(int frameIndex);
+		void Load();
+		void LoadDieIamge();
+		void Die();
 	};
 }
 #endif // !GOOMBA_H

@@ -69,6 +69,9 @@
     <ClCompile Include="Source\Library\enemyfactor.cpp">
       <Filter>GameLibrary</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Library\flower.cpp">
+      <Filter>GameLibrary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Library\audio.h">
@@ -117,6 +120,9 @@
       <Filter>GameLibrary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Library\enemyfactor.h">
+      <Filter>GameLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Library\flower.h">
       <Filter>GameLibrary</Filter>
     </ClInclude>
   </ItemGroup>

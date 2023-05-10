@@ -18,6 +18,7 @@
 #include <experimental/filesystem> // Header file for pre-standard implementation
 #include <comdef.h>
 #include <fstream>
+#include <random>
 
 
 namespace game_framework
@@ -31,14 +32,32 @@ namespace game_framework
 	{
 
 	}
-	void Map::Updata()
+	void Map::Updata(Mario mario, Map map)
 	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+		int mario_y = (mario.GetTop() - 4) / 64;
+		if (mario.IsHitbox() == true)
+		{
+			if (map_vector[mario_y][mario_x] == 2) {
+				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
+				charactor[mario_y - 1][mario_x].SetFrameIndexOfBitmap(1);
+			}
+			else if (map_vector[mario_y][mario_x + 1] == 2) {
+				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
+				charactor[mario_y - 1][mario_x + 1].SetFrameIndexOfBitmap(1);
 
+			}
+		}
 	}
 
 	vector<vector<int>> Map::GetMap()
 	{
 		return map;
+	}
+	CMovingBitmap Map::GetMapCharactor(int x, int y)
+	{
+		return charactor[x][y];
 	}
 
 	void Map::Load(int world, int level)
@@ -46,7 +65,7 @@ namespace game_framework
 		CMovingBitmap block;
 		if (world == 1 && level == 1)
 		{
-			for (int i = 0; i < 211; i++)
+			for (int i = 0; i < 16; i++)
 			{
 				map_temp.push_back(0);
 				array1.push_back(block);
@@ -59,10 +78,9 @@ namespace game_framework
 			array1.clear();
 			map_temp.clear();
 			ifstream ifs("resources/map/1-1.map");
-
 			for (int i = 0; i < 17; i++)
 			{
-				for (int j = 0; j < 211; j++)
+				for (int j = 0; j < 16; j++)
 				{
 					ifs >> map[i][j];
 					switch (map[i][j])
@@ -70,6 +88,7 @@ namespace game_framework
 					case 0:
 						charactor[i][j].LoadBitmapByString({
 							"resources/empty.bmp",
+							"resources/mushroom.bmp"
 							}, RGB(146, 144, 255));
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 1:
@@ -79,7 +98,8 @@ namespace game_framework
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 2:
 						charactor[i][j].LoadBitmapByString({
-							"resources/block2.bmp"
+							"resources/block2.bmp",
+							"resources/block2_2.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 3:
@@ -104,7 +124,7 @@ namespace game_framework
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 7:
 						charactor[i][j].LoadBitmapByString({
-							"resources/pipe_4.bmp"
+							"resources/pipe4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 64, i * 64);
 					case 8:
@@ -120,13 +140,9 @@ namespace game_framework
 					default:
 						break;
 					}
-<<<<<<< HEAD
-				}
-=======
 					width = j;
 				}
-				
->>>>>>> origin/yulun
+
 			}
 			ifs.close();
 		}
@@ -136,7 +152,7 @@ namespace game_framework
 	{
 		for (int i = 0; i < 15; i++)
 		{
-			for (int j = 0; j < 211; j++)
+			for (int j = 0; j < 16; j++)
 			{
 				charactor[i][j].ShowBitmap();
 			}
@@ -146,7 +162,7 @@ namespace game_framework
 	{
 		for (int i = 0; i < 17; i++)
 		{
-			for (int j = 0; j < 211; j++)
+			for (int j = 0; j < 16; j++)
 			{
 				charactor[i][j].SetTopLeft(j * 64, i * 64);
 			}
@@ -171,42 +187,10 @@ namespace game_framework
 	{
 		for (int i = 0; i < 17; i++)
 		{
-			for (int j = 0; j < 211; j++)
+			for (int j = 0; j < 16; j++)
 			{
 				charactor[i][j].SetTopLeft(x + j * 64, y + i * 64);
 			}
 		}
 	}
-	/*bool Map::Isoverlamp(Mario mario, CMovingBitmap floor)
-	{
-		int mario_y = mario.GetTop() / 64;
-		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
-		if (mario.GetStatus() == "rightwalk") {
-			if (map1_1[mario_y][mario_x + 1] != 0) {
-				return true;
-			}
-		}
-		if (mario.GetStatus() == "leftwalk") {
-			if (map1_1[mario_y][mario_x] != 0) {
-				return true;
-			}
-		}
-		if (mario.GetJump()) {
-			if (map1_1[mario_y][mario_x+1] != 0 || map1_1[mario_y][mario_x] != 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-	bool Map::Ontheground(Mario mario, CMovingBitmap floor)
-	{
-		int mario_y = mario.GetTop() / 64;
-		int mario_x = (-1 * floor.GetLeft() + mario.GetLeft()) / 64;
-		if (map1_1[mario_y+1][mario_x+1] != 0 || map1_1[mario_y+1][mario_x] != 0) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}*/
 }

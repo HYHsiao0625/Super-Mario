@@ -20,47 +20,62 @@
 
 namespace game_framework
 {
-	void Goomba::UpData(Mario mario,Map map)
+	void Goomba::UpData(Mario mario, Map map)
 	{
-		//Collision(map);
-		
-		if (this->y - mario.GetLeft() <= 512 && status != "dead")
+		Collision(map);
+		if (isCollision == true)
 		{
-			horizontalSpeed=-4;
-		}
-		else
-		{
-			horizontalSpeed=0;
-		}
-		if (isCollision == true) {
 			horizontalSpeed *= -1;
+			isCollision = false;
+		}
+		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
+			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
+			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+			&& mario.GetLeft() < GetLeft() + GetWidth() && status != "dead"
+			) {
+			status = "dead";
+			horizontalSpeed = 0;
+			Die();
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+
 	}
 	void Goomba::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int enemy_x = (x - map.GetLeft()) / 64;
-		int enemy_y = y / 64;
+		int mario_y = GetTop() / 64;
 
+		//left collision
 		if (horizontalSpeed > 0)
 		{
-			if (map_vector[enemy_y][enemy_x + 1] != 0)
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
 			}
-
-		}
+		}//right collision
 		else if (horizontalSpeed < 0)
 		{
-			if (map_vector[enemy_y][enemy_x] != 0)
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
 			}
 		}
-		else
-		{
-			isCollision = false;
-		}
+	}
+
+	void Goomba::Load()
+	{
+		charactor.LoadBitmapByString({
+			"resources/goomba1.bmp",
+			"resources/goomba2.bmp",
+			"resources/goomba3.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
+	}
+
+	void Goomba::Die()
+	{
+		charactor.SetFrameIndexOfBitmap(2);
 	}
 }
