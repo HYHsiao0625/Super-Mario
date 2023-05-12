@@ -11,6 +11,9 @@
 #include "gameutil.h"
 #include "gamecore.h"
 #include "map.h"
+#include "goomba.h"
+#include "mushroom.h"
+#include "item.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -36,24 +39,25 @@ namespace game_framework
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
-		int mario_y = (mario.GetTop() - 4) / 64;
+		int mario_y = (mario.GetTop() - 24) / 64;
 		if (mario.IsHitbox() == true)
 		{
 			if (map_vector[mario_y][mario_x] == 2) {
 				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
-				charactor[mario_y - 1][mario_x].SetFrameIndexOfBitmap(1);
 			}
 			else if (map_vector[mario_y][mario_x + 1] == 2) {
 				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
-				charactor[mario_y - 1][mario_x + 1].SetFrameIndexOfBitmap(1);
-
 			}
 		}
+
 	}
 
 	vector<vector<int>> Map::GetMap()
 	{
 		return map;
+	}
+	vector<vector<CMovingBitmap>> Map::GetMapcharactor() {
+		return charactor;
 	}
 	CMovingBitmap Map::GetMapCharactor(int x, int y)
 	{

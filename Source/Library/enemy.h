@@ -42,6 +42,8 @@ namespace game_framework
 
 		bool	GetDie();
 		string	GetStatus();
+		bool	GetOnGround();
+
 
 
 		CMovingBitmap charactor;
@@ -62,6 +64,7 @@ namespace game_framework
 		int		verticalSpeed = 0;
 		string	status = "initial";
 		bool	isCollision = false;
+		bool    isOnGround = true;
 	};
 }
 #endif // !Enemy_H

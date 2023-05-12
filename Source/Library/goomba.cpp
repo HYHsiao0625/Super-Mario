@@ -23,6 +23,7 @@ namespace game_framework
 	void Goomba::UpData(Mario mario, Map map)
 	{
 		Collision(map);
+		OnGround(map);
 		if (isCollision == true)
 		{
 			horizontalSpeed *= -1;
@@ -37,6 +38,15 @@ namespace game_framework
 			horizontalSpeed = 0;
 			Die();
 		}
+		if (isOnGround == true)
+		{
+			verticalSpeed = 0;
+		}
+		else
+		{
+			verticalSpeed += 2;
+		}
+
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 
 	}
@@ -46,20 +56,42 @@ namespace game_framework
 		int mario_y = GetTop() / 64;
 
 		//left collision
-		if (horizontalSpeed > 0)
-		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
-			if (map_vector[mario_y][mario_x + 1] != 0)
+		if (GetTop() < 770) {
+			if (horizontalSpeed > 0)
 			{
-				isCollision = true;
+				int mario_x = (GetLeft() - map.GetLeft()) / 64;
+				if (map_vector[mario_y][mario_x + 1] != 0)
+				{
+					isCollision = true;
+				}
+			}//right collision
+			else if (horizontalSpeed < 0)
+			{
+				int mario_x = (GetLeft() - map.GetLeft()) / 64;
+				if (map_vector[mario_y][mario_x] != 0)
+				{
+					isCollision = true;
+				}
 			}
-		}//right collision
-		else if (horizontalSpeed < 0)
-		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
-			if (map_vector[mario_y][mario_x] != 0)
+		}
+	}
+	void Goomba::OnGround(Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int goomba_x = (GetLeft() - map.GetLeft()-48) / 64;
+		int goomba_y = GetTop() / 64;
+		if (GetTop() < 770) {
+			if (map_vector[goomba_x + 1][goomba_y] != 0)
 			{
-				isCollision = true;
+				isOnGround = true;
+			}
+			else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
+			{
+				isOnGround = true;
+			}
+			else
+			{
+				isOnGround = false;
 			}
 		}
 	}
@@ -72,10 +104,12 @@ namespace game_framework
 			"resources/goomba3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
+
 	}
 
 	void Goomba::Die()
 	{
 		charactor.SetFrameIndexOfBitmap(2);
+		charactor.SetFrameIndexOfBitmap(3);
 	}
 }

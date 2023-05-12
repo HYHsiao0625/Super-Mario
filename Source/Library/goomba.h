@@ -16,6 +16,7 @@ namespace game_framework
 	public:
 		void UpData(Mario mario, Map map);
 		void Collision(Map map);
+		void OnGround(Map map);
 		void ToggleAnimation(int frameIndex);
 		void Load();
 		void LoadDieIamge();

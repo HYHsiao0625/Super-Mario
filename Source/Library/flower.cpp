@@ -76,9 +76,7 @@ namespace game_framework
 	void Flower::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/goomba1.bmp",
-			"resources/goomba2.bmp",
-			"resources/goomba3.bmp",
+			"resources/flower.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}

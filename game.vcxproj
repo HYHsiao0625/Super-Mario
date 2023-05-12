@@ -249,8 +249,11 @@
     <ClCompile Include="Source\Library\gamecore.cpp" />
     <ClCompile Include="Source\Library\gameutil.cpp" />
     <ClCompile Include="Source\Library\goomba.cpp" />
+    <ClCompile Include="Source\Library\item.cpp" />
+    <ClCompile Include="Source\Library\itemfactor.cpp" />
     <ClCompile Include="Source\Library\map.cpp" />
     <ClCompile Include="Source\Library\mario.cpp" />
+    <ClCompile Include="Source\Library\mushroom.cpp" />
     <ClCompile Include="Source\Library\turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -269,8 +272,11 @@
     <ClInclude Include="Source\Library\gamecore.h" />
     <ClInclude Include="Source\Library\gameutil.h" />
     <ClInclude Include="Source\Library\goomba.h" />
+    <ClInclude Include="Source\Library\item.h" />
+    <ClInclude Include="Source\Library\itemfactor.h" />
     <ClInclude Include="Source\Library\map.h" />
     <ClInclude Include="Source\Library\mario.h" />
+    <ClInclude Include="Source\Library\mushroom.h" />
     <ClInclude Include="Source\Library\turtle.h" />
   </ItemGroup>
   <ItemGroup>

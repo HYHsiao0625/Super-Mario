@@ -130,6 +130,9 @@ namespace game_framework
 	{
 		return status;
 	}
-
+	bool Enemy::GetOnGround()
+	{
+		return isOnGround;
+	}
 
 }

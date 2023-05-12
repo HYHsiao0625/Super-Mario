@@ -12,6 +12,7 @@
 #include "gamecore.h"
 #include "mario.h"
 #include "goomba.h"
+#include "item.h"
 #include "Shlwapi.h"
 #include "Enemyfactor.h"
 #include "../Game/config.h"
@@ -53,12 +54,12 @@ namespace game_framework
 		return charactor.GetTop();
 	}
 
-	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor)
+	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor)
 	{
 		int mario_x = (map.GetLeft() - mario.GetLeft()) / 64;
 		int mario_y = mario.GetTop() / 64;
 		Collision(mario, map);
-		//Collision(mario, goomba);
+		Collision(itemfactor);
 		Collision(enemyfactor);
 		OnGround(mario, map);
 		HitBox(mario, map);
@@ -278,7 +279,14 @@ namespace game_framework
 			}
 		}
 	}
-
+	void Mario::Collision(Itemfactor itemfactor) {
+		std::vector<Item*>itemlist = itemfactor.GetItemlist();
+			for (unsigned int i = 0; i<itemlist.size(); i++) {
+				if (itemlist[i]->charactor.IsOverlap(itemlist[i]->charactor, charactor)) {
+					
+				}
+			}
+	}
 	void Mario::OnGround(Mario mario, Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();

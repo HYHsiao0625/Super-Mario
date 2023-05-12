@@ -10,6 +10,8 @@
 #include "../Library/enemy.h"
 #include "../Library/enemyfactor.h"
 #include "../Library/map.h"
+#include "../Library/item.h"
+#include "../Library/mushroom.h"
 #include "mygame.h"
 #include "string"
 
@@ -54,7 +56,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	LoadMap();
 	mario.Reset();
 	enemyfactor.Load();
-
+	//mushroom.Load();
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -129,8 +131,8 @@ void CGameStateRun::OnShow()
 {
 	int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
 	int mario_y = mario.GetTop() / 64;
-	mario.UpData(mario, map, enemyfactor);
-	//flower.UpData(mario ,map);
+	mario.UpData(mario, map, enemyfactor,itemfactor);
+	itemfactor.UpData(mario ,map);
 	//goomba1.UpData(mario, map);
 	map.Updata(mario, map);
 	enemyfactor.UpData(mario, map);
@@ -139,11 +141,11 @@ void CGameStateRun::OnShow()
 		if (level == 1)
 		{
 			background.ShowBitmap();
-			//floor.ShowBitmap();
 			map.Show();
 			mario.Show();
 			enemyfactor.Show();
-			//flower.ShowBitmap();
+			itemfactor.Show();
+			//mushroom.ShowBitmap();
 			ShowMarioPostion();
 		}
 	}
