@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "Goomba.h"
+#include "goomba.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,133 +20,62 @@
 
 namespace game_framework
 {
-	Goomba::Goomba()
+	void Goomba::UpData(Mario mario, Map map)
 	{
-
-	}
-
-	Goomba::~Goomba()
-	{
-
-	}
-
-	void Goomba::UpData()
-	{
+		Collision(map);
+		if (isCollision == true)
+		{
+			horizontalSpeed *= -1;
+			isCollision = false;
+		}
+		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
+			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
+			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+			&& mario.GetLeft() < GetLeft() + GetWidth() && status != "dead"
+			) {
+			status = "dead";
+			horizontalSpeed = 0;
+			Die();
+		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+
+	}
+	void Goomba::Collision(Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_y = GetTop() / 64;
+
+		//left collision
+		if (horizontalSpeed > 0)
+		{
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			if (map_vector[mario_y][mario_x + 1] != 0)
+			{
+				isCollision = true;
+			}
+		}//right collision
+		else if (horizontalSpeed < 0)
+		{
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			if (map_vector[mario_y][mario_x] != 0)
+			{
+				isCollision = true;
+			}
+		}
 	}
 
-	void Goomba::ShowBitmap()
+	void Goomba::Load()
 	{
-		charactor.ShowBitmap();
+		charactor.LoadBitmapByString({
+			"resources/goomba1.bmp",
+			"resources/goomba2.bmp",
+			"resources/goomba3.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
 	}
 
-	void Goomba::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	void Goomba::Die()
 	{
-		charactor.LoadBitmapByString(filepaths, color);
-	}
-
-	int Goomba::GetFrameIndexOfBitmap()
-	{
-		return charactor.GetFrameIndexOfBitmap();
-	}
-
-	void Goomba::SetFrameIndexOfBitmap(int frameIndex)
-	{
-		charactor.SetFrameIndexOfBitmap(frameIndex);
-	}
-
-	void Goomba::SetAnimation(int delay, bool _once)
-	{
-		charactor.SetAnimation(delay, _once);
-	}
-	void Goomba::SetTopLeft(int x, int y)
-	{
-		charactor.SetTopLeft(x, y);
-	}
-	int Goomba::GetTop()
-	{
-		return charactor.GetTop();
-	}
-
-	int Goomba::GetLeft()
-	{
-		return charactor.GetLeft();
-	}
-	int Goomba::GetHeight()
-	{
-		return charactor.GetHeight();
-	}
-
-	int Goomba::GetWidth()
-	{
-		return charactor.GetWidth();
-	}
-
-	void Goomba::SetVerticalSpeed(int value)
-	{
-		verticalSpeed = value;
-	}
-
-	void Goomba::SetHorizontalSpeed(int value)
-	{
-		horizontalSpeed = value;
-	}
-
-	void Goomba::SetPressedKey(int value)
-	{
-		pressedKey = value;
-	}
-
-	void Goomba::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Goomba::SetKeyPressed(bool flags)
-	{
-		isKeyPressed = flags;
-	}
-
-	void Goomba::SetDie(bool flag)
-	{
-		dead = flag;
-	}
-	void Goomba::SetStatus(string action)
-	{
-		status = action;
-	}
-
-	int Goomba::GetVerticalSpeed()
-	{
-		return verticalSpeed;
-	}
-	int Goomba::GetHorizontalSpeed()
-	{
-		return horizontalSpeed;
-	}
-
-	bool Goomba::GetDie()
-	{
-		return dead;
-	}
-
-	int Goomba::GetPressedKey()
-	{
-		return pressedKey;
-	}
-
-	string Goomba::GetStatus()
-	{
-		return status;
-	}
-
-	bool Goomba::IsKeyPressed()
-	{
-		return isKeyPressed;
-	}
-
-	bool Goomba::IsCollision()
-	{
-		return isCollision;
+		charactor.SetFrameIndexOfBitmap(2);
 	}
 }

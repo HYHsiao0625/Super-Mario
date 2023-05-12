@@ -3,9 +3,12 @@
 
 #pragma
 #include "gameutil.h"
+#include "map.h"
 #include <list>
 #include <vector>
 #include <map>
+#include "enemyfactor.h"
+#include "goomba.h"
 using namespace std;
 
 namespace game_framework
@@ -14,12 +17,16 @@ namespace game_framework
 	{
 	public:
 		Mario();
-		void	UpData();
-		void	ShowBitmap();
-		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
+		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor);
+		void	Reset();
+
+		void	Show();
+		void	Load(vector<string>, COLORREF = CLR_INVALID);
+
 		void	SetAnimation(int delay, bool _once);
-		int		GetFrameIndexOfBitmap();
 		void	SetFrameIndexOfBitmap(int);
+
+		int		GetFrameIndexOfBitmap();
 		int		GetTop();
 		int		GetLeft();
 		int		GetHeight();
@@ -28,27 +35,37 @@ namespace game_framework
 		void	SetTopLeft(int, int);
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
-		void	SetKeyPressed(bool);
-		void	SetPressedKey(int);
-		void	SetCollision(bool);
-		void	SetDie(bool);
 		void	SetStatus(string);
+
+		void	Die();
+		int		GetX();
+		int		GetY();
 
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
+		bool	GetDead() const;
 		int		GetPressedKey();
-		bool	GetDie();
 		string	GetStatus();
 
+
 		bool	IsKeyPressed();
-		bool	IsCollision();
+		bool	IsOnGround();
+		bool	IsHitbox();
+		void	Collision(Mario mario, Map map);
+		void	Collision(Mario mario, Goomba goomba);
+		void    Collision(Enemyfactor enemyfactor);
+		void	OnGround(Mario mario, Map map);
+		void	HitBox(Mario mario, Map map);
 
 		CMovingBitmap charactor;
 	private:
-		bool	crouching;
+		bool	isCrouching;
 		bool	dead = false;
-		bool	flipped;
-		bool	on_ground;
+		bool	isFlipped = false;
+		bool	isOnGround = false;
+		bool	isHitbox = false;
+		bool	isJump = false;
+		bool	isCollision = false;
 		int		x;
 		int		y;
 
@@ -62,7 +79,9 @@ namespace game_framework
 		int		pressedKey = 0;
 		string	status = "initial";
 		bool	isKeyPressed = false;
-		bool	isCollision = false;
+
+
+		int const GRAVITY = 1;
 	};
 
 }
