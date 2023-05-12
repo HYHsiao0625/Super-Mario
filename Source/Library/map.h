@@ -23,7 +23,7 @@ namespace game_framework
 		int		GetLeft();
 		int		GetWidth();
 		void	initalize();
-		
+
 		void	SetTopLeft(int, int);
 		vector<vector<int>>	GetMap();
 		CMovingBitmap GetMapCharactor(int x, int y);

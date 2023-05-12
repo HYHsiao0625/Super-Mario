@@ -42,7 +42,10 @@
 #include "../Library/enemy.h"
 #include "../Library/enemyfactor.h"
 #include "../Library/goomba.h"
+#include "../Library/turtle.h"
+#include "../Library/flower.h"
 #include "../Library/map.h"
+#include "../Library/mushroom.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -111,8 +114,10 @@ namespace game_framework {
 		int level = 1;
 		Mario mario;
 		Goomba goomba;
+		Flower flower;
 		Enemyfactor enemyfactor;
 		Map map;
+		Mushroom mushroom;
 		CMovingBitmap background;
 		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;

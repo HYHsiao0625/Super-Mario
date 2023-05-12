@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "goomba.h"
+#include "Turtle.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void Goomba::UpData(Mario mario, Map map)
+	void Turtle::UpData(Mario mario, Map map)
 	{
 		Collision(map);
 		if (isCollision == true)
@@ -34,13 +34,27 @@ namespace game_framework
 			&& mario.GetLeft() < GetLeft() + GetWidth() && status != "dead"
 			) {
 			status = "dead";
+			SetTopLeft(GetLeft(), GetTop() + 32);
 			horizontalSpeed = 0;
 			Die();
+		}
+		else if (status == "dead") {
+			if (mario.charactor.IsOverlap(charactor, mario.charactor)) {
+				if (mario.GetLeft() < GetLeft() && on_kick == 1) {
+					horizontalSpeed = 10;
+				}
+				else if(mario.GetLeft() > GetLeft() && on_kick == 1){
+					horizontalSpeed = -10;
+				}
+				else {
+					on_kick = 1;
+				}
+			}
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 
 	}
-	void Goomba::Collision(Map map)
+	void Turtle::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 64;
@@ -64,19 +78,18 @@ namespace game_framework
 		}
 	}
 
-	void Goomba::Load()
+	void Turtle::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/goomba1.bmp",
-			"resources/goomba2.bmp",
-			"resources/goomba3.bmp",
+			"resources/turtle1.bmp",
+			"resources/turtle2.bmp",
+			"resources/turtle3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}
 
-	void Goomba::Die()
+	void Turtle::Die()
 	{
 		charactor.SetFrameIndexOfBitmap(2);
-		charactor.SetFrameIndexOfBitmap(3);
 	}
 }

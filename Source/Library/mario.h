@@ -46,7 +46,7 @@ namespace game_framework
 		bool	GetDead() const;
 		int		GetPressedKey();
 		string	GetStatus();
-		
+
 
 		bool	IsKeyPressed();
 		bool	IsOnGround();
@@ -79,7 +79,7 @@ namespace game_framework
 		int		pressedKey = 0;
 		string	status = "initial";
 		bool	isKeyPressed = false;
-		
+
 
 		int const GRAVITY = 1;
 	};

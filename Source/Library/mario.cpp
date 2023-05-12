@@ -19,6 +19,8 @@
 #include <filesystem>
 #include <experimental/filesystem> // Header file for pre-standard implementation
 #include <comdef.h>
+#include <typeinfo>
+
 
 namespace game_framework
 {
@@ -84,7 +86,7 @@ namespace game_framework
 			}
 		}
 
-		
+
 
 		if (isCollision == true)
 		{
@@ -92,13 +94,13 @@ namespace game_framework
 		}
 
 		if (isOnGround == true && mario.GetStatus() != "jump") {
-			y = ((charactor.GetTop() + verticalSpeed) / 64 )* 64;
+			y = ((charactor.GetTop() + verticalSpeed) / 64) * 64;
 		}
-		else 
+		else
 		{
 			y = charactor.GetTop() + verticalSpeed;
 		}
-		
+
 		if (mario.GetTop() > 960)
 		{
 			mario.Die();
@@ -241,20 +243,20 @@ namespace game_framework
 				&& GetTop() + GetHeight() - goomba.GetTop() <= 0
 				&& GetLeft() + GetWidth() > goomba.GetLeft()
 				&& GetLeft() < goomba.GetLeft() + goomba.GetWidth()
-				) 
+				)
 			{
 				goomba.SetStatus("dead");
 				goomba.SetFrameIndexOfBitmap(2);
 			}
-			else 
+			else
 			{
 				Die();
 			}
 		}
 	}
 	*/
-	void Mario::Collision(Enemyfactor enemyfactor){
-		std::vector<Goomba>enemylist = enemyfactor.GetMonsterlist();
+	void Mario::Collision(Enemyfactor enemyfactor) {
+		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
 		if (GetY() > 960)
 		{
 			Die();
@@ -262,11 +264,11 @@ namespace game_framework
 
 		else {
 			for (int i = 0; i < 5; i++) {
-				if (enemylist[i].charactor.IsOverlap(charactor,enemylist[i].charactor) && enemylist[i].GetStatus() != "dead") {
-					if (-10 <= GetTop() +GetHeight() - enemylist[i].GetTop()
-						&& GetTop() + GetHeight() - enemylist[i].GetTop() <= 0
-						&& GetLeft() + GetWidth() > enemylist[i].GetLeft()
-						&& GetLeft() < enemylist[i].GetLeft() + enemylist[i].GetWidth()
+				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->GetStatus() != "dead") {
+					if (-10 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
+						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
+						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
+						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
 						) {
 					}
 					else {
@@ -276,7 +278,7 @@ namespace game_framework
 			}
 		}
 	}
-	
+
 	void Mario::OnGround(Mario mario, Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();

@@ -28,41 +28,60 @@ namespace game_framework
 	Enemyfactor::~Enemyfactor()
 	{
 	}
-	vector<Goomba> Enemyfactor::GetMonsterlist()
+	vector<Enemy*> Enemyfactor::GetMonsterlist()
 	{
 		return monster_list;
 	}
 	void Enemyfactor::Load()
 	{
-		Goomba monster;
+		ifstream ifs("resources/enemyposition.txt");
 
 		for (int i = 0; i < 2; i++)
 		{
 			monster_temp.push_back(0);
-			
+
 		}
 		for (int i = 0; i < 5; i++)
 		{
-			monster_list.push_back(monster);
 			monster_position.push_back(monster_temp);
 		}
 		monster_temp.clear();
-		ifstream ifs("resources/enemyposition.txt");
+		//讀取位子
 		for (int i = 0; i < 5; i++)
 		{
 			for (int j = 0; j < 2; j++)
 			{
 				ifs >> monster_position[i][j];
-				switch (monster_position[i][0])
-				{
-					case 1:
-						monster_list[i].Load();
-						monster_list[i].SetTopLeft(monster_position[i][1], 768);
-						monster_list[i].SetHorizontalSpeed(-4);
-						monster_list[i].SetStatus("appear");
-					default:
-						break;
-				}
+			}
+		}
+
+		for (int i = 0; i < 5; i++) 
+		{
+			switch (monster_position[i][0])
+			{
+			case 1://Goomba怪物
+				monster_list.push_back(new Goomba());
+				monster_list[i]->Load();
+				monster_list[i]->SetTopLeft(monster_position[i][1], 768);
+				monster_list[i]->SetHorizontalSpeed(-4);
+				monster_list[i]->SetStatus("appear");
+				break;
+			case 2://flower怪物
+				monster_list.push_back(new Flower());
+				monster_list[i]->Load();
+				monster_list[i]->SetTopLeft(monster_position[i][1], 580);
+				monster_list[i]->SetHorizontalSpeed(0);
+				monster_list[i]->SetStatus("appear");
+				break;
+			case 3://turtle怪物
+				monster_list.push_back(new Turtle());
+				monster_list[i]->Load();
+				monster_list[i]->SetTopLeft(monster_position[i][1], 736);
+				monster_list[i]->SetHorizontalSpeed(-4);
+				monster_list[i]->SetStatus("appear");
+				break;
+			default:
+				break;
 			}
 		}
 		ifs.close();
@@ -70,8 +89,9 @@ namespace game_framework
 
 	void Enemyfactor::Show()
 	{
-		for (int i = 0; i < 5; i++) {
-			monster_list[i].ShowBitmap();
+
+		for (auto enemy : monster_list) {
+			enemy->ShowBitmap();
 		}
 
 	}
@@ -80,8 +100,8 @@ namespace game_framework
 	{
 		//Collision(map);
 
-		for (int i = 0; i < 5; i++) {
-			monster_list[i].UpData(monster_list[i], mario,map);
+		for (auto enemy : monster_list) {
+			enemy->UpData(mario, map);
 		}
 	}
 	// ! ENEMYFACTO

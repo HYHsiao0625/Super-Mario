@@ -1,25 +1,26 @@
-#ifndef GOOMBA_H
-#define GOOMBA_H
+#ifndef flower_H
+#define flower_H
 
 #pragma
 #include "gameutil.h"
 #include <list>
 #include <vector>
 #include <map>
+#include "mario.h"
 #include "enemy.h"
 using namespace std;
 
 namespace game_framework
 {
-	class Goomba : public Enemy
+	class Flower : public Enemy
 	{
 	public:
 		void UpData(Mario mario, Map map);
 		void Collision(Map map);
-		void ToggleAnimation(int frameIndex);
 		void Load();
-		void LoadDieIamge();
-		void Die();
+	private:
+		bool active = 1;
+		bool trigger = 0;
 	};
 }
-#endif // !GOOMBA_H
+#endif // !flower_H

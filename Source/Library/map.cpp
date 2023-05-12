@@ -11,6 +11,8 @@
 #include "gameutil.h"
 #include "gamecore.h"
 #include "map.h"
+#include "goomba.h"
+#include "mushroom.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -46,7 +48,6 @@ namespace game_framework
 			else if (map_vector[mario_y][mario_x + 1] == 2) {
 				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
 				charactor[mario_y - 1][mario_x + 1].SetFrameIndexOfBitmap(1);
-
 			}
 		}
 	}
@@ -142,7 +143,7 @@ namespace game_framework
 					}
 					width = j;
 				}
-				
+
 			}
 			ifs.close();
 		}

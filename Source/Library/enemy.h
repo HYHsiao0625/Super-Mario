@@ -17,7 +17,8 @@ namespace game_framework
 		Enemy();
 		~Enemy();
 
-
+		virtual void Load() = 0;
+		virtual void UpData(Mario mario, Map map)=0;
 		void	ShowBitmap();
 		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
 		void	SetAnimation(int delay, bool _once);
@@ -41,7 +42,7 @@ namespace game_framework
 
 		bool	GetDie();
 		string	GetStatus();
-		
+
 
 		CMovingBitmap charactor;
 	protected:

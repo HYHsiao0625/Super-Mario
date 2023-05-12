@@ -1,5 +1,5 @@
-#ifndef GOOMBA_H
-#define GOOMBA_H
+#ifndef Turtle_H
+#define Turtle_H
 
 #pragma
 #include "gameutil.h"
@@ -7,11 +7,13 @@
 #include <vector>
 #include <map>
 #include "enemy.h"
+#include "mario.h"
+
 using namespace std;
 
 namespace game_framework
 {
-	class Goomba : public Enemy
+	class Turtle : public Enemy
 	{
 	public:
 		void UpData(Mario mario, Map map);
@@ -20,6 +22,8 @@ namespace game_framework
 		void Load();
 		void LoadDieIamge();
 		void Die();
+	private:
+		bool on_kick = 0;
 	};
 }
-#endif // !GOOMBA_H
+#endif // !Turtle_H

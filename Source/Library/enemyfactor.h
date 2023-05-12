@@ -14,17 +14,17 @@ namespace game_framework
 {
 	class Enemyfactor
 	{
-		
+
 	public:
 		Enemyfactor();
 		~Enemyfactor();
 		void Load();
 		void Show();
 		void UpData(Mario mario, Map map);
-		vector<Goomba> GetMonsterlist();
+		vector<Enemy*> GetMonsterlist();
 		vector<int> monster_temp;
 		vector<vector<int>> monster_position;
-		vector<Goomba> monster_list;
+		vector<Enemy*> monster_list;
 	};
 }
 #endif // !GOOMBA_H

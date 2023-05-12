@@ -11,6 +11,7 @@
 #include "gameutil.h"
 #include "gamecore.h"
 #include "goomba.h"
+#include "mushroom.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,7 +21,16 @@
 
 namespace game_framework
 {
-	void Goomba::UpData(Mario mario, Map map)
+	Mushroom::Mushroom()
+	{
+
+	}
+
+	Mushroom::~Mushroom()
+	{
+
+	}
+	void Mushroom::UpData(Mario mario, Map map)
 	{
 		Collision(map);
 		if (isCollision == true)
@@ -28,27 +38,17 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
-			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
-			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && status != "dead"
-			) {
-			status = "dead";
-			horizontalSpeed = 0;
-			Die();
-		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
-
 	}
-	void Goomba::Collision(Map map)
+	void Mushroom::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mario_y = GetTop() / 64;
+		int mario_y = charactor.GetTop() / 64;
 
 		//left collision
 		if (horizontalSpeed > 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (charactor.GetLeft() - map.GetLeft()) / 64;
 			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
@@ -56,7 +56,7 @@ namespace game_framework
 		}//right collision
 		else if (horizontalSpeed < 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (charactor.GetLeft() - map.GetLeft()) / 64;
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
@@ -64,19 +64,12 @@ namespace game_framework
 		}
 	}
 
-	void Goomba::Load()
+	void Mushroom::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/goomba1.bmp",
-			"resources/goomba2.bmp",
-			"resources/goomba3.bmp",
+			"resources/mushroom.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}
 
-	void Goomba::Die()
-	{
-		charactor.SetFrameIndexOfBitmap(2);
-		charactor.SetFrameIndexOfBitmap(3);
-	}
 }
