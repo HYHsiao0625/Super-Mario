@@ -19,6 +19,8 @@
 #include <filesystem>
 #include <experimental/filesystem> // Header file for pre-standard implementation
 #include <comdef.h>
+#include <typeinfo>
+
 
 namespace game_framework
 {

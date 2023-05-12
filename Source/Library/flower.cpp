@@ -33,14 +33,14 @@ namespace game_framework
 			trigger = 1;
 		}
 		if (trigger == 1) {
-			if (GetTop() == 570 && active == 1) {
+			if (GetTop() == 580 && active == 1) {
 				verticalSpeed = -1;
 			}
 			else if (GetTop() == 510) {
 				verticalSpeed = 1;
 				active = 0;
 			}
-			else if (GetTop() == 570 && active == 0) {
+			else if (GetTop() == 580 && active == 0) {
 				verticalSpeed = 0;
 			}
 			charactor.SetTopLeft(charactor.GetLeft(), charactor.GetTop() + verticalSpeed);

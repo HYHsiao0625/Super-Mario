@@ -42,6 +42,7 @@
 #include "../Library/enemy.h"
 #include "../Library/enemyfactor.h"
 #include "../Library/goomba.h"
+#include "../Library/turtle.h"
 #include "../Library/flower.h"
 #include "../Library/map.h"
 

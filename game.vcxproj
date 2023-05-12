@@ -251,6 +251,7 @@
     <ClCompile Include="Source\Library\goomba.cpp" />
     <ClCompile Include="Source\Library\map.cpp" />
     <ClCompile Include="Source\Library\mario.cpp" />
+    <ClCompile Include="Source\Library\turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Core\Game.h" />
@@ -270,6 +271,7 @@
     <ClInclude Include="Source\Library\goomba.h" />
     <ClInclude Include="Source\Library\map.h" />
     <ClInclude Include="Source\Library\mario.h" />
+    <ClInclude Include="Source\Library\turtle.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Source\Core\game.rc" />
