@@ -15,7 +15,7 @@ namespace game_framework
 	class Flower : public Enemy
 	{
 	public:
-		void UpData(Mario mario, Map map);
+		void UpData(vector<Enemy*> monster_list,Mario mario, Map map);
 		void Collision(Map map);
 		void Load();
 	private:

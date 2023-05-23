@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include "enemyfactor.h"
+#include "itemfactor.h"
 #include "goomba.h"
 using namespace std;
 
@@ -17,7 +18,7 @@ namespace game_framework
 	{
 	public:
 		Mario();
-		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor);
+		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor);
 		void	Reset();
 
 		void	Show();
@@ -54,12 +55,14 @@ namespace game_framework
 		void	Collision(Mario mario, Map map);
 		void	Collision(Mario mario, Goomba goomba);
 		void    Collision(Enemyfactor enemyfactor);
+		void    Collision(Itemfactor itemyfactor);
+
 		void	OnGround(Mario mario, Map map);
 		void	HitBox(Mario mario, Map map);
 
 		CMovingBitmap charactor;
 	private:
-		bool	isCrouching;
+		bool	isCrouching = true;
 		bool	dead = false;
 		bool	isFlipped = false;
 		bool	isOnGround = false;
@@ -77,6 +80,7 @@ namespace game_framework
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;
 		int		pressedKey = 0;
+		double  size = 1;
 		string	status = "initial";
 		bool	isKeyPressed = false;
 

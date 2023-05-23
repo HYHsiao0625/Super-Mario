@@ -16,8 +16,10 @@ namespace game_framework
 	class Turtle : public Enemy
 	{
 	public:
-		void UpData(Mario mario, Map map);
+		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
 		void Collision(Map map);
+		void Turtle::Collision(vector<Enemy*> monster_list);
+		void OnGround(Map map);
 		void ToggleAnimation(int frameIndex);
 		void Load();
 		void LoadDieIamge();

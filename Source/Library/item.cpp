@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "Enemy.h"
+#include "item.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,26 +20,26 @@
 
 namespace game_framework
 {
-	Enemy::Enemy()
+	Item::Item()
 	{
 	}
 
-	Enemy::~Enemy()
+	Item::~Item()
 	{
 
 	}
 
 
-	void Enemy::ShowBitmap()
+	void Item::ShowBitmap()
 	{
 		charactor.ShowBitmap();
 	}
 
-	void Enemy::LoadBitmapByString(vector<string> filepaths, COLORREF color)
+	void Item::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
-	void Enemy::Limit(CMovingBitmap floor, Mario mario)
+	void Item::Limit(CMovingBitmap floor, Mario mario)
 	{
 		if (floor.GetLeft() < 0 && mario.GetLeft() <= 384)
 		{
@@ -51,88 +51,85 @@ namespace game_framework
 		}
 	}
 
-	int Enemy::GetFrameIndexOfBitmap()
+	int Item::GetFrameIndexOfBitmap()
 	{
 		return charactor.GetFrameIndexOfBitmap();
 	}
 
-	void Enemy::SetFrameIndexOfBitmap(int frameIndex)
+	void Item::SetFrameIndexOfBitmap(int frameIndex)
 	{
 		charactor.SetFrameIndexOfBitmap(frameIndex);
 	}
 
-	void Enemy::SetAnimation(int delay, bool _once)
+	void Item::SetAnimation(int delay, bool _once)
 	{
 		charactor.SetAnimation(delay, _once);
 	}
-	void Enemy::SetTopLeft(int x, int y)
+	void Item::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
 	}
-	int Enemy::GetTop()
+	int Item::GetTop()
 	{
 		return charactor.GetTop();
 	}
 
-	int Enemy::GetLeft()
+	int Item::GetLeft()
 	{
 		return charactor.GetLeft();
 	}
-	int Enemy::GetHeight()
+	int Item::GetHeight()
 	{
 		return charactor.GetHeight();
 	}
 
-	int Enemy::GetWidth()
+	int Item::GetWidth()
 	{
 		return charactor.GetWidth();
 	}
 
-	void Enemy::SetVerticalSpeed(int value)
+	void Item::SetVerticalSpeed(int value)
 	{
 		verticalSpeed = value;
 	}
 
-	void Enemy::SetHorizontalSpeed(int value)
+	void Item::SetHorizontalSpeed(int value)
 	{
 		horizontalSpeed = value;
 	}
 
-	void Enemy::SetCollision(bool value)
+	void Item::SetCollision(bool value)
 	{
 		isCollision = value;
 	}
 
-	void Enemy::SetDie(bool flag)
+	void Item::SetDie(bool flag)
 	{
 		dead = flag;
 	}
-	void Enemy::SetStatus(string action)
+	void Item::SetStatus(string action)
 	{
 		status = action;
 	}
 
-	int Enemy::GetVerticalSpeed()
+	int Item::GetVerticalSpeed()
 	{
 		return verticalSpeed;
 	}
-	int Enemy::GetHorizontalSpeed()
+	int Item::GetHorizontalSpeed()
 	{
 		return horizontalSpeed;
 	}
 
-	bool Enemy::GetDie()
+	bool Item::GetDie()
 	{
 		return dead;
 	}
 
-	string Enemy::GetStatus()
+	string Item::GetStatus()
 	{
 		return status;
 	}
-	bool Enemy::GetOnGround()
-	{
-		return isOnGround;
-	}
+
 
 }

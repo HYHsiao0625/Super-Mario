@@ -1,31 +1,27 @@
-#ifndef MUSHROOM_H
-#define MUSHROOM_H
+#ifndef Mushroom_H
+#define Mushroom_H
 
 #pragma
 #include "gameutil.h"
 #include <list>
 #include <vector>
 #include <map>
-#include "mario.h"
-#include "map.h"
+#include "item.h"
+
 using namespace std;
 
 namespace game_framework
 {
-	class Mushroom
+	class Mushroom : public Item
 	{
 	public:
-		Mushroom();
-		~Mushroom();
 		void UpData(Mario mario, Map map);
 		void Collision(Map map);
+		void OnGround(Map map);
+		void ToggleAnimation(int frameIndex);
 		void Load();
-		CMovingBitmap charactor;
-	private:
-		int		horizontalSpeed = 0;
-		int		verticalSpeed = 0;
-		string	status = "initial";
-		bool	isCollision = false;
+		void LoadDieIamge();
+		void Die();
 	};
 }
-#endif // !MUSHROOM_H
+#endif // !Mushroom_H

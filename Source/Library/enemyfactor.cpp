@@ -101,7 +101,7 @@ namespace game_framework
 		//Collision(map);
 
 		for (auto enemy : monster_list) {
-			enemy->UpData(mario, map);
+			enemy->UpData(monster_list,mario, map);
 		}
 	}
 	// ! ENEMYFACTO

@@ -10,8 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "goomba.h"
-#include "mushroom.h"
+#include "Mushroom.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -21,34 +20,40 @@
 
 namespace game_framework
 {
-	Mushroom::Mushroom()
-	{
-
-	}
-
-	Mushroom::~Mushroom()
-	{
-
-	}
 	void Mushroom::UpData(Mario mario, Map map)
 	{
 		Collision(map);
+		OnGround(map);
 		if (isCollision == true)
 		{
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
+		if (charactor.IsOverlap(mario.charactor,charactor)) {
+			horizontalSpeed = 0;
+			isUsed = true;
+			Die();
+		}
+		if (isOnGround == true)
+		{
+			verticalSpeed = 0;
+		}
+		else
+		{
+			verticalSpeed += 2;
+		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+
 	}
 	void Mushroom::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mario_y = charactor.GetTop() / 64;
+		int mario_y = GetTop() / 64;
 
 		//left collision
 		if (horizontalSpeed > 0)
 		{
-			int mario_x = (charactor.GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
 			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
@@ -56,20 +61,46 @@ namespace game_framework
 		}//right collision
 		else if (horizontalSpeed < 0)
 		{
-			int mario_x = (charactor.GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
 			}
 		}
 	}
+	void Mushroom::OnGround(Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mushroom_x = (GetLeft() - map.GetLeft()) / 64;
+		int mushroom_y = GetTop() / 64;
+		
+		if (map_vector[mushroom_y + 1][mushroom_x] != 0)
+		{
+			isOnGround = true;
+		}
+		else if (map_vector[mushroom_y + 1][mushroom_x + 1] != 0 && map_vector[mushroom_y][mushroom_x + 1] == 0)
+		{
+
+			isOnGround = true;
+		}
+		else
+		{
+			isOnGround = false;
+		}
+		
+	}
 
 	void Mushroom::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/mushroom.bmp",
+			"resources/Mushroom.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
+
 	}
 
+	void Mushroom::Die()
+	{
+		charactor.SetFrameIndexOfBitmap(1);
+	}
 }

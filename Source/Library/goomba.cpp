@@ -20,9 +20,12 @@
 
 namespace game_framework
 {
-	void Goomba::UpData(Mario mario, Map map)
+	void Goomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		Collision(map);
+		Collision(monster_list);
+
+		OnGround(map);
 		if (isCollision == true)
 		{
 			horizontalSpeed *= -1;
@@ -37,6 +40,15 @@ namespace game_framework
 			horizontalSpeed = 0;
 			Die();
 		}
+		if (isOnGround == true)
+		{
+			verticalSpeed = 0;
+		}
+		else
+		{
+			verticalSpeed += 2;
+		}
+
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 
 	}
@@ -63,6 +75,43 @@ namespace game_framework
 			}
 		}
 	}
+	void Goomba::Collision(vector<Enemy*> monster_list) 
+	{
+		
+		for (auto enemy : monster_list) {
+			if (charactor.IsOverlap(charactor, enemy->charactor)&&(charactor.GetLeft()!=enemy->GetLeft()))
+			{
+				if (enemy->charactor.GetFrameIndexOfBitmap()==2) {
+					status = "dead";
+					horizontalSpeed = 0;
+					Die();
+				}
+				else if(enemy->GetStatus()!="dead"){
+					isCollision = true;
+				}
+			}
+		}
+	}
+	void Goomba::OnGround(Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int goomba_x = (GetLeft() - map.GetLeft()-48) / 64;
+		int goomba_y = GetTop() / 64;
+		if (GetTop() < 770) {
+			if (map_vector[goomba_x + 1][goomba_y] != 0)
+			{
+				isOnGround = true;
+			}
+			else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
+			{
+				isOnGround = true;
+			}
+			else
+			{
+				isOnGround = false;
+			}
+		}
+	}
 
 	void Goomba::Load()
 	{
@@ -72,6 +121,7 @@ namespace game_framework
 			"resources/goomba3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
+
 	}
 
 	void Goomba::Die()

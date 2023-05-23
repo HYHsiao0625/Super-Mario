@@ -1,5 +1,5 @@
-#ifndef Enemy_H
-#define Enemy_H
+#ifndef Item_H
+#define Item_H
 
 #pragma
 #include "gameutil.h"
@@ -11,14 +11,14 @@ using namespace std;
 
 namespace game_framework
 {
-	class Enemy
+	class Item
 	{
 	public:
-		Enemy();
-		~Enemy();
+		Item();
+		~Item();
 
 		virtual void Load() = 0;
-		virtual void UpData(vector<Enemy*> monster_list,Mario mario, Map map)=0;
+		virtual void UpData(Mario mario, Map map) = 0;
 		void	ShowBitmap();
 		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
 		void	SetAnimation(int delay, bool _once);
@@ -42,10 +42,8 @@ namespace game_framework
 
 		bool	GetDie();
 		string	GetStatus();
-		bool	GetOnGround();
 
-
-
+		bool	isUsed = false;
 		CMovingBitmap charactor;
 	protected:
 		bool	crouching;
@@ -64,7 +62,8 @@ namespace game_framework
 		int		verticalSpeed = 0;
 		string	status = "initial";
 		bool	isCollision = false;
-		bool    isOnGround = true;
+		bool	isOnGround = true;
+		
 	};
 }
-#endif // !Enemy_H
+#endif // !Item_H

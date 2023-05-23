@@ -21,7 +21,7 @@
 
 namespace game_framework
 {
-	void Flower::UpData(Mario mario, Map map)
+	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		//Collision(map);
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;

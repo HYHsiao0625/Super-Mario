@@ -26,6 +26,7 @@ namespace game_framework
 
 		void	SetTopLeft(int, int);
 		vector<vector<int>>	GetMap();
+		vector<vector<CMovingBitmap>> GetMapcharactor();
 		CMovingBitmap GetMapCharactor(int x, int y);
 
 	private:
@@ -34,6 +35,7 @@ namespace game_framework
 		vector<vector<int>> map;
 		vector<CMovingBitmap> array1;
 		vector<vector<CMovingBitmap>> charactor;
+
 	};
 }
 #endif // !GOOMBA_H
