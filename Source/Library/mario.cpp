@@ -64,26 +64,27 @@ namespace game_framework
 		OnGround(mario, map);
 		HitBox(mario, map);
 
-		if (isHitbox == true)
-		{
-			verticalSpeed = 0;
-			verticalSpeed += GRAVITY;
-		}
-
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
 		}
 		else
 		{
-			if (GetStatus() == "jump")
+			if (isHitbox == true)
 			{
-				verticalSpeed = -16;
+				verticalSpeed = 0;
+				verticalSpeed += GRAVITY;
 			}
 			else
 			{
-				verticalSpeed += GRAVITY;
-				//verticalSpeed = 16;
+				if (GetStatus() == "jump")
+				{
+					verticalSpeed = -16;
+				}
+				else
+				{
+					verticalSpeed += GRAVITY;
+				}
 			}
 		}
 
@@ -115,12 +116,26 @@ namespace game_framework
 	{
 		dead = false;
 	}
+
+	void Mario::Load()
+	{
+		charactor.LoadBitmapByString({
+		"resources/mario1.bmp",
+		"resources/mario2.bmp",
+		"resources/mario3.bmp",
+		"resources/mario4.bmp",
+		"resources/bigmario1.bmp",
+		"resources/bigmario2.bmp",
+		"resources/bigmario3.bmp",
+		"resources/bigmario4.bmp",
+			}/*, RGB(146, 144, 255)*/);
+	}
 	void Mario::Show()
 	{
-		charactor.ShowBitmap(size);
+		charactor.ShowBitmap();
 	}
 
-	void Mario::Load(vector<string> filepaths, COLORREF color)
+	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
@@ -215,29 +230,53 @@ namespace game_framework
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
 		int mario_y = mario.GetTop() / 64;
 		//left collision
-		if (mario.GetHorizontalSpeed() > 0)
+		if (isCrouching == true)
 		{
-			int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
-			if (size != 1) {
-				mario_x = mario_x + 1;
-			}
-			if (map_vector[mario_y][mario_x + 1] != 0)
+			if (mario.GetHorizontalSpeed() > 0)
 			{
-				isCollision = true;
-			}
-		}//right collision
-		else if (mario.GetHorizontalSpeed() < 0)
-		{
-			int mario_x = (mario.GetLeft() - map.GetLeft() - 16) / 64;
-			if (map_vector[mario_y][mario_x] != 0)
+				int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+				if (map_vector[mario_y][mario_x + 1] != 0)
+				{
+					isCollision = true;
+				}
+			}//right collision
+			else if (mario.GetHorizontalSpeed() < 0)
 			{
-				isCollision = true;
+				int mario_x = (mario.GetLeft() - map.GetLeft() - 16) / 64;
+				if (map_vector[mario_y][mario_x] != 0)
+				{
+					isCollision = true;
+				}
+			}
+			else
+			{
+				isCollision = false;
 			}
 		}
 		else
 		{
-			isCollision = false;
+			if (mario.GetHorizontalSpeed() > 0)
+			{
+				int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
+				if (map_vector[mario_y][mario_x + 1] != 0 || map_vector[mario_y + 1][mario_x + 1] != 0)
+				{
+					isCollision = true;
+				}
+			}//right collision
+			else if (mario.GetHorizontalSpeed() < 0)
+			{
+				int mario_x = (mario.GetLeft() - map.GetLeft() - 16) / 64;
+				if (map_vector[mario_y][mario_x] != 0 || map_vector[mario_y + 1][mario_x] != 0)
+				{
+					isCollision = true;
+				}
+			}
+			else
+			{
+				isCollision = false;
+			}
 		}
+		
 	}
 	/*void Mario::Collision(Mario mario, Goomba goomba)
 	{
@@ -269,7 +308,7 @@ namespace game_framework
 			if (isCrouching == true)
 			{
 				for (int i = 0; i < 5; i++) {
-					if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->GetStatus() != "dead") {
+					if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
 						if (-10 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
 							&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
 							&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
@@ -285,7 +324,7 @@ namespace game_framework
 			else
 			{
 				for (int i = 0; i < 5; i++) {
-					if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->GetStatus() != "dead") {
+					if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
 						if (-74 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
 							&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -54
 							&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
@@ -307,6 +346,7 @@ namespace game_framework
 				if (itemlist[i]->charactor.IsOverlap(itemlist[i]->charactor, charactor) && itemlist[i]->isUsed == false) {
 					itemlist[i]->isUsed = true;
 					charactor.SetTopLeft(GetLeft(), GetTop() - 64);
+					charactor.SetFrameIndexOfBitmap(4);
 					isCrouching = false;
 				}
 			}
@@ -346,7 +386,7 @@ namespace game_framework
 				{
 					isOnGround = true;
 				}
-				else if (map_vector[mario_y + 2][mario_x + 1] != 0 && map_vector[mario_y][mario_x + 1] == 0)
+				else if (map_vector[mario_y + 2][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
 				{
 					isOnGround = true;
 				}
@@ -369,12 +409,27 @@ namespace game_framework
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
 		int mario_y = (mario.GetTop() - 4) / 64;
 		
-		if (isOnGround == false)
+		if (isOnGround == false && isHitbox == false)
 		{
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isHitbox = true;
+			}
+			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
+			{
+				isHitbox = true;
 				SetStatus("hitbox");
+			}
+			else
+			{
+				isHitbox = false;
+			}
+		}
+		else
+		{
+			if (map_vector[mario_y][mario_x] != 0)
+			{
+				isHitbox = true;
 			}
 			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
 			{

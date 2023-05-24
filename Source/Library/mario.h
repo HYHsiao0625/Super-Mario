@@ -20,9 +20,9 @@ namespace game_framework
 		Mario();
 		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor);
 		void	Reset();
-
+		void	Load();
 		void	Show();
-		void	Load(vector<string>, COLORREF = CLR_INVALID);
+		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
 
 		void	SetAnimation(int delay, bool _once);
 		void	SetFrameIndexOfBitmap(int);
@@ -83,7 +83,6 @@ namespace game_framework
 		double  size = 1;
 		string	status = "initial";
 		bool	isKeyPressed = false;
-
 
 		int const GRAVITY = 1;
 	};

@@ -69,6 +69,33 @@ namespace game_framework
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 	}
+
+	void Turtle::Reset()
+	{
+
+	}
+
+	void Turtle::Load()
+	{
+		charactor.LoadBitmapByString({
+			"resources/turtle1.bmp",
+			"resources/turtle2.bmp",
+			"resources/turtle3.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
+	}
+
+	void Turtle::Die()
+	{
+		charactor.SetFrameIndexOfBitmap(2);
+		isdead = true;
+	}
+
+	bool Turtle::IsDead()
+	{
+		return isdead;
+	}
+
 	void Turtle::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
@@ -98,7 +125,7 @@ namespace game_framework
 	void Turtle::Collision(vector<Enemy*> monster_list) {
 		if (GetTop() < 770) {
 			for (auto enemy : monster_list) {
-				if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()))
+				if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
 				{
 					isCollision = true;
 				}
@@ -128,19 +155,5 @@ namespace game_framework
 		}
 		
 		
-	}
-	void Turtle::Load()
-	{
-		charactor.LoadBitmapByString({
-			"resources/turtle1.bmp",
-			"resources/turtle2.bmp",
-			"resources/turtle3.bmp",
-			"resources/empty.bmp"
-			}, RGB(146, 144, 255));
-	}
-
-	void Turtle::Die()
-	{
-		charactor.SetFrameIndexOfBitmap(2);
 	}
 }

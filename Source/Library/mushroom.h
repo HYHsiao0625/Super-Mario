@@ -22,6 +22,9 @@ namespace game_framework
 		void Load();
 		void LoadDieIamge();
 		void Die();
+		bool IsDead();
+	private:
+		bool isdead = false;
 	};
 }
 #endif // !Mushroom_H

@@ -17,15 +17,20 @@ namespace game_framework
 	{
 	public:
 		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
-		void Collision(Map map);
-		void Turtle::Collision(vector<Enemy*> monster_list);
-		void OnGround(Map map);
-		void ToggleAnimation(int frameIndex);
+		void Reset();
 		void Load();
-		void LoadDieIamge();
 		void Die();
+		bool IsDead();
+		//-------------------
+		void Collision(Map map);
+		void Collision(vector<Enemy*> monster_list);
+		//-------------------
+		void OnGround(Map map);
+		void LoadDieIamge();
+
 	private:
-		bool on_kick = 0;
+		bool isdead = false;
+		bool on_kick = false;
 	};
 }
 #endif // !Turtle_H

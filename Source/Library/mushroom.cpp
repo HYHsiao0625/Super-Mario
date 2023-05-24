@@ -102,5 +102,11 @@ namespace game_framework
 	void Mushroom::Die()
 	{
 		charactor.SetFrameIndexOfBitmap(1);
+		isdead = true;
+	}
+
+	bool Mushroom::IsDead()
+	{
+		return isdead;
 	}
 }

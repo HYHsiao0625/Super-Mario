@@ -15,13 +15,17 @@ namespace game_framework
 	{
 	public:
 		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
+		void Reset();
+		void Load();
+		void Die();
+		bool IsDead();
+		//-------------------
 		void Collision(Map map);
 		void Collision(vector<Enemy*> monster_list);
+		//-------------------
 		void OnGround(Map map);
-		void ToggleAnimation(int frameIndex);
-		void Load();
 		void LoadDieIamge();
-		void Die();
+		
 	};
 }
 #endif // !GOOMBA_H

@@ -28,7 +28,7 @@ namespace game_framework
 		int mario_y = (mario.GetTop() - 4) / 64;
 		int enemy_x = (GetLeft() - map.GetLeft()) / 64;
 		int enemy_y = GetTop() / 64;
-		if (abs(mario_x - enemy_x)<=1 && abs(mario_y - enemy_y) <= 1)
+		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 1)
 		{
 			trigger = 1;
 		}
@@ -46,11 +46,35 @@ namespace game_framework
 			charactor.SetTopLeft(charactor.GetLeft(), charactor.GetTop() + verticalSpeed);
 		}
 	}
+
+	void Flower::Reset()
+	{
+
+	}
+
+	void Flower::Load()
+	{
+		charactor.LoadBitmapByString({
+			"resources/flower.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
+	}
+
+	void Flower::Die()
+	{
+
+	}
+
+	bool Flower::IsDead()
+	{
+		return false;
+	}
+
 	void Flower::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int enemy_x = (x - map.GetLeft()) / 64;
-		int enemy_y = y / 64;
+		int enemy_x = (GetLeft() - map.GetLeft()) / 64;
+		int enemy_y = GetTop() / 64;
 
 		if (horizontalSpeed > 0)
 		{
@@ -71,13 +95,5 @@ namespace game_framework
 		{
 			isCollision = false;
 		}
-	}
-
-	void Flower::Load()
-	{
-		charactor.LoadBitmapByString({
-			"resources/flower.bmp",
-			"resources/empty.bmp"
-			}, RGB(146, 144, 255));
 	}
 }

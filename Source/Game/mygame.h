@@ -106,10 +106,7 @@ namespace game_framework {
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
 		void LoadBackground();
-		void LoadGoomba();
-		void LoadFloor();
-		void LoadMario();
-		void LoadMap();
+		void LoadMap(int world, int level);
 		void ShowMarioPostion();
 		string prestatus = "initial";
 		int world = 1;

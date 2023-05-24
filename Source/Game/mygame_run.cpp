@@ -33,6 +33,7 @@ CGameStateRun::~CGameStateRun()
 void CGameStateRun::OnBeginState()
 {
 	map.initalize();
+	mario.Load();
 	background.SetTopLeft(0, 0);
 	mario.SetTopLeft(0, 0);
 	mario.SetVerticalSpeed(12);
@@ -50,11 +51,8 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	LoadBackground();
-	LoadFloor();
-	LoadMario();
-	LoadGoomba();
-	LoadMap();
-	mario.Reset();
+	LoadMap(1, 1);
+	mario.Load();
 	enemyfactor.Load();
 	//mushroom.Load();
 }
@@ -165,40 +163,6 @@ void CGameStateRun::OnShow()
 
 }
 
-void CGameStateRun::LoadMario()
-{
-	mario.Load({
-		"resources/mario1.bmp",
-		"resources/mario2.bmp",
-		"resources/mario3.bmp",
-		"resources/mario4.bmp",
-		}/*, RGB(146, 144, 255)*/);
-}
-
-void CGameStateRun::LoadGoomba()
-{
-	/*
-	flower.LoadBitmapByString({
-		"resources/goomba1.bmp",
-		"resources/goomba2.bmp",
-		"resources/goomba3.bmp",
-		}, RGB(146, 144, 255));
-	flower.SetTopLeft(800, 570);
-	flower.SetHorizontalSpeed(0);
-	*/
-	/*
-	goomba1.LoadBitmapByString({
-		"resources/goomba1.bmp",
-		"resources/goomba2.bmp",
-		"resources/goomba3.bmp",
-		}, RGB(146, 144, 255));
-	
-	goomba1.SetTopLeft(2000, 768);
-	goomba1.SetHorizontalSpeed(0);
-	goomba1.SetStatus("appear");
-	*/
-}
-
 void CGameStateRun::LoadBackground()
 {
 	background.LoadBitmapByString({
@@ -206,16 +170,9 @@ void CGameStateRun::LoadBackground()
 		});
 	background.SetTopLeft(0, 0);
 }
-void CGameStateRun::LoadFloor()
-{
-	floor.LoadBitmapByString({
-		"resources/1-1 floor.bmp"
-		}, RGB(255, 255, 255));
-	floor.SetTopLeft(0, 832);
-}
 
 
-void CGameStateRun::LoadMap()
+void CGameStateRun::LoadMap(int world, int level)
 {
 	map.Load(1, 1);
 }

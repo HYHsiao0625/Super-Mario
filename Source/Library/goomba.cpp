@@ -34,9 +34,8 @@ namespace game_framework
 		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
 			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
 			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && status != "dead"
+			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
 			) {
-			status = "dead";
 			horizontalSpeed = 0;
 			Die();
 		}
@@ -51,6 +50,33 @@ namespace game_framework
 
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 
+	}
+	
+	void Goomba::Reset()
+	{
+
+	}
+
+	void Goomba::Load()
+	{
+		charactor.LoadBitmapByString({
+			"resources/goomba1.bmp",
+			"resources/goomba2.bmp",
+			"resources/goomba3.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
+
+	}
+
+	void Goomba::Die()
+	{
+		charactor.SetFrameIndexOfBitmap(3);
+		isDead = true;
+	}
+
+	bool Goomba::IsDead()
+	{
+		return isDead;
 	}
 	void Goomba::Collision(Map map)
 	{
@@ -79,14 +105,13 @@ namespace game_framework
 	{
 		
 		for (auto enemy : monster_list) {
-			if (charactor.IsOverlap(charactor, enemy->charactor)&&(charactor.GetLeft()!=enemy->GetLeft()))
+			if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
 			{
 				if (enemy->charactor.GetFrameIndexOfBitmap()==2) {
-					status = "dead";
 					horizontalSpeed = 0;
 					Die();
 				}
-				else if(enemy->GetStatus()!="dead"){
+				else if(enemy->IsDead() == false){
 					isCollision = true;
 				}
 			}
@@ -113,20 +138,5 @@ namespace game_framework
 		}
 	}
 
-	void Goomba::Load()
-	{
-		charactor.LoadBitmapByString({
-			"resources/goomba1.bmp",
-			"resources/goomba2.bmp",
-			"resources/goomba3.bmp",
-			"resources/empty.bmp"
-			}, RGB(146, 144, 255));
-
-	}
-
-	void Goomba::Die()
-	{
-		charactor.SetFrameIndexOfBitmap(2);
-		charactor.SetFrameIndexOfBitmap(3);
-	}
+	
 }

@@ -64,21 +64,21 @@ namespace game_framework
 				monster_list[i]->Load();
 				monster_list[i]->SetTopLeft(monster_position[i][1], 768);
 				monster_list[i]->SetHorizontalSpeed(-4);
-				monster_list[i]->SetStatus("appear");
+				//monster_list[i]->SetStatus("appear");
 				break;
 			case 2://flower©Çª«
 				monster_list.push_back(new Flower());
 				monster_list[i]->Load();
 				monster_list[i]->SetTopLeft(monster_position[i][1], 580);
 				monster_list[i]->SetHorizontalSpeed(0);
-				monster_list[i]->SetStatus("appear");
+				//monster_list[i]->SetStatus("appear");
 				break;
 			case 3://turtle©Çª«
 				monster_list.push_back(new Turtle());
 				monster_list[i]->Load();
 				monster_list[i]->SetTopLeft(monster_position[i][1], 736);
 				monster_list[i]->SetHorizontalSpeed(-4);
-				monster_list[i]->SetStatus("appear");
+				//monster_list[i]->SetStatus("appear");
 				break;
 			default:
 				break;
@@ -101,7 +101,7 @@ namespace game_framework
 		//Collision(map);
 
 		for (auto enemy : monster_list) {
-			enemy->UpData(monster_list,mario, map);
+			enemy->UpData(monster_list, mario, map);
 		}
 	}
 	// ! ENEMYFACTO
