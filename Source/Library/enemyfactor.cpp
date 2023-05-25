@@ -103,6 +103,14 @@ namespace game_framework
 		for (auto enemy : monster_list) {
 			enemy->UpData(monster_list, mario, map);
 		}
+
+		/*for (unsigned int i = 0; i < monster_list.size(); i++) {
+			if (monster_list[i]->IsDead() == true) {
+				delete monster_list[i];
+				monster_list.erase(monster_list.begin() + i);
+			}
+		}*/ //TOBEDEBUG
+
 	}
 	// ! ENEMYFACTO
 }

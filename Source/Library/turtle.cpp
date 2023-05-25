@@ -27,26 +27,26 @@ namespace game_framework
 		Collision(monster_list);
 		if (isCollision == true)
 		{
-			if (status != "dead") {
+			if (isDead == false) {
 				horizontalSpeed *= -1;
 				isCollision = false;
 			}
 			else {
-				horizontalSpeed =0;
+				horizontalSpeed = 0;
 				charactor.SetFrameIndexOfBitmap(3);
 			}
 		}
 		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
 			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
 			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && status != "dead"
-			) {
-			status = "dead";
+			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false) 
+		{
+			Die();
+			isDead = true;
 			SetTopLeft(GetLeft(), GetTop() + 32);
 			horizontalSpeed = 0;
-			Die();
 		}
-		if (status == "dead") {
+		if (isDead == true) {
 			if (mario.charactor.IsOverlap(charactor, mario.charactor)) {
 				if (mario.GetLeft() < GetLeft() && on_kick == 1) {
 					horizontalSpeed = 10;
@@ -87,7 +87,7 @@ namespace game_framework
 
 	void Turtle::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(2);
+		//charactor.SetFrameIndexOfBitmap(2);
 		isdead = true;
 	}
 
@@ -99,22 +99,22 @@ namespace game_framework
 	void Turtle::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mario_y = GetTop() / 64;
+		int turtle_y = GetTop() / 64;
 
 		//left collision
 		if (GetTop() < 800) {
 			if (horizontalSpeed > 0)
 			{
-				int mario_x = (GetLeft() - map.GetLeft()) / 64;
-				if (map_vector[mario_y][mario_x + 1] != 0)
+				int turtle_x = (GetLeft() - map.GetLeft()) / 64;
+				if (map_vector[turtle_y][turtle_x + 1] != 0)
 				{
 					isCollision = true;
 				}
 			}//right collision
 			else if (horizontalSpeed < 0)
 			{
-				int mario_x = (GetLeft() - map.GetLeft()) / 64;
-				if (map_vector[mario_y][mario_x] != 0)
+				int turtle_x = (GetLeft() - map.GetLeft()) / 64;
+				if (map_vector[turtle_y][turtle_x] != 0)
 				{
 					isCollision = true;
 				}
@@ -137,14 +137,14 @@ namespace game_framework
 	{
 		
 		vector<vector<int>> map_vector = map.GetMap();
-		int goomba_x = (GetLeft() - map.GetLeft()-32) / 64;
-		int goomba_y = (GetTop()+32) / 64;
+		int turtle_x = (GetLeft() - map.GetLeft()-32) / 64;
+		int turtle_y = (GetTop()+32) / 64;
 		if (GetTop() < 800) {
-			if (map_vector[goomba_x + 1][goomba_y] != 0)
+			if (map_vector[turtle_y + 1][turtle_x] != 0)
 			{
 				isOnGround = true;
 			}
-			else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
+			else if (map_vector[turtle_y + 1][turtle_x + 1] != 0 && map_vector[turtle_y][turtle_x + 1] == 0)
 			{
 				isOnGround = true;
 			}

@@ -70,7 +70,7 @@ namespace game_framework
 
 	void Goomba::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(3);
+		//charactor.SetFrameIndexOfBitmap(3);
 		isDead = true;
 	}
 

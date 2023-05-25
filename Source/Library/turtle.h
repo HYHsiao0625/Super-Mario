@@ -29,6 +29,7 @@ namespace game_framework
 		void LoadDieIamge();
 
 	private:
+		bool isKickAble = false;
 		bool isdead = false;
 		bool on_kick = false;
 	};

@@ -41,7 +41,7 @@ void CGameStateRun::OnBeginState()
 
 void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 {
-	if (mario.GetDead() == true)
+	if (mario.IsDead() == true)
 	{
 		mario.Reset();
 		OnBeginState();
@@ -62,22 +62,20 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == 0x41)
 	{
-		mario.SetStatus("leftwalk");
 		mario.SetHorizontalSpeed(-16);
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
-		mario.SetStatus("rightwalk");
 		mario.SetHorizontalSpeed(16);
 	}
 	if (nChar == VK_SPACE)
 	{
 		if (mario.IsOnGround() == true) {
-			mario.SetStatus("jump");
+			mario.SetJump(true);
 		}
 		else
 		{
-			mario.SetStatus("stand");
+			mario.SetJump(false);
 		}
 	}
 }
@@ -87,17 +85,14 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x41)
 	{
 		mario.SetHorizontalSpeed(0);
-		mario.SetStatus("stand");
 	}
 	if (nChar == 0x44) //key(2)== D
 	{
 		mario.SetHorizontalSpeed(0);
-		mario.SetStatus("stand");
 	}
 	if (nChar == VK_SPACE)
 	{
-		//mario.SetOnGround(false);
-		mario.SetStatus("stand");
+		mario.SetJump(false);
 	}
 	if (nChar == 0x52)
 	{
@@ -192,7 +187,7 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::Print(pDC, 0, 32, "y: " + std::to_string((mario.GetTop()) / 64));
 		CTextDraw::Print(pDC, 0, 48, "HorizontalSpeed: " + std::to_string(mario.GetHorizontalSpeed()));
 		CTextDraw::Print(pDC, 0, 64, "HIT: " + std::to_string(mario.IsHitbox()));
-		CTextDraw::Print(pDC, 0, 80, "GetStatus: " + mario.GetStatus());
+		CTextDraw::Print(pDC, 0, 80, "GetStatus: " + mario.IsJump());
 
 		CTextDraw::Print(pDC, 0, 96, "map:");
 		CTextDraw::Print(pDC, 0, 112, "type:" + std::to_string(map.GetMap()[mario_y][mario_x]));

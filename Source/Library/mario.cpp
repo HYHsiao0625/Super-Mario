@@ -27,31 +27,14 @@ namespace game_framework
 {
 	Mario::Mario() :
 		isCrouching(true),
-		dead(false),
+		isDead(false),
 		isFlipped(false),
 		isOnGround(false),
 		horizontalSpeed(0),
 		verticalSpeed(0),
-		jump_timer(0),
-		growth_timer(0),
-		invincible_timer(0)
+		jump_timer(-6)
 	{
 
-	}
-
-	bool Mario::GetDead() const
-	{
-		return dead;
-	}
-
-	int Mario::GetX()
-	{
-		return charactor.GetLeft();
-	}
-
-	int Mario::GetY()
-	{
-		return charactor.GetTop();
 	}
 
 	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor)
@@ -64,9 +47,16 @@ namespace game_framework
 		OnGround(mario, map);
 		HitBox(mario, map);
 
+		if (isCollision == true)
+		{
+			horizontalSpeed = 0;
+		}
+
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
+			isJump = false;
+			jump_timer = -10;
 		}
 		else
 		{
@@ -77,9 +67,19 @@ namespace game_framework
 			}
 			else
 			{
-				if (GetStatus() == "jump")
+				if (isJump == true)
 				{
-					verticalSpeed = -16;
+					if (jump_timer < 0)
+					{
+						verticalSpeed = -16;
+						jump_timer++;
+					}
+					else
+					{
+						verticalSpeed += GRAVITY;
+						isJump = false;
+						//jump_timer++;
+					}
 				}
 				else
 				{
@@ -88,33 +88,34 @@ namespace game_framework
 			}
 		}
 
-
-
-		if (isCollision == true)
+		if (mario.GetTop() > 960)
 		{
-			horizontalSpeed = 0;
+			mario.Die();
 		}
 
-		if (isOnGround == true && mario.GetStatus() != "jump") {
+		if (verticalSpeed > 16)
+		{
+			verticalSpeed = 16;
+		}
+
+		x = charactor.GetLeft() + horizontalSpeed;
+		if (isOnGround == true && isJump == false)
+		{
 			y = ((charactor.GetTop() + verticalSpeed) / 64) * 64;
 		}
 		else
 		{
 			y = charactor.GetTop() + verticalSpeed;
 		}
-
-		if (mario.GetTop() > 960)
-		{
-			mario.Die();
-		}
-
-		x = charactor.GetLeft() + horizontalSpeed;
+		
 		charactor.SetTopLeft(x, y);
 	}
 
 	void Mario::Reset()
 	{
-		dead = false;
+		isDead = false;
+		isCrouching = true;
+		charactor.SetFrameIndexOfBitmap(0);
 	}
 
 	void Mario::Load()
@@ -134,7 +135,10 @@ namespace game_framework
 	{
 		charactor.ShowBitmap();
 	}
-
+	void Mario::Die()
+	{
+		isDead = true;
+	}
 	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
@@ -157,11 +161,6 @@ namespace game_framework
 	void Mario::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
-	}
-
-	void Mario::SetStatus(string flags)
-	{
-		status = flags;
 	}
 
 	int Mario::GetTop()
@@ -193,12 +192,6 @@ namespace game_framework
 		horizontalSpeed = value;
 	}
 
-
-	void Mario::Die()
-	{
-		dead = true;
-	}
-
 	int Mario::GetVerticalSpeed()
 	{
 		return verticalSpeed;
@@ -208,20 +201,6 @@ namespace game_framework
 		return horizontalSpeed;
 	}
 
-	int Mario::GetPressedKey()
-	{
-		return pressedKey;
-	}
-
-	string Mario::GetStatus()
-	{
-		return status;
-	}
-
-	bool Mario::IsKeyPressed()
-	{
-		return isKeyPressed;
-	}
 
 	void Mario::Collision(Mario mario, Map map)
 	{
@@ -262,7 +241,7 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
-			}//right collision
+			}
 			else if (mario.GetHorizontalSpeed() < 0)
 			{
 				int mario_x = (mario.GetLeft() - map.GetLeft() - 16) / 64;
@@ -299,57 +278,51 @@ namespace game_framework
 	*/
 	void Mario::Collision(Enemyfactor enemyfactor) {
 		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
-		if (GetY() > 960)
+		if (isCrouching == true)
 		{
-			Die();
+			for (int i = 0; i < 5; i++) {
+				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
+					if (-10 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
+						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
+						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
+						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
+						) {
+					}
+					else {
+						Die();
+					}
+				}
+			}
 		}
-		else 
+		else
 		{
-			if (isCrouching == true)
-			{
-				for (int i = 0; i < 5; i++) {
-					if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
-						if (-10 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
-							&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
-							&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
-							&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
-							) {
-						}
-						else {
-							Die();
-						}
+			for (int i = 0; i < 5; i++) {
+				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
+					if (-74 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
+						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -54
+						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
+						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
+						) {
+					}
+					else {
+						Die();
 					}
 				}
 			}
-			else
-			{
-				for (int i = 0; i < 5; i++) {
-					if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
-						if (-74 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
-							&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -54
-							&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
-							&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
-							) {
-						}
-						else {
-							Die();
-						}
-					}
-				}
-			}
-			
 		}
 	}
+
 	void Mario::Collision(Itemfactor itemfactor) {
-		std::vector<Item*>itemlist = itemfactor.GetItemlist();
-			for (unsigned int i = 0; i<itemlist.size(); i++) {
-				if (itemlist[i]->charactor.IsOverlap(itemlist[i]->charactor, charactor) && itemlist[i]->isUsed == false) {
-					itemlist[i]->isUsed = true;
-					charactor.SetTopLeft(GetLeft(), GetTop() - 64);
-					charactor.SetFrameIndexOfBitmap(4);
-					isCrouching = false;
-				}
+		std::vector<Item*>_itemList = itemfactor.GetItemList();
+		for (unsigned int i = 0; i < _itemList.size(); i++)
+		{
+			if (_itemList[i]->charactor.IsOverlap(_itemList[i]->charactor, charactor))
+			{
+				charactor.SetTopLeft(GetLeft(), GetTop() - 64);
+				charactor.SetFrameIndexOfBitmap(4);
+				isCrouching = false;
 			}
+		}
 	}
 	void Mario::OnGround(Mario mario, Map map)
 	{
@@ -358,7 +331,7 @@ namespace game_framework
 		int mario_y = mario.GetTop() / 64;
 		if (isCrouching == true)
 		{
-			if (mario.GetStatus() != "jump")
+			if (isJump == false)
 			{
 				if (map_vector[mario_y + 1][mario_x] != 0)
 				{
@@ -380,7 +353,7 @@ namespace game_framework
 		}
 		else
 		{
-			if (mario.GetStatus() != "jump")
+			if (isJump == false)
 			{
 				if (map_vector[mario_y + 2][mario_x] != 0)
 				{
@@ -414,11 +387,12 @@ namespace game_framework
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isHitbox = true;
+				isJump = false;
 			}
 			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
 			{
 				isHitbox = true;
-				SetStatus("hitbox");
+				isJump = false;
 			}
 			else
 			{
@@ -434,7 +408,6 @@ namespace game_framework
 			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
 			{
 				isHitbox = true;
-				SetStatus("hitbox");
 			}
 			else
 			{
@@ -442,6 +415,11 @@ namespace game_framework
 			}
 		}
 		
+	}
+
+	bool Mario::IsDead()
+	{
+		return isDead;
 	}
 
 	bool Mario::IsOnGround()
@@ -452,5 +430,15 @@ namespace game_framework
 	bool Mario::IsHitbox()
 	{
 		return isHitbox;
+	}
+
+	bool Mario::IsJump()
+	{
+		return isJump;
+	}
+
+	void Mario::SetJump(bool flags)
+	{
+		isJump = flags;
 	}
 }

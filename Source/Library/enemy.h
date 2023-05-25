@@ -40,13 +40,9 @@ namespace game_framework
 		
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
-		void	SetStatus(string);
 
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
-		bool	GetDead() const;
-		int		GetPressedKey();
-		string	GetStatus();
 		//-----------------------
 
 		CMovingBitmap charactor;
@@ -55,7 +51,6 @@ namespace game_framework
 		
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;
-		string	status = "initial";
 		bool	isCollision = false;
 		bool    isOnGround = false;
 		bool	isDead = false;

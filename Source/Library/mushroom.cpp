@@ -31,7 +31,7 @@ namespace game_framework
 		}
 		if (charactor.IsOverlap(mario.charactor,charactor)) {
 			horizontalSpeed = 0;
-			isUsed = true;
+			isDead = true;
 			Die();
 		}
 		if (isOnGround == true)
@@ -44,6 +44,30 @@ namespace game_framework
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 
+	}
+
+	void Mushroom::Reset()
+	{
+
+	}
+
+	void Mushroom::Load()
+	{
+		charactor.LoadBitmapByString({
+			"resources/Mushroom.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
+	}
+
+	void Mushroom::Die()
+	{
+		charactor.SetFrameIndexOfBitmap(1);
+		isdead = true;
+	}
+
+	bool Mushroom::IsDead()
+	{
+		return isdead;
 	}
 	void Mushroom::Collision(Map map)
 	{
@@ -90,23 +114,5 @@ namespace game_framework
 		
 	}
 
-	void Mushroom::Load()
-	{
-		charactor.LoadBitmapByString({
-			"resources/Mushroom.bmp",
-			"resources/empty.bmp"
-			}, RGB(146, 144, 255));
-
-	}
-
-	void Mushroom::Die()
-	{
-		charactor.SetFrameIndexOfBitmap(1);
-		isdead = true;
-	}
-
-	bool Mushroom::IsDead()
-	{
-		return isdead;
-	}
+	
 }

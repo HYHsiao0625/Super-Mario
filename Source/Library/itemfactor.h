@@ -21,10 +21,10 @@ namespace game_framework
 		void Load();
 		void Show();
 		void UpData(Mario mario, Map map);
-		vector<Item*> GetItemlist();
-		vector<int> item_temp;
-		vector<vector<int>> item_position;
-		vector<Item*> item_list;
+		vector<Item*> GetItemList();
+		vector<int> itemTemp;
+		vector<vector<int>> itemPosition;
+		vector<Item*> itemList;
 	};
 }
 #endif // !GOOMBA_H

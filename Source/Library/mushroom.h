@@ -16,13 +16,16 @@ namespace game_framework
 	{
 	public:
 		void UpData(Mario mario, Map map);
-		void Collision(Map map);
-		void OnGround(Map map);
-		void ToggleAnimation(int frameIndex);
+		void Reset();
 		void Load();
-		void LoadDieIamge();
 		void Die();
 		bool IsDead();
+
+		void Collision(Map map);
+		void OnGround(Map map);
+		void LoadDieIamge();
+
+		
 	private:
 		bool isdead = false;
 	};
