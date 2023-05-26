@@ -35,11 +35,11 @@ namespace game_framework
 	{
 
 	}
-	void Map::Updata(Mario mario, Map map)
+	void Map::Updata(Mario mario)
 	{
-		vector<vector<int>> map_vector = map.GetMap();
-		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
-		int mario_y = (mario.GetTop() - 24) / 64;
+
+		int mario_x = (mario.GetLeft() - GetLeft()) / 64;
+		int mario_y = (mario.GetTop() - 4) / 64;
 		if (mario.IsHitbox() == true)
 		{
 			if (map_vector[mario_y][mario_x] == 2) {
@@ -49,12 +49,27 @@ namespace game_framework
 				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
 			}
 		}
-
+		if (mario.GetHorizontalSpeed() > 0)
+		{
+			if (GetWidth() + GetLeft() > 1600 && mario.GetLeft() > 480)
+			{
+				mario.SetTopLeft(mario.GetLeft(), mario.GetTop());
+				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
+			}
+		}
+		else if (mario.GetHorizontalSpeed() < 0)
+		{
+			if (GetLeft() < 0 && mario.GetLeft() < 256)
+			{
+				mario.SetTopLeft(mario.GetLeft(), mario.GetTop());
+				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
+			}
+		}
 	}
 
 	vector<vector<int>> Map::GetMap()
 	{
-		return map;
+		return map_vector;
 	}
 	vector<vector<CMovingBitmap>> Map::GetMapcharactor() {
 		return charactor;
@@ -69,25 +84,25 @@ namespace game_framework
 		CMovingBitmap block;
 		if (world == 1 && level == 1)
 		{
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < 32; i++)
 			{
 				map_temp.push_back(0);
 				array1.push_back(block);
 			}
-			for (int i = 0; i < 17; i++)
+			for (int i = 0; i < height + 2; i++)
 			{
-				map.push_back(map_temp);
+				map_vector.push_back(map_temp);
 				charactor.push_back(array1);
 			}
 			array1.clear();
 			map_temp.clear();
 			ifstream ifs("resources/map/1-1.map");
-			for (int i = 0; i < 17; i++)
+			for (int i = 0; i < height + 2; i++)
 			{
-				for (int j = 0; j < 16; j++)
+				for (int j = 0; j < 32; j++)
 				{
-					ifs >> map[i][j];
-					switch (map[i][j])
+					ifs >> map_vector[i][j];
+					switch (map_vector[i][j])
 					{
 					case 0:
 						charactor[i][j].LoadBitmapByString({
@@ -144,9 +159,7 @@ namespace game_framework
 					default:
 						break;
 					}
-					width = j;
 				}
-
 			}
 			ifs.close();
 		}
@@ -154,9 +167,9 @@ namespace game_framework
 
 	void Map::Show()
 	{
-		for (int i = 0; i < 15; i++)
+		for (int i = 0; i < height; i++)
 		{
-			for (int j = 0; j < 16; j++)
+			for (int j = 0; j < 32; j++)
 			{
 				charactor[i][j].ShowBitmap();
 			}
@@ -164,9 +177,9 @@ namespace game_framework
 	}
 	void Map::initalize()
 	{
-		for (int i = 0; i < 17; i++)
+		for (int i = 0; i < height + 2; i++)
 		{
-			for (int j = 0; j < 16; j++)
+			for (int j = 0; j < 32; j++)
 			{
 				charactor[i][j].SetTopLeft(j * 64, i * 64);
 			}
@@ -189,9 +202,9 @@ namespace game_framework
 
 	void Map::SetTopLeft(int x, int y)
 	{
-		for (int i = 0; i < 17; i++)
+		for (int i = 0; i < height + 2; i++)
 		{
-			for (int j = 0; j < 16; j++)
+			for (int j = 0; j < 32; j++)
 			{
 				charactor[i][j].SetTopLeft(x + j * 64, y + i * 64);
 			}

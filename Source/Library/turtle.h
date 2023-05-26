@@ -16,6 +16,8 @@ namespace game_framework
 	class Turtle : public Enemy
 	{
 	public:
+		Turtle();
+		~Turtle();
 		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
 		void Reset();
 		void Load();

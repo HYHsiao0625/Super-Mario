@@ -15,7 +15,7 @@ namespace game_framework
 	{
 	public:
 		Enemy();
-		~Enemy();
+		virtual ~Enemy()=0;
 
 		virtual void UpData(vector<Enemy*> monster_list, Mario mario, Map map) = 0;
 		virtual void Reset() = 0;

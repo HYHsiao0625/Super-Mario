@@ -40,7 +40,7 @@ namespace game_framework
 		}
 		else
 		{
-			verticalSpeed += 2;
+			verticalSpeed += 1;
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 

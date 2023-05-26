@@ -280,7 +280,7 @@ namespace game_framework
 		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
 		if (isCrouching == true)
 		{
-			for (int i = 0; i < 5; i++) {
+			for (unsigned int i = 0; i < enemylist.size(); i++) {
 				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
 					if (-10 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
 						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
@@ -296,7 +296,7 @@ namespace game_framework
 		}
 		else
 		{
-			for (int i = 0; i < 5; i++) {
+			for (unsigned int i = 0; i < enemylist.size(); i++) {
 				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
 					if (-74 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
 						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -54

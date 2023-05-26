@@ -1,4 +1,4 @@
-//#define	 INITGUID
+﻿//#define	 INITGUID
 #include "stdafx.h"
 #include "../Core/game.h"
 #include "../Core/MainFrm.h"
@@ -21,6 +21,14 @@
 
 namespace game_framework
 {
+	Flower::Flower() : Enemy() 
+	{
+
+	}
+	Flower::~Flower() 
+	{
+
+	}
 	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		//Collision(map);

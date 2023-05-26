@@ -16,23 +16,27 @@ namespace game_framework
 		Map();
 		~Map();
 
-		void	Updata(Mario mario, Map map);
+		void	Updata(Mario mario);
 		void	Show();
 		void	Load(int world, int level);
+
 		int		GetTop();
 		int		GetLeft();
 		int		GetWidth();
+
 		void	initalize();
 
 		void	SetTopLeft(int, int);
+
 		vector<vector<int>>	GetMap();
 		vector<vector<CMovingBitmap>> GetMapcharactor();
 		CMovingBitmap GetMapCharactor(int x, int y);
 
 	private:
-		int width, height = 15;
+		int width = 32;
+		int height = 15;
 		vector<int> map_temp;
-		vector<vector<int>> map;
+		vector<vector<int>> map_vector;
 		vector<CMovingBitmap> array1;
 		vector<vector<CMovingBitmap>> charactor;
 

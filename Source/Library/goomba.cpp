@@ -20,6 +20,14 @@
 
 namespace game_framework
 {
+	Goomba::Goomba() : Enemy() 
+	{
+		
+	}
+	Goomba::~Goomba() 
+	{
+
+	}
 	void Goomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		Collision(map);
@@ -45,7 +53,7 @@ namespace game_framework
 		}
 		else
 		{
-			verticalSpeed += 2;
+			verticalSpeed += 1;
 		}
 
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);

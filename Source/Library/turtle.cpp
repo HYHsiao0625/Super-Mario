@@ -20,6 +20,10 @@
 
 namespace game_framework
 {
+	Turtle::Turtle() : Enemy() {
+	}
+	Turtle::~Turtle() {
+	}
 	void Turtle::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		Collision(map);
@@ -39,33 +43,39 @@ namespace game_framework
 		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
 			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
 			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false) 
+			&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
 		{
-			Die();
-			isDead = true;
+			charactor.SetFrameIndexOfBitmap(2);
+			isKickAble = true;
 			SetTopLeft(GetLeft(), GetTop() + 32);
 			horizontalSpeed = 0;
 		}
-		if (isDead == true) {
+		if (isKickAble == true) {
 			if (mario.charactor.IsOverlap(charactor, mario.charactor)) {
-				if (mario.GetLeft() < GetLeft() && on_kick == 1) {
+				if (mario.GetLeft() < GetLeft()) {
 					horizontalSpeed = 10;
 				}
-				else if(mario.GetLeft() > GetLeft() && on_kick == 1){
+				else if(mario.GetLeft() > GetLeft()){
 					horizontalSpeed = -10;
 				}
-				else {
-					on_kick = 1;
+			}
+			if (horizontalSpeed == 10 || horizontalSpeed == -10) {
+				for (auto enemy : monster_list) {
+					if (enemy->charactor.IsOverlap(enemy->charactor, charactor) && (charactor.GetLeft() != enemy->GetLeft())) {
+						enemy->Die();
+						Die();
+					}
 				}
 			}
 		}
+
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
 		}
 		else
 		{
-			verticalSpeed += 2;
+			verticalSpeed += 1;
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 	}
@@ -138,7 +148,7 @@ namespace game_framework
 		
 		vector<vector<int>> map_vector = map.GetMap();
 		int turtle_x = (GetLeft() - map.GetLeft()-32) / 64;
-		int turtle_y = (GetTop()+32) / 64;
+		int turtle_y = (GetTop() + 32) / 64;
 		if (GetTop() < 800) {
 			if (map_vector[turtle_y + 1][turtle_x] != 0)
 			{

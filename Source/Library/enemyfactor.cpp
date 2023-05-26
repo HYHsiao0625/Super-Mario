@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "../Core/game.h"
 #include "../Core/MainFrm.h"
 #include "../Core/Resource.h"
@@ -36,48 +36,47 @@ namespace game_framework
 	{
 		ifstream ifs("resources/enemyposition.txt");
 
-		for (int i = 0; i < 2; i++)
+		int numMonsters = 0;
+		int temp;
+		while (ifs >> temp)
 		{
-			monster_temp.push_back(0);
-
-		}
-		for (int i = 0; i < 5; i++)
-		{
-			monster_position.push_back(monster_temp);
-		}
-		monster_temp.clear();
-		//Åª¨ú¦ì¤l
-		for (int i = 0; i < 5; i++)
-		{
-			for (int j = 0; j < 2; j++)
-			{
-				ifs >> monster_position[i][j];
-			}
+			numMonsters++;
+			monster_temp.push_back(temp);
 		}
 
-		for (int i = 0; i < 5; i++) 
+		int numPositions = numMonsters / 2;
+		monster_position.resize(numPositions, vector<int>(2));
+		for (int i = 0; i < numPositions; i++)
 		{
-			switch (monster_position[i][0])
+			monster_position[i][0] = monster_temp[i * 2];
+			monster_position[i][1] = monster_temp[i * 2 + 1];
+		}
+
+		for (int i = 0; i < numPositions; i++)
+		{
+			int monsterType = monster_position[i][0];
+			int monsterPos = monster_position[i][1];
+			switch (monsterType)
 			{
-			case 1://Goomba©Çª«
+			case 1://Goombaæ€ªç‰©
 				monster_list.push_back(new Goomba());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monster_position[i][1], 768);
-				monster_list[i]->SetHorizontalSpeed(-4);
+				monster_list[i]->SetTopLeft(monsterPos, 768);
+				monster_list[i]->SetHorizontalSpeed(-1);
 				//monster_list[i]->SetStatus("appear");
 				break;
-			case 2://flower©Çª«
+			case 2://floweræ€ªç‰©
 				monster_list.push_back(new Flower());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monster_position[i][1], 580);
+				monster_list[i]->SetTopLeft(monsterPos, 580);
 				monster_list[i]->SetHorizontalSpeed(0);
 				//monster_list[i]->SetStatus("appear");
 				break;
-			case 3://turtle©Çª«
+			case 3://turtleæ€ªç‰©
 				monster_list.push_back(new Turtle());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monster_position[i][1], 736);
-				monster_list[i]->SetHorizontalSpeed(-4);
+				monster_list[i]->SetTopLeft(monsterPos, 736);
+				monster_list[i]->SetHorizontalSpeed(-1);
 				//monster_list[i]->SetStatus("appear");
 				break;
 			default:
@@ -98,19 +97,17 @@ namespace game_framework
 
 	void Enemyfactor::UpData(Mario mario, Map map)
 	{
-		//Collision(map);
 
 		for (auto enemy : monster_list) {
 			enemy->UpData(monster_list, mario, map);
 		}
 
-		/*for (unsigned int i = 0; i < monster_list.size(); i++) {
+		for (int i = monster_list.size() - 1; i >= 0; i--) {
 			if (monster_list[i]->IsDead() == true) {
 				delete monster_list[i];
 				monster_list.erase(monster_list.begin() + i);
 			}
-		}*/ //TOBEDEBUG
-
+		}
 	}
 	// ! ENEMYFACTO
 }

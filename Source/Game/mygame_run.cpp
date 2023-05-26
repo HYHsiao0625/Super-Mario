@@ -127,7 +127,7 @@ void CGameStateRun::OnShow()
 	mario.UpData(mario, map, enemyfactor,itemfactor);
 	itemfactor.UpData(mario ,map);
 	//goomba1.UpData(mario, map);
-	map.Updata(mario, map);
+	map.Updata(mario);
 	enemyfactor.UpData(mario, map);
 	if (world == 1)
 	{
@@ -148,7 +148,7 @@ void CGameStateRun::OnShow()
 		mario.SetHorizontalSpeed(0);
 		mario.SetTopLeft(map.GetLeft(), mario.GetTop());
 	}
-	if (mario.GetLeft() + mario.GetWidth() >= 1024)
+	if (mario.GetLeft() + mario.GetWidth() >= 1600)
 	{
 		mario.SetHorizontalSpeed(0);
 		mario.SetTopLeft(map.GetLeft(), mario.GetTop());

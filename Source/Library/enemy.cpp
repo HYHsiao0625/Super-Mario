@@ -54,10 +54,12 @@ namespace game_framework
 	{
 		charactor.SetAnimation(delay, _once);
 	}
+
 	void Enemy::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
 	}
+
 	int Enemy::GetTop()
 	{
 		return charactor.GetTop();

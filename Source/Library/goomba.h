@@ -14,6 +14,9 @@ namespace game_framework
 	class Goomba : public Enemy
 	{
 	public:
+		Goomba();
+		~Goomba();
+
 		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
 		void Reset();
 		void Load();
