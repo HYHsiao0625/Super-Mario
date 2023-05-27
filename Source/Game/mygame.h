@@ -113,7 +113,7 @@ namespace game_framework {
 		int level = 1;
 		Mario mario;
 
-		//Goomba goomba1;
+		Goomba goomba1;
 		Enemyfactor enemyfactor;
 		Itemfactor itemfactor;
 		Map map;

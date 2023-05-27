@@ -49,22 +49,27 @@ namespace game_framework
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		vector<vector<CMovingBitmap>> map_charactor = map.GetMapcharactor();
-		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
-		int mario_y = (mario.GetTop() - 4) / 64;
+
+		/*int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+		int mario_y = (mario.GetTop()) / 32;*/
+
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+		int mario_y = (mario.GetTop() - 4) / 32;
+
 		if (mario.IsHitbox() == true)
 		{
 			if (map_vector[mario_y][mario_x] == 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap()== 0) {
 				itemList.push_back(new Mushroom());
 				itemList.back()->Load();
-				itemList.back()->SetTopLeft(mario_x * 64, (mario_y - 1) * 64);
-				itemList.back()->SetHorizontalSpeed(4);
+				itemList.back()->SetTopLeft(mario.GetLeft() , (mario_y - 1) * 32);
+				itemList.back()->SetHorizontalSpeed(2);
 				
 			}
-			if (map_vector[mario_y][mario_x+1] == 2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
+			if (map_vector[mario_y][mario_x + 1] == 2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
 				itemList.push_back(new Mushroom());
 				itemList.back()->Load();
-				itemList.back()->SetTopLeft((mario_x + 1) * 64, (mario_y - 1) * 64);
-				itemList.back()->SetHorizontalSpeed(4);
+				itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
+				itemList.back()->SetHorizontalSpeed(2);
 			}
 		}
 		//Collision(map);

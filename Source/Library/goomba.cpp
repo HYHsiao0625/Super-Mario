@@ -32,14 +32,13 @@ namespace game_framework
 	{
 		Collision(map);
 		Collision(monster_list);
-
 		OnGround(map);
 		if (isCollision == true)
 		{
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
+		if (-2 <= mario.GetTop() + mario.GetHeight() - GetTop()
 			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
 			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
 			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
@@ -89,12 +88,12 @@ namespace game_framework
 	void Goomba::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mario_y = GetTop() / 64;
+		int mario_y = GetTop() / 32;
 
 		//left collision
 		if (horizontalSpeed > 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (GetLeft() - map.GetLeft()) / 32;
 			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
@@ -102,7 +101,7 @@ namespace game_framework
 		}//right collision
 		else if (horizontalSpeed < 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (GetLeft() - map.GetLeft()) / 32;
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
@@ -115,7 +114,7 @@ namespace game_framework
 		for (auto enemy : monster_list) {
 			if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
 			{
-				if (enemy->charactor.GetFrameIndexOfBitmap()==2) {
+				if (enemy->charactor.GetFrameIndexOfBitmap() == 2) {
 					horizontalSpeed = 0;
 					Die();
 				}
@@ -128,8 +127,8 @@ namespace game_framework
 	void Goomba::OnGround(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int goomba_x = (GetLeft() - map.GetLeft()-48) / 64;
-		int goomba_y = GetTop() / 64;
+		int goomba_x = (GetLeft() - map.GetLeft()) / 32;
+		int goomba_y = GetTop() / 32;
 		if (GetTop() < 770) {
 			if (map_vector[goomba_x + 1][goomba_y] != 0)
 			{

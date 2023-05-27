@@ -18,6 +18,7 @@ namespace game_framework
 	public:
 		Itemfactor();
 		~Itemfactor();
+
 		void Load();
 		void Show();
 		void UpData(Mario mario, Map map);

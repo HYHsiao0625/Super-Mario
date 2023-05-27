@@ -32,10 +32,10 @@ namespace game_framework
 	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		//Collision(map);
-		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
-		int mario_y = (mario.GetTop() - 4) / 64;
-		int enemy_x = (GetLeft() - map.GetLeft()) / 64;
-		int enemy_y = GetTop() / 64;
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+		int mario_y = (mario.GetTop() - 4) / 32;
+		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
+		int enemy_y = GetTop() / 32;
 		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 1)
 		{
 			trigger = 1;
@@ -81,8 +81,8 @@ namespace game_framework
 	void Flower::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int enemy_x = (GetLeft() - map.GetLeft()) / 64;
-		int enemy_y = GetTop() / 64;
+		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
+		int enemy_y = GetTop() / 32;
 
 		if (horizontalSpeed > 0)
 		{

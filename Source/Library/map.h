@@ -33,7 +33,7 @@ namespace game_framework
 		CMovingBitmap GetMapCharactor(int x, int y);
 
 	private:
-		int width = 32;
+		int width = 211;
 		int height = 15;
 		vector<int> map_temp;
 		vector<vector<int>> map_vector;

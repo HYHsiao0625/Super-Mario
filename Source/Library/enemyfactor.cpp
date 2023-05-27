@@ -61,21 +61,21 @@ namespace game_framework
 			case 1://Goomba怪物
 				monster_list.push_back(new Goomba());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monsterPos, 768);
+				monster_list[i]->SetTopLeft(monsterPos, 64);
 				monster_list[i]->SetHorizontalSpeed(-1);
 				//monster_list[i]->SetStatus("appear");
 				break;
 			case 2://flower怪物
 				monster_list.push_back(new Flower());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monsterPos, 580);
+				monster_list[i]->SetTopLeft(monsterPos, 0);
 				monster_list[i]->SetHorizontalSpeed(0);
 				//monster_list[i]->SetStatus("appear");
 				break;
 			case 3://turtle怪物
 				monster_list.push_back(new Turtle());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monsterPos, 736);
+				monster_list[i]->SetTopLeft(monsterPos, 0);
 				monster_list[i]->SetHorizontalSpeed(-1);
 				//monster_list[i]->SetStatus("appear");
 				break;
