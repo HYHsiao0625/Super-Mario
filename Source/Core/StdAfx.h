@@ -5,7 +5,8 @@
 /*
  *   2010-02-23 V4.5
  *      1. Add #define _WIN32_WINNT 0x0500 to work with VS2008
- *   2016-02-26 V4.9
+ *   20
+ -02-26 V4.9
  *      1. Remove #define _WIN32_WINNT and Preprocessor Definitions (WINVER=0x500)
  *      2. Include SDKDDKVER.h, the file automatic setting WINVER and _WIN32_WINNT in latest version
 */

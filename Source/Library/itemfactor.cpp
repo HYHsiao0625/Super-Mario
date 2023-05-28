@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "../Core/game.h"
 #include "../Core/MainFrm.h"
 #include "../Core/Resource.h"
@@ -28,9 +28,9 @@ namespace game_framework
 	Itemfactor::~Itemfactor()
 	{
 	}
-	vector<Item*> Itemfactor::GetItemlist()
+	vector<Item*> Itemfactor::GetItemList()
 	{
-		return item_list;
+		return itemList;
 	}
 	void Itemfactor::Load()
 	{
@@ -39,7 +39,7 @@ namespace game_framework
 	void Itemfactor::Show()
 	{
 
-		for (auto item : item_list) {
+		for (auto item : itemList) {
 			item->ShowBitmap();
 		}
 
@@ -53,26 +53,44 @@ namespace game_framework
 		int mario_y = (mario.GetTop() - 4) / 64;
 		if (mario.IsHitbox() == true)
 		{
-			if (map_vector[mario_y][mario_x] == 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap()== 0) {
-				item_list.push_back(new Mushroom());
-				item_list.back()->Load();
-				item_list.back()->SetTopLeft(mario_x*64, (mario_y-1)*64);
-				item_list.back()->SetHorizontalSpeed(4);
-				item_list.back()->SetStatus("appear");
-				
-			}
-			if (map_vector[mario_y][mario_x+1] == 2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
-				item_list.push_back(new Mushroom());
-				item_list.back()->Load();
-				item_list.back()->SetTopLeft((mario_x+1) * 64, (mario_y - 1) * 64);
-				item_list.back()->SetHorizontalSpeed(4);
-				item_list.back()->SetStatus("appear");
+			if (map_vector[mario_y][mario_x] == 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap() == 0) {
+				itemList.push_back(new Mushroom());
+				itemList.back()->Load();
+				itemList.back()->SetTopLeft((mario.GetLeft()/64)*64, (mario_y - 1) * 64);
+				itemList.back()->SetHorizontalSpeed(4);
 
 			}
+			else if (map_vector[mario_y-1][mario_x] == 2 && map_charactor[mario_y-1][mario_x].GetFrameIndexOfBitmap() == 0) {
+				itemList.push_back(new Mushroom());
+				itemList.back()->Load();
+				itemList.back()->SetTopLeft((mario.GetLeft() / 64) * 64, (mario_y ) * 64);
+				itemList.back()->SetHorizontalSpeed(4);
+
+			}
+			else if (map_vector[mario_y][mario_x + 1] == 2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
+				itemList.push_back(new Mushroom());
+				itemList.back()->Load();
+				itemList.back()->SetTopLeft((mario.GetLeft() / 64+1) * 64, (mario_y - 1) * 64);
+				itemList.back()->SetHorizontalSpeed(4);
+			}
+			else if (map_vector[mario_y-1][mario_x + 1] == 2 && map_charactor[mario_y-1][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
+				itemList.push_back(new Mushroom());
+				itemList.back()->Load();
+				itemList.back()->SetTopLeft((mario.GetLeft() / 64+1) * 64, (mario_y - 1) * 64);
+				itemList.back()->SetHorizontalSpeed(4);
+			}
+			
 		}
 		//Collision(map);
-		for(auto item : item_list) {
+		for (auto item : itemList) {
 			item->UpData(mario, map);
+		}
+
+		for (unsigned int i = 0; i < itemList.size(); i++) {
+			if (itemList[i]->IsDead() == true) {
+				delete itemList[i];
+				itemList.erase(itemList.begin() + i);
+			}
 		}
 	}
 	// ! ENEMYFACTO

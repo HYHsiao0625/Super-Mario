@@ -29,9 +29,9 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (charactor.IsOverlap(mario.charactor,charactor)) {
-			status = "dead";
+		if (charactor.IsOverlap(mario.charactor, charactor)) {
 			horizontalSpeed = 0;
+			isDead = true;
 			Die();
 		}
 		if (isOnGround == true)
@@ -40,56 +40,29 @@ namespace game_framework
 		}
 		else
 		{
-			verticalSpeed += 2;
+			verticalSpeed += 1;
+		}
+		if (mario.GetHorizontalSpeed() > 0)
+		{
+			if (map.GetWidth() + map.GetLeft() > 1600 && mario.GetLeft() > 480)
+			{
+				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
+			}
+		}
+		else if (mario.GetHorizontalSpeed() < 0)
+		{
+			if (map.GetLeft() < 0 && mario.GetLeft() < 256)
+			{
+				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
+			}
 		}
 		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
 
 	}
-	void Mushroom::Collision(Map map)
-	{
-		vector<vector<int>> map_vector = map.GetMap();
-		int mario_y = GetTop() / 64;
 
-		//left collision
-		if (GetTop() < 780) {
-			if (horizontalSpeed > 0)
-			{
-				int mario_x = (GetLeft() - map.GetLeft()) / 64;
-				if (map_vector[mario_y][mario_x + 1] != 0)
-				{
-					isCollision = true;
-				}
-			}//right collision
-			else if (horizontalSpeed < 0)
-			{
-				int mario_x = (GetLeft() - map.GetLeft()) / 64;
-				if (map_vector[mario_y][mario_x] != 0)
-				{
-					isCollision = true;
-				}
-			}
-		}
-	}
-	void Mushroom::OnGround(Map map)
+	void Mushroom::Reset()
 	{
-		vector<vector<int>> map_vector = map.GetMap();
-		int goomba_x = (GetLeft() - map.GetLeft() - 32) / 64;
-		int goomba_y = GetTop() / 64;
-		if (GetTop() < 780) {
-			if (map_vector[goomba_x + 1][goomba_y] != 0)
-			{
-				isOnGround = true;
-			}
-			else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
-			{
 
-				isOnGround = true;
-			}
-			else
-			{
-				isOnGround = false;
-			}
-		}
 	}
 
 	void Mushroom::Load()
@@ -98,11 +71,62 @@ namespace game_framework
 			"resources/Mushroom.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
-
 	}
 
 	void Mushroom::Die()
 	{
 		charactor.SetFrameIndexOfBitmap(1);
+		isdead = true;
 	}
+
+	bool Mushroom::IsDead()
+	{
+		return isdead;
+	}
+	void Mushroom::Collision(Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mario_y = GetTop() / 64;
+
+		//left collision
+		if (horizontalSpeed > 0)
+		{
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			if (map_vector[mario_y][mario_x + 1] != 0)
+			{
+				isCollision = true;
+			}
+		}//right collision
+		else if (horizontalSpeed < 0)
+		{
+			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			if (map_vector[mario_y][mario_x] != 0)
+			{
+				isCollision = true;
+			}
+		}
+	}
+	void Mushroom::OnGround(Map map)
+	{
+		vector<vector<int>> map_vector = map.GetMap();
+		int mushroom_x = (GetLeft() - map.GetLeft()) / 64;
+		int mushroom_y = GetTop() / 64;
+
+		if (map_vector[mushroom_y + 1][mushroom_x] != 0)
+		{
+			isOnGround = true;
+		}
+		else if (map_vector[mushroom_y + 1][mushroom_x + 1] != 0 && map_vector[mushroom_y][mushroom_x + 1] == 0)
+		{
+
+			isOnGround = true;
+		}
+		else
+		{
+			isOnGround = false;
+		}
+
+	}
+
+
 }

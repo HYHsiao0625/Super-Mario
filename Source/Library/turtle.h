@@ -16,15 +16,24 @@ namespace game_framework
 	class Turtle : public Enemy
 	{
 	public:
-		void UpData(Mario mario, Map map);
-		void Collision(Map map);
-		void OnGround(Map map);
-		void ToggleAnimation(int frameIndex);
+		Turtle();
+		~Turtle();
+		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
+		void Reset();
 		void Load();
-		void LoadDieIamge();
 		void Die();
+		bool IsDead();
+		//-------------------
+		void Collision(Map map);
+		void Collision(vector<Enemy*> monster_list);
+		//-------------------
+		void OnGround(Map map);
+		void LoadDieIamge();
+
 	private:
-		bool on_kick = 0;
+		bool isKickAble = false;
+		bool isdead = false;
+		bool on_kick = false;
 	};
 }
 #endif // !Turtle_H

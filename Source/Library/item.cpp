@@ -39,18 +39,7 @@ namespace game_framework
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
-	void Item::Limit(CMovingBitmap floor, Mario mario)
-	{
-		if (floor.GetLeft() < 0 && mario.GetLeft() <= 384)
-		{
-			this->SetTopLeft(this->GetLeft() - mario.GetHorizontalSpeed(), this->GetTop());
-		}
-		if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
-		{
-			this->SetTopLeft(this->GetLeft() - mario.GetHorizontalSpeed(), this->GetTop());
-		}
-	}
-
+	
 	int Item::GetFrameIndexOfBitmap()
 	{
 		return charactor.GetFrameIndexOfBitmap();
@@ -69,6 +58,7 @@ namespace game_framework
 	{
 		charactor.SetTopLeft(x, y);
 	}
+
 	int Item::GetTop()
 	{
 		return charactor.GetTop();
@@ -98,19 +88,6 @@ namespace game_framework
 		horizontalSpeed = value;
 	}
 
-	void Item::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Item::SetDie(bool flag)
-	{
-		dead = flag;
-	}
-	void Item::SetStatus(string action)
-	{
-		status = action;
-	}
 
 	int Item::GetVerticalSpeed()
 	{
@@ -120,16 +97,4 @@ namespace game_framework
 	{
 		return horizontalSpeed;
 	}
-
-	bool Item::GetDie()
-	{
-		return dead;
-	}
-
-	string Item::GetStatus()
-	{
-		return status;
-	}
-
-
 }

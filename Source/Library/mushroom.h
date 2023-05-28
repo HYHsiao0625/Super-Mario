@@ -16,12 +16,18 @@ namespace game_framework
 	{
 	public:
 		void UpData(Mario mario, Map map);
+		void Reset();
+		void Load();
+		void Die();
+		bool IsDead();
+
 		void Collision(Map map);
 		void OnGround(Map map);
-		void ToggleAnimation(int frameIndex);
-		void Load();
 		void LoadDieIamge();
-		void Die();
+
+		
+	private:
+		bool isdead = false;
 	};
 }
 #endif // !Mushroom_H

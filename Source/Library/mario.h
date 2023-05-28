@@ -20,38 +20,34 @@ namespace game_framework
 		Mario();
 		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor);
 		void	Reset();
-
+		void	Load();
 		void	Show();
-		void	Load(vector<string>, COLORREF = CLR_INVALID);
+		void	Die();
+		//--------------
+		void	LoadBitmapByString(vector<string>, COLORREF = CLR_INVALID);
 
 		void	SetAnimation(int delay, bool _once);
 		void	SetFrameIndexOfBitmap(int);
+		void	SetTopLeft(int x, int y);
 
 		int		GetFrameIndexOfBitmap();
 		int		GetTop();
 		int		GetLeft();
 		int		GetHeight();
 		int		GetWidth();
-
-		void	SetTopLeft(int, int);
+		//--------------
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
-		void	SetStatus(string);
-
-		void	Die();
-		int		GetX();
-		int		GetY();
-
+		void	SetJump(bool);
+		//--------------
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
-		bool	GetDead() const;
-		int		GetPressedKey();
-		string	GetStatus();
-
-
-		bool	IsKeyPressed();
+		//--------------
+		bool	IsDead();
 		bool	IsOnGround();
 		bool	IsHitbox();
+		bool	IsJump();
+		//--------------
 		void	Collision(Mario mario, Map map);
 		void	Collision(Mario mario, Goomba goomba);
 		void    Collision(Enemyfactor enemyfactor);
@@ -59,30 +55,24 @@ namespace game_framework
 
 		void	OnGround(Mario mario, Map map);
 		void	HitBox(Mario mario, Map map);
-
+		//----------
 		CMovingBitmap charactor;
 	private:
-		bool	isCrouching;
-		bool	dead = false;
+		bool	isDead = false;
+		bool	isCrouching = true;
+		bool	isCollision = false;
 		bool	isFlipped = false;
 		bool	isOnGround = false;
 		bool	isHitbox = false;
 		bool	isJump = false;
-		bool	isCollision = false;
+		
 		int		x;
 		int		y;
 
-		unsigned char jump_timer;
-		unsigned short death_timer;
-		unsigned short growth_timer;
-		unsigned short invincible_timer;
+		int		jump_timer;
 
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;
-		int		pressedKey = 0;
-		string	status = "initial";
-		bool	isKeyPressed = false;
-
 
 		int const GRAVITY = 1;
 	};

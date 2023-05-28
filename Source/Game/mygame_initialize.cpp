@@ -62,7 +62,8 @@ void CGameStateInit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 		case 1:
 			player = 2;
-			select.SetTopLeft(72 * 4 + 1, 160 * 4 + 2);
+			select.SetTopLeft(72 * 4 + 1, 
+				0 * 4 + 2);
 		case 2:
 			break;
 		}

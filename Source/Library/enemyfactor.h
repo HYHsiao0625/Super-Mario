@@ -21,6 +21,7 @@ namespace game_framework
 		void Load();
 		void Show();
 		void UpData(Mario mario, Map map);
+		void clear();
 		vector<Enemy*> GetMonsterlist();
 		vector<int> monster_temp;
 		vector<vector<int>> monster_position;

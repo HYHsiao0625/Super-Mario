@@ -39,17 +39,6 @@ namespace game_framework
 	{
 		charactor.LoadBitmapByString(filepaths, color);
 	}
-	void Enemy::Limit(CMovingBitmap floor, Mario mario)
-	{
-		if (floor.GetLeft() < 0 && mario.GetLeft() <= 384)
-		{
-			this->SetTopLeft(this->GetLeft() - mario.GetHorizontalSpeed(), this->GetTop());
-		}
-		if (mario.GetLeft() >= 512 && floor.GetLeft() + floor.GetWidth() >= 1024)
-		{
-			this->SetTopLeft(this->GetLeft() - mario.GetHorizontalSpeed(), this->GetTop());
-		}
-	}
 
 	int Enemy::GetFrameIndexOfBitmap()
 	{
@@ -65,10 +54,12 @@ namespace game_framework
 	{
 		charactor.SetAnimation(delay, _once);
 	}
+
 	void Enemy::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
 	}
+
 	int Enemy::GetTop()
 	{
 		return charactor.GetTop();
@@ -98,41 +89,13 @@ namespace game_framework
 		horizontalSpeed = value;
 	}
 
-	void Enemy::SetCollision(bool value)
-	{
-		isCollision = value;
-	}
-
-	void Enemy::SetDie(bool flag)
-	{
-		dead = flag;
-	}
-	void Enemy::SetStatus(string action)
-	{
-		status = action;
-	}
-
 	int Enemy::GetVerticalSpeed()
 	{
 		return verticalSpeed;
 	}
+
 	int Enemy::GetHorizontalSpeed()
 	{
 		return horizontalSpeed;
 	}
-
-	bool Enemy::GetDie()
-	{
-		return dead;
-	}
-
-	string Enemy::GetStatus()
-	{
-		return status;
-	}
-	bool Enemy::GetOnGround()
-	{
-		return isOnGround;
-	}
-
 }
