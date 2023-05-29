@@ -1,3 +1,0 @@
-﻿cl : 命令列 warning D9035: 選項 'Gm' 已被取代，在未來的發行版本中將會移除
-  goomba.cpp
-  game.vcxproj -> D:\game-framework-practice\.\Debug\game.exe

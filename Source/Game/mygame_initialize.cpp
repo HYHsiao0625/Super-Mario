@@ -51,7 +51,7 @@ void CGameStateInit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 		case 2:
 			player = 1;
-			select.SetTopLeft(72 * 4 + 1, 144 * 4 + 2);
+			select.SetTopLeft(144, 288);
 		}
 	}
 	if (nChar == VK_DOWN || nChar == 0x53)
@@ -62,8 +62,7 @@ void CGameStateInit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			break;
 		case 1:
 			player = 2;
-			select.SetTopLeft(72 * 4 + 1, 
-				0 * 4 + 2);
+			select.SetTopLeft(144, 320);
 		case 2:
 			break;
 		}
@@ -103,18 +102,18 @@ void CGameStateInit::LoadTitle() {
 		"resources/coin_overworld3.bmp",
 		"resources/coin_overworld1.bmp",
 		});
-	coin.SetTopLeft(352, 96);
+	coin.SetTopLeft(176, 48);
 	select.LoadBitmapByString({
 		"resources/select.bmp",
 		"resources/reject.bmp"
 		});
 	if (player == 1)
 	{
-		select.SetTopLeft(288, 576);
+		select.SetTopLeft(144, 288);
 	}
 	else
 	{
-		select.SetTopLeft(288, 640);
+		select.SetTopLeft(144, 320);
 	}
 
 }

@@ -1,4 +1,4 @@
-﻿﻿//#define	 INITGUID
+﻿//#define	 INITGUID
 #include "stdafx.h"
 #include "../Core/game.h"
 #include "../Core/MainFrm.h"
@@ -21,22 +21,22 @@
 
 namespace game_framework
 {
-	Flower::Flower() : Enemy()
+	Flower::Flower() : Enemy() 
 	{
 
 	}
-	Flower::~Flower()
+	Flower::~Flower() 
 	{
 
 	}
 	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
 		//Collision(map);
-		int mario_x = (mario.GetLeft() - map.GetLeft()) / 64;
-		int mario_y = (mario.GetTop() - 4) / 64;
-		int enemy_x = (GetLeft() - map.GetLeft()) / 64;
-		int enemy_y = GetTop() / 64;
-		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 2)
+		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+		int mario_y = (mario.GetTop() - 4) / 32;
+		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
+		int enemy_y = GetTop() / 32;
+		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 1)
 		{
 			trigger = 1;
 		}
@@ -51,22 +51,8 @@ namespace game_framework
 			else if (GetTop() == 580 && active == 0) {
 				verticalSpeed = 0;
 			}
+			charactor.SetTopLeft(charactor.GetLeft(), charactor.GetTop() + verticalSpeed);
 		}
-		if (mario.GetHorizontalSpeed() > 0)
-		{
-			if (map.GetWidth() + map.GetLeft() > 1600 && mario.GetLeft() > 480)
-			{
-				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
-			}
-		}
-		else if (mario.GetHorizontalSpeed() < 0)
-		{
-			if (map.GetLeft() < 0 && mario.GetLeft() < 256)
-			{
-				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
-			}
-		}
-		charactor.SetTopLeft(charactor.GetLeft(), charactor.GetTop() + verticalSpeed);
 	}
 
 	void Flower::Reset()
@@ -95,8 +81,8 @@ namespace game_framework
 	void Flower::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int enemy_x = (GetLeft() - map.GetLeft()) / 64;
-		int enemy_y = GetTop() / 64;
+		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
+		int enemy_y = GetTop() / 32;
 
 		if (horizontalSpeed > 0)
 		{

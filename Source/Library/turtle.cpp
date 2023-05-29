@@ -26,16 +26,20 @@ namespace game_framework
 	}
 	void Turtle::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
 	{
+		int x, y;
 		Collision(map);
 		OnGround(map);
 		Collision(monster_list);
+
 		if (isCollision == true)
 		{
-			if (isDead == false) {
+			if (isDead == false)
+			{
 				horizontalSpeed *= -1;
 				isCollision = false;
 			}
-			else {
+			else
+			{
 				horizontalSpeed = 0;
 				charactor.SetFrameIndexOfBitmap(3);
 			}
@@ -47,21 +51,29 @@ namespace game_framework
 		{
 			charactor.SetFrameIndexOfBitmap(2);
 			isKickAble = true;
-			SetTopLeft(GetLeft(), GetTop() + 32);
+			SetTopLeft(GetLeft(), GetTop() + 16);
 			horizontalSpeed = 0;
 		}
 		if (isKickAble == true) {
-			if (mario.charactor.IsOverlap(charactor, mario.charactor)) {
-				if (mario.GetLeft() < GetLeft()) {
-					horizontalSpeed = 10;
-				}
-				else if (mario.GetLeft() > GetLeft()) {
-					horizontalSpeed = -10;
+			if (mario.charactor.IsOverlap(charactor, mario.charactor)) 
+			{
+				if (isKickAble == true)
+				{
+					if (mario.GetLeft() < GetLeft())
+					{
+						horizontalSpeed = 12;
+					}
+					else if (mario.GetLeft() > GetLeft()) {
+						horizontalSpeed = -12;
+					}
 				}
 			}
-			if (horizontalSpeed == 10 || horizontalSpeed == -10) {
-				for (auto enemy : monster_list) {
-					if (enemy->charactor.IsOverlap(enemy->charactor, charactor) && (charactor.GetLeft() != enemy->GetLeft())) {
+			if (horizontalSpeed == 12 || horizontalSpeed == -12) 
+			{
+				for (auto enemy : monster_list) 
+				{
+					if (enemy->charactor.IsOverlap(enemy->charactor, charactor) && (charactor.GetLeft() != enemy->GetLeft())) 
+					{
 						enemy->Die();
 						Die();
 					}
@@ -77,21 +89,35 @@ namespace game_framework
 		{
 			verticalSpeed += 1;
 		}
-		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
-		if (mario.GetHorizontalSpeed() > 0)
+
+		if (verticalSpeed > 16)
 		{
-			if (map.GetWidth() + map.GetLeft() > 1600 && mario.GetLeft() > 480)
-			{
-				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
-			}
+			verticalSpeed = 16;
 		}
-		else if (mario.GetHorizontalSpeed() < 0)
+
+		x = charactor.GetLeft() + horizontalSpeed;
+
+		if (isOnGround == true)
 		{
-			if (map.GetLeft() < 0 && mario.GetLeft() < 256)
+			if (isKickAble == false)
 			{
-				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
+				y = ((charactor.GetTop() + verticalSpeed) / 32) * 32 + 16;
 			}
+			else
+			{
+				y = ((charactor.GetTop() + verticalSpeed) / 32) * 32;
+			}
+			
 		}
+		else
+		{
+			y = charactor.GetTop() + verticalSpeed;
+		}
+		if (GetTop() > 480)
+		{
+			Die();
+		}
+		charactor.SetTopLeft(x, y);
 	}
 
 	void Turtle::Reset()
@@ -111,7 +137,7 @@ namespace game_framework
 
 	void Turtle::Die()
 	{
-		//charactor.SetFrameIndexOfBitmap(2);
+		charactor.SetFrameIndexOfBitmap(3);
 		isdead = true;
 	}
 
@@ -123,61 +149,62 @@ namespace game_framework
 	void Turtle::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int turtle_y = GetTop() / 64;
+		int turtle_y = GetTop() / 32;
 
 		//left collision
-		if (GetTop() < 800) {
-			if (horizontalSpeed > 0)
+		if (horizontalSpeed > 0)
+		{
+			int turtle_x = (GetLeft() - map.GetLeft()) / 32;
+			if (map_vector[turtle_y][turtle_x + 1] != 0)
 			{
-				int turtle_x = (GetLeft() - map.GetLeft()) / 64;
-				if (map_vector[turtle_y][turtle_x + 1] != 0)
-				{
-					isCollision = true;
-				}
-			}//right collision
-			else if (horizontalSpeed < 0)
+				isCollision = true;
+			}
+
+			if (GetLeft() - map.GetLeft() < 4)
 			{
-				int turtle_x = (GetLeft() - map.GetLeft()) / 64;
-				if (map_vector[turtle_y][turtle_x] != 0)
-				{
-					isCollision = true;
-				}
+				horizontalSpeed *= -1;
+			}
+		}//right collision
+		else if (horizontalSpeed < 0)
+		{
+			int turtle_x = (GetLeft() - map.GetLeft()) / 32;
+
+			if (map_vector[turtle_y][turtle_x] != 0)
+			{
+				isCollision = true;
+			}
+
+			if (GetLeft() - map.GetLeft() < 4)
+			{
+				horizontalSpeed *= -1;
 			}
 		}
-
 	}
 	void Turtle::Collision(vector<Enemy*> monster_list) {
-		if (GetTop() < 770) {
-			for (auto enemy : monster_list) {
-				if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
-				{
-					isCollision = true;
-				}
+		for (auto enemy : monster_list) {
+			if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
+			{
+				isCollision = true;
 			}
 		}
-
 	}
 	void Turtle::OnGround(Map map)
 	{
-
 		vector<vector<int>> map_vector = map.GetMap();
-		int turtle_x = (GetLeft() - map.GetLeft() - 32) / 64;
-		int turtle_y = (GetTop() + 32) / 64;
-		if (GetTop() < 800) {
-			if (map_vector[turtle_y + 1][turtle_x] != 0)
-			{
-				isOnGround = true;
-			}
-			else if (map_vector[turtle_y + 1][turtle_x + 1] != 0 && map_vector[turtle_y][turtle_x + 1] == 0)
-			{
-				isOnGround = true;
-			}
-			else
-			{
-				isOnGround = false;
-			}
+		int turtle_x = (GetLeft() - map.GetLeft()) / 32;
+		int turtle_y = (GetTop() + 16) / 32;
+		
+		if (map_vector[turtle_y + 1][turtle_x] != 0)
+		{
+			isOnGround = true;
 		}
-
-
+		else if (map_vector[turtle_y + 1][turtle_x + 1] != 0 && map_vector[turtle_y][turtle_x + 1] == 0)
+		{
+			isOnGround = true;
+		}
+		else
+		{
+			isOnGround = false;
+		}
 	}
 }

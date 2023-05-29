@@ -54,7 +54,7 @@ namespace game_framework
 		bool	isCollision = false;
 		bool    isOnGround = false;
 		bool	isDead = false;
-
+		
 	};
 }
 #endif // !Item_H

@@ -22,6 +22,7 @@ namespace game_framework
 {
 	void Mushroom::UpData(Mario mario, Map map)
 	{
+		int x, y;
 		Collision(map);
 		OnGround(map);
 		if (isCollision == true)
@@ -29,11 +30,12 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (charactor.IsOverlap(mario.charactor, charactor)) {
+		if (charactor.IsOverlap(mario.charactor,charactor)) {
 			horizontalSpeed = 0;
 			isDead = true;
 			Die();
 		}
+
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
@@ -42,21 +44,28 @@ namespace game_framework
 		{
 			verticalSpeed += 1;
 		}
-		if (mario.GetHorizontalSpeed() > 0)
+		if (verticalSpeed > 16)
 		{
-			if (map.GetWidth() + map.GetLeft() > 1600 && mario.GetLeft() > 480)
-			{
-				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
-			}
+			verticalSpeed = 16;
 		}
-		else if (mario.GetHorizontalSpeed() < 0)
+
+		x = charactor.GetLeft() + horizontalSpeed;
+
+		if (isOnGround == true)
 		{
-			if (map.GetLeft() < 0 && mario.GetLeft() < 256)
-			{
-				SetTopLeft(GetLeft() - mario.GetHorizontalSpeed(), GetTop());
-			}
+			y = ((charactor.GetTop() + verticalSpeed) / 32) * 32;
 		}
-		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+		else
+		{
+			y = charactor.GetTop() + verticalSpeed;
+		}
+
+		if (GetTop() > 480)
+		{
+			Die();
+		}
+
+		charactor.SetTopLeft(x, y);
 
 	}
 
@@ -83,15 +92,16 @@ namespace game_framework
 	{
 		return isdead;
 	}
+
 	void Mushroom::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mario_y = GetTop() / 64;
+		int mario_y = GetTop() / 32;
 
 		//left collision
 		if (horizontalSpeed > 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (GetLeft() - map.GetLeft()) / 32;
 			if (map_vector[mario_y][mario_x + 1] != 0)
 			{
 				isCollision = true;
@@ -99,7 +109,7 @@ namespace game_framework
 		}//right collision
 		else if (horizontalSpeed < 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 64;
+			int mario_x = (GetLeft() - map.GetLeft()) / 32;
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isCollision = true;
@@ -109,9 +119,9 @@ namespace game_framework
 	void Mushroom::OnGround(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mushroom_x = (GetLeft() - map.GetLeft()) / 64;
-		int mushroom_y = GetTop() / 64;
-
+		int mushroom_x = (GetLeft() - map.GetLeft()) / 32;
+		int mushroom_y = GetTop() / 32;
+		
 		if (map_vector[mushroom_y + 1][mushroom_x] != 0)
 		{
 			isOnGround = true;
@@ -125,8 +135,8 @@ namespace game_framework
 		{
 			isOnGround = false;
 		}
-
+		
 	}
 
-
+	
 }

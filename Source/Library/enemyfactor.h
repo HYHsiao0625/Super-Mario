@@ -18,13 +18,16 @@ namespace game_framework
 	public:
 		Enemyfactor();
 		~Enemyfactor();
-		void Load();
+		void Load(int world, int level);
 		void Show();
 		void UpData(Mario mario, Map map);
-		void clear();
+		void SetTopLeft(int x, int y);
+		void Reset();
 		vector<Enemy*> GetMonsterlist();
+
 		vector<int> monster_temp;
 		vector<vector<int>> monster_position;
+		vector<vector<int>> emeny_data;
 		vector<Enemy*> monster_list;
 	};
 }
