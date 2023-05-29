@@ -45,9 +45,11 @@ void CGameStateRun::OnMove()							// 移動遊戲元素
 void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 {
 	LoadBackground();
-	LoadMap(1, 1);
+	map.Load(1, 1);
+	enemyfactor.Load(1, 1);
 	mario.Load();
-	enemyfactor.Load();
+	//goomba.Load();
+	//goomba.SetTopLeft(50, 384);
 	//mushroom.Load();
 }
 
@@ -86,6 +88,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == VK_SPACE)
 	{
+		mario.SetVerticalSpeed(mario.GetVerticalSpeed() + 1);
 		mario.SetJump(false);
 	}
 	if (nChar == 0x52)
@@ -118,11 +121,10 @@ void CGameStateRun::OnShow()
 {
 	int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 	int mario_y = mario.GetTop() / 32;
-	mario.UpData(mario, map, enemyfactor,itemfactor);
+	mario.UpData(mario, map, enemyfactor, itemfactor);
 	itemfactor.UpData(mario ,map);
 	map.Updata(mario);
 	enemyfactor.UpData(mario, map);
-
 	if (mario.IsDead() == true)
 	{
 		OnBeginState();
@@ -138,7 +140,8 @@ void CGameStateRun::OnShow()
 			mario.Show();
 			enemyfactor.Show();
 			itemfactor.Show();
-			//mushroom.ShowBitmap();
+			//goomba.ShowBitmap();
+			//--------
 			ShowMarioPostion();
 		}
 	}
@@ -160,7 +163,8 @@ void CGameStateRun::OnShow()
 		{
 			mario.SetTopLeft(256, mario.GetTop());
 			map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), map.GetTop());
-
+			background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
+			itemfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 		}
 	}
 	else if (mario.GetHorizontalSpeed() < 0)
@@ -169,6 +173,7 @@ void CGameStateRun::OnShow()
 		{
 			mario.SetTopLeft(128, mario.GetTop());
 			map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), map.GetTop());
+			background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 		}
 	}
 
@@ -180,12 +185,6 @@ void CGameStateRun::LoadBackground()
 		"resources/1-1 backgorund.bmp"
 		});
 	background.SetTopLeft(0, 0);
-}
-
-
-void CGameStateRun::LoadMap(int world, int level)
-{
-	map.Load(1, 1);
 }
 
 void CGameStateRun::ShowMarioPostion()
@@ -203,7 +202,7 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::Print(pDC, 0, 32, "y: " + std::to_string(mario.GetTop()));
 		CTextDraw::Print(pDC, 0, 48, "HorizontalSpeed: " + std::to_string(mario.GetHorizontalSpeed()));
 		CTextDraw::Print(pDC, 0, 64, "HIT: " + std::to_string(mario.IsHitbox()));
-		CTextDraw::Print(pDC, 0, 80, "GetStatus: " + mario.IsJump());
+		CTextDraw::Print(pDC, 0, 80, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
 
 		CTextDraw::Print(pDC, 0, 96, std::to_string(mario.IsDead()));
 		CTextDraw::Print(pDC, 0, 112, "type:" + std::to_string(map.GetMap()[mario_y][mario_x]));

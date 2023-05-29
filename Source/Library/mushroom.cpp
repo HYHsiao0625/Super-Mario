@@ -22,6 +22,7 @@ namespace game_framework
 {
 	void Mushroom::UpData(Mario mario, Map map)
 	{
+		int x, y;
 		Collision(map);
 		OnGround(map);
 		if (isCollision == true)
@@ -34,6 +35,7 @@ namespace game_framework
 			isDead = true;
 			Die();
 		}
+
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
@@ -42,7 +44,28 @@ namespace game_framework
 		{
 			verticalSpeed += 1;
 		}
-		charactor.SetTopLeft(charactor.GetLeft() + horizontalSpeed, charactor.GetTop() + verticalSpeed);
+		if (verticalSpeed > 16)
+		{
+			verticalSpeed = 16;
+		}
+
+		x = charactor.GetLeft() + horizontalSpeed;
+
+		if (isOnGround == true)
+		{
+			y = ((charactor.GetTop() + verticalSpeed) / 32) * 32;
+		}
+		else
+		{
+			y = charactor.GetTop() + verticalSpeed;
+		}
+
+		if (GetTop() > 480)
+		{
+			Die();
+		}
+
+		charactor.SetTopLeft(x, y);
 
 	}
 
@@ -69,6 +92,7 @@ namespace game_framework
 	{
 		return isdead;
 	}
+
 	void Mushroom::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();

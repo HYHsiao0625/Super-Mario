@@ -32,7 +32,7 @@ namespace game_framework
 		isOnGround(false),
 		horizontalSpeed(0),
 		verticalSpeed(0),
-		jump_timer(-8)
+		jump_timer(-4)
 	{
 
 	}
@@ -57,9 +57,9 @@ namespace game_framework
 		{
 			verticalSpeed = 0;
 			isJump = false;
-			jump_timer = -8;
+			isOnHit = false;
+			jump_timer = -4;
 		}
-
 		else
 		{
 			if (isHitbox == true)
@@ -84,7 +84,7 @@ namespace game_framework
 				}
 				else
 				{
-					verticalSpeed += GRAVITY;
+					verticalSpeed += 2 * GRAVITY;
 				}
 			}
 		}
@@ -95,7 +95,7 @@ namespace game_framework
 		}
 
 		x = charactor.GetLeft() + horizontalSpeed;
-		if (isOnGround == true && isJump == false)
+		if (isOnGround == true)
 		{
 			y = ((charactor.GetTop() + verticalSpeed) / 32) * 32;
 		}
@@ -305,8 +305,11 @@ namespace game_framework
 						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
 						) {
 					}
-					else {
-						Die();
+					else 
+					{
+						charactor.SetTopLeft(GetLeft(), GetTop() + 32);
+						charactor.SetFrameIndexOfBitmap(1);
+						isCrouching = true;
 					}
 				}
 			}
@@ -383,16 +386,18 @@ namespace game_framework
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
 		
-		if (isOnGround == false && isHitbox == false)
+		if (isOnGround == false && isHitbox == false && isOnHit == false)
 		{
 			if (map_vector[mario_y][mario_x] != 0)
 			{
 				isHitbox = true;
+				isOnHit = true;
 				isJump = false;
 			}
 			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
 			{
 				isHitbox = true;
+				isOnHit = true;
 				isJump = false;
 			}
 			else
@@ -400,20 +405,9 @@ namespace game_framework
 				isHitbox = false;
 			}
 		}
-		else
+		else if (isOnHit == true)
 		{
-			if (map_vector[mario_y][mario_x] != 0)
-			{
-				isHitbox = true;
-			}
-			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
-			{
-				isHitbox = true;
-			}
-			else
-			{
-				isHitbox = false;
-			}
+			isHitbox = false;
 		}
 		
 	}

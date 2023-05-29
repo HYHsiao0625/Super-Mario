@@ -66,6 +66,8 @@ namespace game_framework
 	void Map::Load(int world, int level)
 	{
 		CMovingBitmap block;
+		vector<int> map_temp;
+		vector<CMovingBitmap> array1;
 		if (world == 1 && level == 1)
 		{
 			for (int i = 0; i < 211; i++)
@@ -80,7 +82,7 @@ namespace game_framework
 			}
 			array1.clear();
 			map_temp.clear();
-			ifstream ifs("resources/map/1-1.map");
+			ifstream ifs("resources/map/1-1/1-1.map");
 			for (int i = 0; i < height + 4; i++)
 			{
 				for (int j = 0; j < 211; j++)

@@ -32,58 +32,55 @@ namespace game_framework
 	{
 		return monster_list;
 	}
-	void Enemyfactor::Load()
+	void Enemyfactor::Load(int world, int level)
 	{
 		ifstream ifs("resources/enemyposition.txt");
 
-		int numMonsters = 0;
-		int temp;
-		while (ifs >> temp)
-		{
-			numMonsters++;
-			monster_temp.push_back(temp);
-		}
+		vector<int> data_temp;
 
-		int numPositions = numMonsters / 2;
-		monster_position.resize(numPositions, vector<int>(2));
-		for (int i = 0; i < numPositions; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			monster_position[i][0] = monster_temp[i * 2];
-			monster_position[i][1] = monster_temp[i * 2 + 1];
+			data_temp.push_back(0);
 		}
-
-		for (int i = 0; i < numPositions; i++)
+		for (int i = 0; i < 2; i++)
 		{
-			int monsterType = monster_position[i][0];
-			int monsterPos = monster_position[i][1];
+			emeny_data.push_back(data_temp);
+		}
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				ifs >> emeny_data[i][j];
+			}
+		}
+		ifs.close();
+
+		for (int i = 0; i < 2; i++)
+		{
+			int monsterType = emeny_data[i][0];
+			int monsterPosLeft = emeny_data[i][1];
+			int monsterPosTop = emeny_data[i][2];
 			switch (monsterType)
 			{
 			case 1://Goomba怪物
 				monster_list.push_back(new Goomba());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monsterPos, 64);
-				monster_list[i]->SetHorizontalSpeed(-1);
-				//monster_list[i]->SetStatus("appear");
+				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
 				break;
 			case 2://flower怪物
 				monster_list.push_back(new Flower());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monsterPos, 0);
-				monster_list[i]->SetHorizontalSpeed(0);
-				//monster_list[i]->SetStatus("appear");
+				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
 				break;
 			case 3://turtle怪物
 				monster_list.push_back(new Turtle());
 				monster_list[i]->Load();
-				monster_list[i]->SetTopLeft(monsterPos, 0);
-				monster_list[i]->SetHorizontalSpeed(-1);
-				//monster_list[i]->SetStatus("appear");
+				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
 				break;
 			default:
 				break;
 			}
 		}
-		ifs.close();
 	}
 
 	void Enemyfactor::Show()
@@ -95,19 +92,29 @@ namespace game_framework
 
 	}
 
+	void Enemyfactor::SetTopLeft(int x, int y)
+	{
+
+		for (auto enemy : monster_list) 
+		{
+			enemy->SetTopLeft(x, y);
+		}
+
+	}
+
 	void Enemyfactor::UpData(Mario mario, Map map)
 	{
 
 		for (auto enemy : monster_list) {
 			enemy->UpData(monster_list, mario, map);
 		}
-
+		/*
 		for (int i = monster_list.size() - 1; i >= 0; i--) {
 			if (monster_list[i]->IsDead() == true) {
 				delete monster_list[i];
 				monster_list.erase(monster_list.begin() + i);
 			}
-		}
+		}*/
 	}
 	// ! ENEMYFACTO
 }

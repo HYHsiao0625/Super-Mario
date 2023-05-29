@@ -65,6 +65,7 @@ namespace game_framework
 		bool	isOnGround = false;
 		bool	isHitbox = false;
 		bool	isJump = false;
+		bool	isOnHit = false;
 		
 		int		x;
 		int		y;

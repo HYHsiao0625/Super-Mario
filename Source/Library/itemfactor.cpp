@@ -84,5 +84,12 @@ namespace game_framework
 			}
 		}
 	}
+
+	void Itemfactor::SetTopLeft(int x, int y)
+	{
+		for (auto item : itemList) {
+			item->SetTopLeft(item->GetLeft() - x, item->GetTop() - y);
+		}
+	}
 	// ! ENEMYFACTO
 }
