@@ -314,7 +314,14 @@ namespace game_framework
 					else 
 					{
 						if (enemylist[i]->GetFrameIndexOfBitmap() != 2) {
-							charactor.SetTopLeft(GetLeft(), GetTop() + 32);
+							if (GetLeft()> enemylist[i]->GetLeft())
+							{
+								charactor.SetTopLeft(GetLeft()-32, GetTop() + 32);
+							}
+							else
+							{
+								charactor.SetTopLeft(GetLeft() + 32, GetTop() + 32);
+							}
 							charactor.SetFrameIndexOfBitmap(0);
 							isCrouching = true;
 						}

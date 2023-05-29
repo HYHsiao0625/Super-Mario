@@ -37,16 +37,22 @@ namespace game_framework
 	}
 	void Map::Updata(Mario mario)
 	{
-
+		vector<int> map_temp;
 		int mario_x = (mario.GetLeft() - GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
 		if (mario.IsHitbox() == true)
 		{
 			if (map_vector[mario_y][mario_x] == 2) {
 				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
+				map_temp.push_back(mario_y);
+				map_temp.push_back(mario_x);
+				resetblock_vector.push_back(map_temp);
 			}
 			else if (map_vector[mario_y][mario_x + 1] == 2) {
 				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
+				map_temp.push_back(mario_y);
+				map_temp.push_back(mario_x+1);
+				resetblock_vector.push_back(map_temp);
 			}
 		}
 	}
@@ -199,6 +205,10 @@ namespace game_framework
 			{
 				charactor[i][j].SetTopLeft(j * 32, i * 32);
 			}
+		}
+		for (unsigned int i = 0; i <  resetblock_vector.size(); i++)
+		{
+			charactor[resetblock_vector[i][0]][resetblock_vector[i][1]].SetFrameIndexOfBitmap(0);
 		}
 	}
 }

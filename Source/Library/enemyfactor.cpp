@@ -66,6 +66,7 @@ namespace game_framework
 				monster_list.push_back(new Goomba());
 				monster_list[i]->Load();
 				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
+				monster_list[i]->SetHorizontalSpeed(4);
 				break;
 			case 2://flower怪物
 				monster_list.push_back(new Flower());
@@ -76,6 +77,7 @@ namespace game_framework
 				monster_list.push_back(new Turtle());
 				monster_list[i]->Load();
 				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
+				monster_list[i]->SetHorizontalSpeed(4);
 				break;
 			default:
 				break;
@@ -121,7 +123,11 @@ namespace game_framework
 	{
 		for (auto enemy : monster_list) 
 		{
-			enemy->Reset();
+			for (int i = monster_list.size() - 1; i >= 0; i--) {
+				delete monster_list[i];
+				monster_list.erase(monster_list.begin() + i);
+				
+			}
 		}
 	}
 

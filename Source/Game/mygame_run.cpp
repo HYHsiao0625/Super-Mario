@@ -36,6 +36,8 @@ void CGameStateRun::OnBeginState()
 	mario.Reset();
 	map.Reset();
 	enemyfactor.Reset();
+	itemfactor.Reset();
+	enemyfactor.Load(1,1);
 }
 
 void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
@@ -176,6 +178,7 @@ void CGameStateRun::OnShow()
 			mario.SetTopLeft(128, mario.GetTop());
 			map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), map.GetTop());
 			background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
+			itemfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 			enemyfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 		}
 	}

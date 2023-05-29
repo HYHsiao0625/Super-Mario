@@ -91,5 +91,11 @@ namespace game_framework
 			item->SetTopLeft(item->GetLeft() - x, item->GetTop() - y);
 		}
 	}
+	void Itemfactor::Reset() {
+		for (unsigned int i = 0; i < itemList.size(); i++) {
+			delete itemList[i];
+		}
+		itemList.clear();
+	}
 	// ! ENEMYFACTO
 }
