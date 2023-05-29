@@ -95,9 +95,9 @@ namespace game_framework
 	void Enemyfactor::SetTopLeft(int x, int y)
 	{
 
-		for (auto enemy : monster_list) 
+		for (auto enemy : monster_list)
 		{
-			enemy->SetTopLeft(x, y);
+			enemy->SetTopLeft(enemy->GetLeft() - x, enemy->GetTop() - y);
 		}
 
 	}
@@ -108,13 +108,23 @@ namespace game_framework
 		for (auto enemy : monster_list) {
 			enemy->UpData(monster_list, mario, map);
 		}
-		/*
+		
 		for (int i = monster_list.size() - 1; i >= 0; i--) {
 			if (monster_list[i]->IsDead() == true) {
 				delete monster_list[i];
 				monster_list.erase(monster_list.begin() + i);
 			}
-		}*/
+		}
 	}
+
+	void Enemyfactor::Reset()
+	{
+		for (auto enemy : monster_list) 
+		{
+			enemy->Reset();
+		}
+	}
+
+
 	// ! ENEMYFACTO
 }

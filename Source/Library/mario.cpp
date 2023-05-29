@@ -117,6 +117,7 @@ namespace game_framework
 		isDead = false;
 		isCrouching = true;
 		charactor.SetFrameIndexOfBitmap(0);
+		charactor.SetTopLeft(0, 0);
 	}
 
 	void Mario::Load()
@@ -287,9 +288,11 @@ namespace game_framework
 						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= 0
 						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
 						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
-						) {
+						) 
+					{
 					}
-					else {
+					else 
+					{
 						Die();
 					}
 				}
@@ -303,7 +306,8 @@ namespace game_framework
 						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -14
 						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
 						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
-						) {
+						) 
+					{
 					}
 					else 
 					{

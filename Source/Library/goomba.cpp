@@ -152,7 +152,7 @@ namespace game_framework
 		vector<vector<int>> map_vector = map.GetMap();
 		int goomba_x = (GetLeft() - map.GetLeft()) / 32;
 		int goomba_y = GetTop() / 32;
-		if (map_vector[goomba_x + 1][goomba_y] != 0)
+		if (map_vector[goomba_y + 1][goomba_x] != 0)
 		{
 			isOnGround = true;
 		}

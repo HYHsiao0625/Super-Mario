@@ -55,9 +55,12 @@ namespace game_framework
 	{
 		return map_vector;
 	}
-	vector<vector<CMovingBitmap>> Map::GetMapcharactor() {
+
+	vector<vector<CMovingBitmap>> Map::GetMapcharactor()
+	{
 		return charactor;
 	}
+
 	CMovingBitmap Map::GetMapCharactor(int x, int y)
 	{
 		return charactor[x][y];
@@ -184,6 +187,17 @@ namespace game_framework
 			for (int j = 0; j < 211; j++)
 			{
 				charactor[i][j].SetTopLeft(x + j * 32, y + i * 32);
+			}
+		}
+	}
+
+	void Map::Reset()
+	{
+		for (int i = 0; i < height + 2; i++)
+		{
+			for (int j = 0; j < 211; j++)
+			{
+				charactor[i][j].SetTopLeft(j * 32, i * 32);
 			}
 		}
 	}

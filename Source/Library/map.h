@@ -19,12 +19,11 @@ namespace game_framework
 		void	Updata(Mario mario);
 		void	Show();
 		void	Load(int world, int level);
+		void	Reset();
 
 		int		GetTop();
 		int		GetLeft();
 		int		GetWidth();
-
-		void	initalize();
 
 		void	SetTopLeft(int, int);
 
@@ -35,7 +34,7 @@ namespace game_framework
 	private:
 		int width = 211;
 		int height = 15;
-		
+
 		vector<vector<int>> map_vector;
 		vector<vector<CMovingBitmap>> charactor;
 
