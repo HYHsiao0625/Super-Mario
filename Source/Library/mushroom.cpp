@@ -30,12 +30,17 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (charactor.IsOverlap(mario.charactor,charactor)) {
+		if (mario.GetLeft() + mario.GetWidth() > GetLeft()
+			&& mario.GetLeft() < GetLeft() + GetWidth()
+			&& mario.GetTop() + mario.GetHeight() > GetTop()
+			&& mario.GetTop() < GetTop() + GetHeight()) {
+			cd--;
 			horizontalSpeed = 0;
 			isDead = true;
-			Die();
+			if (cd == 0) {
+				Die();
+			}
 		}
-
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;

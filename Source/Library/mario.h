@@ -74,6 +74,7 @@ namespace game_framework
 
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;
+		int     unbeatable_time = 0;
 
 		int const GRAVITY = 1;
 	};

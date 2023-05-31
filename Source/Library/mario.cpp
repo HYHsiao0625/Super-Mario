@@ -316,11 +316,11 @@ namespace game_framework
 						if (enemylist[i]->GetFrameIndexOfBitmap() != 2) {
 							if (GetLeft()> enemylist[i]->GetLeft())
 							{
-								charactor.SetTopLeft(GetLeft()-32, GetTop() + 32);
+								charactor.SetTopLeft(GetLeft()+ 64, GetTop() + 32);
 							}
 							else
 							{
-								charactor.SetTopLeft(GetLeft() + 32, GetTop() + 32);
+								charactor.SetTopLeft(GetLeft() - 64, GetTop() + 32);
 							}
 							charactor.SetFrameIndexOfBitmap(0);
 							isCrouching = true;
@@ -335,7 +335,10 @@ namespace game_framework
 		std::vector<Item*>_itemList = itemfactor.GetItemList();
 		for (unsigned int i = 0; i < _itemList.size(); i++)
 		{
-			if (_itemList[i]->charactor.IsOverlap(_itemList[i]->charactor, charactor))
+			if (GetLeft() + GetWidth() > _itemList[i]->GetLeft()
+				&& GetLeft() < _itemList[i]->GetLeft() + _itemList[i]->GetWidth()
+				&& GetTop() + GetHeight() > _itemList[i]->GetTop()
+				&& GetTop() < _itemList[i]->GetTop() + _itemList[i]->GetHeight())
 			{
 				charactor.SetTopLeft(GetLeft(), GetTop() - 32);
 				charactor.SetFrameIndexOfBitmap(4);

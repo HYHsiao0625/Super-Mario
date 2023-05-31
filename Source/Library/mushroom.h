@@ -28,6 +28,7 @@ namespace game_framework
 		
 	private:
 		bool isdead = false;
+		int	 cd = 2;
 	};
 }
 #endif // !Mushroom_H
