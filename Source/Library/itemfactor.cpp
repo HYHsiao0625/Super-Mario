@@ -32,6 +32,10 @@ namespace game_framework
 	{
 		return itemList;
 	}
+	vector<int> Itemfactor::GetItemTemp()
+	{
+		return itemTemp;
+	}
 	void Itemfactor::Load()
 	{
 	}
@@ -63,13 +67,14 @@ namespace game_framework
 				itemList.back()->Load();
 				itemList.back()->SetTopLeft(mario.GetLeft() , (mario_y - 1) * 32);
 				itemList.back()->SetHorizontalSpeed(2);
-				
+				itemTemp.push_back(2);
 			}
 			if (map_vector[mario_y][mario_x + 1] == 2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
 				itemList.push_back(new Mushroom());
 				itemList.back()->Load();
 				itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
 				itemList.back()->SetHorizontalSpeed(2);
+				itemTemp.push_back(2);
 			}
 		}
 		//Collision(map);
@@ -81,6 +86,7 @@ namespace game_framework
 			if (itemList[i]->IsDead() == true) {
 				delete itemList[i];
 				itemList.erase(itemList.begin() + i);
+				itemTemp.erase(itemTemp.begin() + i);
 			}
 		}
 	}
@@ -96,6 +102,7 @@ namespace game_framework
 			delete itemList[i];
 		}
 		itemList.clear();
+		itemTemp.clear();
 	}
 	// ! ENEMYFACTO
 }

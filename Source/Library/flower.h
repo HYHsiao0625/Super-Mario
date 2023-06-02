@@ -8,6 +8,7 @@
 #include <map>
 #include "mario.h"
 #include "enemy.h"
+#include "enemyfactor.h"
 using namespace std;
 
 namespace game_framework

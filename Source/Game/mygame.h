@@ -48,6 +48,8 @@
 #include "../Library/item.h"
 #include "../Library/itemfactor.h"
 #include "../Library/mushroom.h"
+#include "../Library/star.h"
+#include "../Library/fireball.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////

@@ -245,6 +245,7 @@
     <ClCompile Include="Source\Library\audio.cpp" />
     <ClCompile Include="Source\Library\enemy.cpp" />
     <ClCompile Include="Source\Library\enemyfactor.cpp" />
+    <ClCompile Include="Source\Library\fireball.cpp" />
     <ClCompile Include="Source\Library\flower.cpp" />
     <ClCompile Include="Source\Library\gamecore.cpp" />
     <ClCompile Include="Source\Library\gameutil.cpp" />
@@ -254,6 +255,7 @@
     <ClCompile Include="Source\Library\map.cpp" />
     <ClCompile Include="Source\Library\mario.cpp" />
     <ClCompile Include="Source\Library\mushroom.cpp" />
+    <ClCompile Include="Source\Library\star.cpp" />
     <ClCompile Include="Source\Library\turtle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +270,7 @@
     <ClInclude Include="Source\Library\audio.h" />
     <ClInclude Include="Source\Library\enemy.h" />
     <ClInclude Include="Source\Library\enemyfactor.h" />
+    <ClInclude Include="Source\Library\fireball.h" />
     <ClInclude Include="Source\Library\flower.h" />
     <ClInclude Include="Source\Library\gamecore.h" />
     <ClInclude Include="Source\Library\gameutil.h" />
@@ -277,6 +280,7 @@
     <ClInclude Include="Source\Library\map.h" />
     <ClInclude Include="Source\Library\mario.h" />
     <ClInclude Include="Source\Library\mushroom.h" />
+    <ClInclude Include="Source\Library\star.h" />
     <ClInclude Include="Source\Library\turtle.h" />
   </ItemGroup>
   <ItemGroup>
