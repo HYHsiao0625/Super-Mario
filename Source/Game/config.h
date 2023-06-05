@@ -18,7 +18,7 @@
 //! 是否在debug mode顯示cycle time
 #define SHOW_GAME_CYCLE_TIME false		
 //! 是否允許以 Ctrl-Q 暫停遊戲
-#define ENABLE_GAME_PAUSE	 true		
+#define ENABLE_GAME_PAUSE	 false		
 //! 啟動音效介面
 #define ENABLE_AUDIO		 true		
  //! 是否關閉 toolbar

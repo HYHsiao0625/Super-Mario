@@ -161,10 +161,9 @@ namespace game_framework
 			{
 				isCollision = true;
 			}
-
-			if (GetLeft() - map.GetLeft() < 4)
+			if (GetLeft() - map.GetLeft() == 0)
 			{
-				horizontalSpeed *= -1;
+				isCollision = true;
 			}
 		}//right collision
 		else if (horizontalSpeed < 0)
@@ -175,10 +174,9 @@ namespace game_framework
 			{
 				isCollision = true;
 			}
-
-			if (GetLeft() - map.GetLeft() < 4)
+			if (GetLeft() - map.GetLeft() == 0)
 			{
-				horizontalSpeed *= -1;
+				isCollision = true;
 			}
 		}
 	}

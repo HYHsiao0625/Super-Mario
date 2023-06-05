@@ -282,6 +282,10 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
+				if (map_vector[mario_y][mario_x + 1] == 9 || map_vector[mario_y][mario_x + 1] == 10)
+				{
+					SetSwitchMap(true);
+				}
 			}//right collision
 			else if (mario.GetHorizontalSpeed() < 0)
 			{
@@ -289,6 +293,10 @@ namespace game_framework
 				if (map_vector[mario_y][mario_x] != 0)
 				{
 					isCollision = true;
+				}
+				if (map_vector[mario_y][mario_x] == 9 || map_vector[mario_y][mario_x] == 10)
+				{
+					SetSwitchMap(true);
 				}
 			}
 			else
@@ -305,6 +313,10 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
+				if ((map_vector[mario_y][mario_x + 1] == 9 || map_vector[mario_y][mario_x + 1] == 10) ||(map_vector[mario_y + 1][mario_x + 1] == 9 || map_vector[mario_y + 1][mario_x + 1] == 10))
+				{
+					SetSwitchMap(true);
+				}
 			}
 			else if (mario.GetHorizontalSpeed() < 0)
 			{
@@ -313,13 +325,16 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
+				if ((map_vector[mario_y][mario_x] == 9 || map_vector[mario_y][mario_x] == 10) || (map_vector[mario_y + 1][mario_x] == 9 || map_vector[mario_y + 1][mario_x] == 10))
+				{
+					SetSwitchMap(true);
+				}
 			}
 			else
 			{
 				isCollision = false;
 			}
 		}
-
 	}
 	/*void Mario::Collision(Mario mario, Goomba goomba)
 	{
@@ -484,7 +499,6 @@ namespace game_framework
 				isOnGround = false;
 			}
 		}
-
 	}
 
 	void Mario::HitBox(Mario mario, Map map)
@@ -543,10 +557,31 @@ namespace game_framework
 	{
 		isJump = flags;
 	}
+
 	void Mario::FireballSetTopLeft(int x,int y){
 		for (auto fireball : fireball)
 		{
 			fireball.SetTopLeft(fireball.GetLeft() - x, fireball.GetTop() - y);
 		}
+	}
+
+	void Mario::SetDown(bool flags)
+	{
+		isDown = flags;
+	}
+
+	bool Mario::IsDown()
+	{
+		return isDown;
+	}
+
+	void Mario::SetSwitchMap(bool flags)
+	{
+		isSwitchMap = flags;
+	}
+
+	bool Mario::IsSwitchMap()
+	{
+		return isSwitchMap;
 	}
 }

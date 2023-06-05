@@ -113,6 +113,10 @@ namespace game_framework
 		int mario_y = GetTop() / 32;
 
 		//left collision
+		if (GetLeft() - map.GetLeft() == 0)
+		{
+			isCollision = true;
+		}
 		if (horizontalSpeed > 0)
 		{
 			int mario_x = (GetLeft() - map.GetLeft()) / 32;

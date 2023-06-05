@@ -37,7 +37,7 @@ void CGameStateRun::OnBeginState()
 	map.Reset();
 	enemyfactor.Reset();
 	itemfactor.Reset();
-	enemyfactor.Load(1,1);
+	enemyfactor.Load(world, level);
 }
 
 void CGameStateRun::OnMove()							// 移動遊戲元素
@@ -79,6 +79,14 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			mario.SetJump(false);
 		}
 	}
+	if (nChar == 0x52)
+	{
+		mario.SetShot(true);
+	}
+	if (nChar == 0x53)
+	{
+		mario.SetDown(true);
+	}
 }
 
 void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -97,10 +105,11 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 		mario.SetVerticalSpeed(mario.GetVerticalSpeed() + 1);
 		mario.SetJump(false);
 	}
-	if (nChar == 0x52)
+	if (nChar == 0x53)
 	{
-		mario.SetShot(true);
+		mario.SetDown(false);
 	}
+	
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -134,22 +143,39 @@ void CGameStateRun::OnShow()
 	if (mario.IsDead() == true)
 	{
 		OnBeginState();
-		mario.Reset();
 	}
 
-	if (world == 1)
+	if (world == 1 && level == 1)
 	{
-		if (level == 1)
+		background.ShowBitmap();
+		map.Show();
+		mario.Show();
+		enemyfactor.Show();
+		itemfactor.Show();
+		//--------
+		ShowMarioPostion();
+		if (mario.IsSwitchMap() == true)
 		{
-			background.ShowBitmap();
-			map.Show();
-			mario.Show();
-			enemyfactor.Show();
-			itemfactor.Show();
-			//goomba.ShowBitmap();
-			//--------
-			ShowMarioPostion();
+			mario.SetVerticalSpeed(4);
+			if (mario.IsOnGround() == true)
+			{
+				SwitchMap(1, 2);
+				map.Clear();
+				map.Load(1, 2);
+				mario.SetSwitchMap(false);
+				world = 1;
+				level = 2;
+				OnBeginState();
+			}
 		}
+	}
+	else if (world == 1 && level == 2)
+	{
+		background.ShowBitmap();
+		map.Show();
+		mario.Show();
+		enemyfactor.Show();
+		itemfactor.Show();
 	}
 	//----------MARIO-floor-LIMIT----------
 	if (mario.GetLeft() <= map.GetLeft())
@@ -187,7 +213,7 @@ void CGameStateRun::OnShow()
 			mario.FireballSetTopLeft(mario.GetHorizontalSpeed(), 0);
 		}
 	}
-
+	
 }
 
 void CGameStateRun::LoadBackground()
@@ -221,4 +247,13 @@ void CGameStateRun::ShowMarioPostion()
 	}
 	CDDraw::ReleaseBackCDC();
 
+}
+
+void CGameStateRun::SwitchMap(int world, int level)
+{
+	switchAnimation.LoadBitmapByString({
+		"resources/switchAnimation.bmp"
+		});
+	switchAnimation.SetTopLeft(0, 0);
+	switchAnimation.ShowBitmap();
 }
