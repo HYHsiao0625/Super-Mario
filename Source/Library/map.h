@@ -35,6 +35,7 @@ namespace game_framework
 		int width = 211;
 		int height = 15;
 
+		vector<vector<int>> resetblock_vector;
 		vector<vector<int>> map_vector;
 		vector<vector<CMovingBitmap>> charactor;
 

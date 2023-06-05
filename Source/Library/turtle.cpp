@@ -41,6 +41,7 @@ namespace game_framework
 			else
 			{
 				horizontalSpeed = 0;
+				Die();
 				charactor.SetFrameIndexOfBitmap(3);
 			}
 		}
@@ -66,6 +67,7 @@ namespace game_framework
 					else if (mario.GetLeft() > GetLeft()) {
 						horizontalSpeed = -12;
 					}
+					isDead = true;
 				}
 			}
 			if (horizontalSpeed == 12 || horizontalSpeed == -12) 

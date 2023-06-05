@@ -36,6 +36,8 @@ void CGameStateRun::OnBeginState()
 	mario.Reset();
 	map.Reset();
 	enemyfactor.Reset();
+	itemfactor.Reset();
+	enemyfactor.Load(1,1);
 }
 
 void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
@@ -60,10 +62,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x41)
 	{
 		mario.SetHorizontalSpeed(-16);
+		mario.face = -1;
 	}
 	if (nChar == 0x44) //key(2) == D
 	{
 		mario.SetHorizontalSpeed(16);
+		mario.face = 1;
 	}
 	if (nChar == VK_SPACE)
 	{
@@ -82,6 +86,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x41)
 	{
 		mario.SetHorizontalSpeed(0);
+		
 	}
 	if (nChar == 0x44) //key(2)== D
 	{
@@ -94,7 +99,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == 0x52)
 	{
-		OnBeginState();
+		mario.SetShot(true);
 	}
 }
 
@@ -167,6 +172,7 @@ void CGameStateRun::OnShow()
 			background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
 			itemfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 			enemyfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
+			mario.FireballSetTopLeft(mario.GetHorizontalSpeed(), 0);
 		}
 	}
 	else if (mario.GetHorizontalSpeed() < 0)
@@ -176,7 +182,9 @@ void CGameStateRun::OnShow()
 			mario.SetTopLeft(128, mario.GetTop());
 			map.SetTopLeft(map.GetLeft() - mario.GetHorizontalSpeed(), map.GetTop());
 			background.SetTopLeft(background.GetLeft() - mario.GetHorizontalSpeed(), background.GetTop());
+			itemfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
 			enemyfactor.SetTopLeft(mario.GetHorizontalSpeed(), 0);
+			mario.FireballSetTopLeft(mario.GetHorizontalSpeed(), 0);
 		}
 	}
 
@@ -203,7 +211,7 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::Print(pDC, 0, 0, "MARIO: ");
 		CTextDraw::Print(pDC, 0, 16, "x: " + std::to_string(mario.GetLeft() - map.GetLeft()));
 		CTextDraw::Print(pDC, 0, 32, "y: " + std::to_string(mario.GetTop()));
-		CTextDraw::Print(pDC, 0, 48, "HorizontalSpeed: " + std::to_string(mario.GetHorizontalSpeed()));
+		CTextDraw::Print(pDC, 0, 48, "Hnbeatable_time: " + std::to_string(mario.GetHnbeatable_time()));
 		CTextDraw::Print(pDC, 0, 64, "HIT: " + std::to_string(mario.IsHitbox()));
 		CTextDraw::Print(pDC, 0, 80, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
 

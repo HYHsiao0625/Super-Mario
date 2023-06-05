@@ -21,9 +21,11 @@ namespace game_framework
 
 		void Load();
 		void Show();
+		void Reset();
 		void UpData(Mario mario, Map map);
 		void SetTopLeft(int x, int y);
 		vector<Item*> GetItemList();
+		vector<int> GetItemTemp();
 		vector<int> itemTemp;
 		vector<vector<int>> itemPosition;
 		vector<Item*> itemList;

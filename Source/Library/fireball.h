@@ -1,5 +1,5 @@
-#ifndef Mushroom_H
-#define Mushroom_H
+#ifndef Fireball_H
+#define Fireball_H
 
 #pragma
 #include "gameutil.h"
@@ -12,7 +12,7 @@ using namespace std;
 
 namespace game_framework
 {
-	class Mushroom : public Item
+	class Fireball : public Item
 	{
 	public:
 		void UpData(Mario mario, Map map);
@@ -22,13 +22,12 @@ namespace game_framework
 		bool IsDead();
 
 		void Collision(Map map);
-		void OnGround(Map map);
 		void LoadDieIamge();
 
-		
+
 	private:
 		bool isdead = false;
-		int	 cd = 2;
+		int	 cd = 3000;
 	};
 }
-#endif // !Mushroom_H
+#endif // !Fireball_H

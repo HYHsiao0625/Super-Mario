@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "Mushroom.h"
+#include "Star.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void Mushroom::UpData(Mario mario, Map map)
+	void Star::UpData(Mario mario, Map map)
 	{
 		int x, y;
 		Collision(map);
@@ -41,7 +41,6 @@ namespace game_framework
 				Die();
 			}
 		}
-
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
@@ -50,7 +49,6 @@ namespace game_framework
 		{
 			verticalSpeed += 1;
 		}
-
 		if (verticalSpeed > 16)
 		{
 			verticalSpeed = 16;
@@ -76,29 +74,33 @@ namespace game_framework
 
 	}
 
-	void Mushroom::Reset()
+	void Star::Reset()
 	{
 
 	}
 
-	void Mushroom::Load()
+	void Star::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/Mushroom.bmp",
+			"resources/star1.bmp",
+			"resources/star2.bmp",
+			"resources/star3.bmp",
+			"resources/star4.bmp",
 			}, RGB(146, 144, 255));
+		charactor.SetAnimation(300, false);
 	}
 
-	void Mushroom::Die()
+	void Star::Die()
 	{
 		isdead = true;
 	}
 
-	bool Mushroom::IsDead()
+	bool Star::IsDead()
 	{
 		return isdead;
 	}
 
-	void Mushroom::Collision(Map map)
+	void Star::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -121,17 +123,17 @@ namespace game_framework
 			}
 		}
 	}
-	void Mushroom::OnGround(Map map)
+	void Star::OnGround(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int mushroom_x = (GetLeft() - map.GetLeft()) / 32;
-		int mushroom_y = GetTop() / 32;
-		
-		if (map_vector[mushroom_y + 1][mushroom_x] != 0)
+		int Star_x = (GetLeft() - map.GetLeft()) / 32;
+		int Star_y = GetTop() / 32;
+
+		if (map_vector[Star_y + 1][Star_x] != 0)
 		{
 			isOnGround = true;
 		}
-		else if (map_vector[mushroom_y + 1][mushroom_x + 1] != 0 && map_vector[mushroom_y][mushroom_x + 1] == 0)
+		else if (map_vector[Star_y + 1][Star_x + 1] != 0 && map_vector[Star_y][Star_x + 1] == 0)
 		{
 
 			isOnGround = true;
@@ -140,8 +142,8 @@ namespace game_framework
 		{
 			isOnGround = false;
 		}
-		
+
 	}
 
-	
+
 }

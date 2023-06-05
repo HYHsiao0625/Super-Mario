@@ -1,5 +1,5 @@
-#ifndef Mushroom_H
-#define Mushroom_H
+#ifndef Star_H
+#define Star_H
 
 #pragma
 #include "gameutil.h"
@@ -12,7 +12,7 @@ using namespace std;
 
 namespace game_framework
 {
-	class Mushroom : public Item
+	class Star : public Item
 	{
 	public:
 		void UpData(Mario mario, Map map);
@@ -25,10 +25,10 @@ namespace game_framework
 		void OnGround(Map map);
 		void LoadDieIamge();
 
-		
+
 	private:
 		bool isdead = false;
 		int	 cd = 2;
 	};
 }
-#endif // !Mushroom_H
+#endif // !Star_H
