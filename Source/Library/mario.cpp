@@ -69,6 +69,11 @@ namespace game_framework
 
 		if (unbeatable_time != 0) {
 			unbeatable_time--;
+			isInvincible = true;
+		}
+		else
+		{
+			isInvincible = false;
 		}
 
 		if (shot_time != 0) {
@@ -148,15 +153,17 @@ namespace game_framework
 			Die();
 		}
 
-		charactor.SetTopLeft(x, y);
+		SetTopLeft(x, y);
+		
 	}
 
 	void Mario::Reset()
 	{
 		isDead = false;
 		isCrouching = true;
-		charactor.SetFrameIndexOfBitmap(0);
-		charactor.SetTopLeft(0, 0);
+		SetFrameIndexOfBitmap(0);
+		
+		SetTopLeft(0, 0);
 		fireball.clear();
 	}
 
@@ -172,10 +179,51 @@ namespace game_framework
 		"resources/bigmario3.bmp",
 		"resources/bigmario4.bmp",
 			}/*, RGB(146, 144, 255)*/);
+		charactor_right.LoadBitmapByString({
+		"resources/mario1.bmp",
+		"resources/mario2.bmp",
+		"resources/mario3.bmp",
+		"resources/mario4.bmp",
+		"resources/mario1.bmp",
+			}/*, RGB(146, 144, 255)*/);
+		charactor_left.LoadBitmapByString({
+		"resources/mario1_left.bmp",
+		"resources/mario2_left.bmp",
+		"resources/mario3_left.bmp",
+		"resources/mario4_left.bmp",
+				"resources/mario1_left.bmp",
+
+			}/*, RGB(146, 144, 255)*/);
+		charactorbig_right.LoadBitmapByString({
+		"resources/bigmario1.bmp",
+		"resources/bigmario2.bmp",
+		"resources/bigmario3.bmp",
+		"resources/bigmario4.bmp",
+		"resources/bigmario1.bmp",
+			}/*, RGB(146, 144, 255)*/);
+		charactorbig_left.LoadBitmapByString({
+		"resources/bigmario1_left.bmp",
+		"resources/bigmario2_left.bmp",
+		"resources/bigmario3_left.bmp",
+		"resources/bigmario4_left.bmp",
+		"resources/bigmario1_left.bmp",
+			}/*, RGB(146, 144, 255)*/);
 	}
 	void Mario::Show()
 	{
-		charactor.ShowBitmap();
+		//charactor.ShowBitmap();
+		if (face == 1 && isCrouching==true) {
+			charactor_right.ShowBitmap();
+		}
+		else if (face == -1 && isCrouching == true) {
+			charactor_left.ShowBitmap();
+		}
+		else if (face == 1 && isCrouching == false) {
+			charactorbig_right.ShowBitmap();
+		}
+		else if (face == -1 && isCrouching == false) {
+			charactorbig_left.ShowBitmap();
+		}
 		for (unsigned int i = 0; i < fireball.size(); i++) {
 			fireball[i].ShowBitmap();
 		}
@@ -188,9 +236,12 @@ namespace game_framework
 	}
 	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
-		charactor.LoadBitmapByString(filepaths, color);
+		charactor.LoadBitmapByString(filepaths, color);	
+		charactor_left.LoadBitmapByString(filepaths, color);
+		charactor_right.LoadBitmapByString(filepaths, color);
+		charactorbig_left.LoadBitmapByString(filepaths, color);
+		charactorbig_right.LoadBitmapByString(filepaths, color);
 	}
-
 	int Mario::GetFrameIndexOfBitmap()
 	{
 		return charactor.GetFrameIndexOfBitmap();
@@ -199,15 +250,28 @@ namespace game_framework
 	void Mario::SetFrameIndexOfBitmap(int frameIndex)
 	{
 		charactor.SetFrameIndexOfBitmap(frameIndex);
+		charactor_left.SetFrameIndexOfBitmap(frameIndex);
+		charactor_right.SetFrameIndexOfBitmap(frameIndex);
+		charactorbig_left.SetFrameIndexOfBitmap(frameIndex);
+		charactorbig_right.SetFrameIndexOfBitmap(frameIndex);
 	}
 
 	void Mario::SetAnimation(int delay, bool _once)
 	{
 		charactor.SetAnimation(delay, _once);
+		charactor_left.SetAnimation(delay, _once);
+		charactor_right.SetAnimation(delay, _once);
+		charactorbig_left.SetAnimation(delay, _once);
+		charactorbig_right.SetAnimation(delay, _once);
+
 	}
 	void Mario::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
+		charactor_left.SetTopLeft(x, y);
+		charactor_right.SetTopLeft(x, y);
+		charactorbig_left.SetTopLeft(x, y);
+		charactorbig_right.SetTopLeft(x, y);
 	}
 	void Mario::SetShot(bool x)
 	{
@@ -277,6 +341,10 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
+				if (map_vector[mario_y][mario_x + 1] == 9 || map_vector[mario_y][mario_x + 1] == 10)
+				{
+					SetSwitchMap(true);
+				}
 			}//right collision
 			else if (mario.GetHorizontalSpeed() < 0)
 			{
@@ -284,6 +352,10 @@ namespace game_framework
 				if (map_vector[mario_y][mario_x] != 0)
 				{
 					isCollision = true;
+				}
+				if (map_vector[mario_y][mario_x] == 9 || map_vector[mario_y][mario_x] == 10)
+				{
+					SetSwitchMap(true);
 				}
 			}
 			else
@@ -300,6 +372,10 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
+				if ((map_vector[mario_y][mario_x + 1] == 9 || map_vector[mario_y][mario_x + 1] == 10) ||(map_vector[mario_y + 1][mario_x + 1] == 9 || map_vector[mario_y + 1][mario_x + 1] == 10))
+				{
+					SetSwitchMap(true);
+				}
 			}
 			else if (mario.GetHorizontalSpeed() < 0)
 			{
@@ -308,13 +384,16 @@ namespace game_framework
 				{
 					isCollision = true;
 				}
+				if ((map_vector[mario_y][mario_x] == 9 || map_vector[mario_y][mario_x] == 10) || (map_vector[mario_y + 1][mario_x] == 9 || map_vector[mario_y + 1][mario_x] == 10))
+				{
+					SetSwitchMap(true);
+				}
 			}
 			else
 			{
 				isCollision = false;
 			}
 		}
-
 	}
 	/*void Mario::Collision(Mario mario, Goomba goomba)
 	{
@@ -373,13 +452,13 @@ namespace game_framework
 						if (enemylist[i]->GetFrameIndexOfBitmap() != 2) {
 							if (GetLeft() > enemylist[i]->GetLeft())
 							{
-								charactor.SetTopLeft(GetLeft() + 64, GetTop() + 32);
+								SetTopLeft(GetLeft() + 64, GetTop() + 32);
 							}
 							else
 							{
-								charactor.SetTopLeft(GetLeft() - 64, GetTop() + 32);
+								SetTopLeft(GetLeft() - 64, GetTop() + 32);
 							}
-							charactor.SetFrameIndexOfBitmap(0);
+							SetFrameIndexOfBitmap(0);
 							isCrouching = true;
 						}
 					}
@@ -398,18 +477,33 @@ namespace game_framework
 				&& GetTop() + GetHeight() > _itemList[i]->GetTop()
 				&& GetTop() < _itemList[i]->GetTop() + _itemList[i]->GetHeight())
 			{
-				switch (_itemTemp[i])
+				if (isCrouching == true)
 				{
-				case 1://蘑菇物件
-					charactor.SetTopLeft(GetLeft(), GetTop() - 32);
-					charactor.SetFrameIndexOfBitmap(4);
-					isCrouching = false;
-					break;
-				case 2://星星物件
-					unbeatable_time = 60;
-					break;
-				default:
-					break;
+					switch (_itemTemp[i])
+					{
+					case 1://蘑菇物件
+						SetTopLeft(GetLeft(), GetTop() - 32);
+						isCrouching = false;
+						break;
+					case 2://星星物件
+						unbeatable_time = 60;
+						break;
+					default:
+						break;
+					}
+				}
+				else
+				{
+					switch (_itemTemp[i])
+					{
+					case 1://蘑菇物件
+						break;
+					case 2://星星物件
+						unbeatable_time = 60;
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
@@ -463,7 +557,6 @@ namespace game_framework
 				isOnGround = false;
 			}
 		}
-
 	}
 
 	void Mario::HitBox(Mario mario, Map map)
@@ -522,10 +615,31 @@ namespace game_framework
 	{
 		isJump = flags;
 	}
+
 	void Mario::FireballSetTopLeft(int x,int y){
 		for (auto fireball : fireball)
 		{
 			fireball.SetTopLeft(fireball.GetLeft() - x, fireball.GetTop() - y);
 		}
+	}
+
+	void Mario::SetDown(bool flags)
+	{
+		isDown = flags;
+	}
+
+	bool Mario::IsDown()
+	{
+		return isDown;
+	}
+
+	void Mario::SetSwitchMap(bool flags)
+	{
+		isSwitchMap = flags;
+	}
+
+	bool Mario::IsSwitchMap()
+	{
+		return isSwitchMap;
 	}
 }

@@ -32,6 +32,8 @@ namespace game_framework
 		void	SetTopLeft(int x, int y);
 		void	FireballSetTopLeft(int x, int y);
 		void	SetShot(bool);
+		void	SetDown(bool);
+		void	SetSwitchMap(bool);
 
 		int		GetFrameIndexOfBitmap();
 		int		GetTop();
@@ -52,6 +54,8 @@ namespace game_framework
 		bool	IsOnGround();
 		bool	IsHitbox();
 		bool	IsJump();
+		bool	IsDown();
+		bool	IsSwitchMap();
 		//--------------
 		void	Collision(Mario mario, Map map);
 		void	Collision(Mario mario, Goomba goomba);
@@ -60,8 +64,15 @@ namespace game_framework
 
 		void	OnGround(Mario mario, Map map);
 		void	HitBox(Mario mario, Map map);
+
+		
 		//----------
 		CMovingBitmap charactor; 
+		CMovingBitmap charactorjump;
+		CMovingBitmap charactor_right;
+		CMovingBitmap charactor_left;
+		CMovingBitmap charactorbig_right;
+		CMovingBitmap charactorbig_left;
 		int		face = 1;
 	private:
 		bool	isDead = false;
@@ -73,6 +84,9 @@ namespace game_framework
 		bool	isJump = false;
 		bool	isOnHit = false;
 		bool	isShot = false;
+		bool	isInvincible = false;
+		bool	isDown = false;
+		bool	isSwitchMap = false;
 		
 		int		x;
 		int		y;

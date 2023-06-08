@@ -82,14 +82,15 @@ namespace game_framework
 	void Star::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/Star.bmp",
-			"resources/empty.bmp"
+			"resources/star1.bmp",
+			"resources/star2.bmp",
+			"resources/star3.bmp",
+			"resources/star4.bmp",
 			}, RGB(146, 144, 255));
 	}
 
 	void Star::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(1);
 		isdead = true;
 	}
 

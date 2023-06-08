@@ -107,14 +107,16 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 	private:
+		void SwitchMap(int world, int level);
 		void LoadBackground();
 		void LoadMap(int world, int level);
 		void ShowMarioPostion();
 		string prestatus = "initial";
+
 		int world = 1;
 		int level = 1;
-		Mario mario;
 
+		Mario mario;
 		Goomba goomba;
 		Enemyfactor enemyfactor;
 		Itemfactor itemfactor;

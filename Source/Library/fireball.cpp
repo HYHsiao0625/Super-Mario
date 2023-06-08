@@ -27,6 +27,10 @@ namespace game_framework
 		if (cd != 0) {
 			cd--;
 		}
+		if (charactor.GetLeft() == 0)
+		{
+			Die();
+		}
 		if (isCollision == true)
 		{
 			Die();
@@ -46,14 +50,16 @@ namespace game_framework
 	void Fireball::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/Mushroom.bmp",
-			"resources/empty.bmp"
+			"resources/fireball1.bmp",
+			"resources/fireball2.bmp",
+			"resources/fireball3.bmp",
+			"resources/fireball4.bmp",
 			}, RGB(146, 144, 255));
+		charactor.SetAnimation(100, false);
 	}
 
 	void Fireball::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(1);
 		isdead = true;
 	}
 

@@ -63,18 +63,18 @@ namespace game_framework
 		if (mario.IsHitbox() == true)
 		{
 			if (map_vector[mario_y][mario_x] == 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap()== 0) {
-				itemList.push_back(new Mushroom());
+				itemList.push_back(new Star());
 				itemList.back()->Load();
 				itemList.back()->SetTopLeft(mario.GetLeft() , (mario_y - 1) * 32);
 				itemList.back()->SetHorizontalSpeed(2);
-				itemTemp.push_back(2);
+				itemTemp.push_back(1);
 			}
 			if (map_vector[mario_y][mario_x + 1] == 2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
-				itemList.push_back(new Mushroom());
+				itemList.push_back(new Star());
 				itemList.back()->Load();
 				itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
 				itemList.back()->SetHorizontalSpeed(2);
-				itemTemp.push_back(2);
+				itemTemp.push_back(1);
 			}
 		}
 		//Collision(map);

@@ -41,6 +41,7 @@ namespace game_framework
 				Die();
 			}
 		}
+
 		if (isOnGround == true)
 		{
 			verticalSpeed = 0;
@@ -49,6 +50,7 @@ namespace game_framework
 		{
 			verticalSpeed += 1;
 		}
+
 		if (verticalSpeed > 16)
 		{
 			verticalSpeed = 16;
@@ -83,13 +85,11 @@ namespace game_framework
 	{
 		charactor.LoadBitmapByString({
 			"resources/Mushroom.bmp",
-			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}
 
 	void Mushroom::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(1);
 		isdead = true;
 	}
 
