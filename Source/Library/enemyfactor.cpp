@@ -81,6 +81,12 @@ namespace game_framework
 					monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
 					monster_list[i]->SetHorizontalSpeed(4);
 					break;
+				case 4://hat goomba怪物
+					monster_list.push_back(new HatGoomba());
+					monster_list[i]->Load();
+					monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
+					monster_list[i]->SetHorizontalSpeed(4);
+					break;
 				default:
 					break;
 				}
@@ -133,12 +139,18 @@ namespace game_framework
 					monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
 					monster_list[i]->SetHorizontalSpeed(4);
 					break;
+				case 4://turtle怪物
+					monster_list.push_back(new HatGoomba());
+					monster_list[i]->Load();
+					monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
+					monster_list[i]->SetHorizontalSpeed(4);
+					break;
 				default:
 					break;
 				}
 			}
 		}
-		
+
 	}
 
 	void Enemyfactor::Show()
@@ -163,11 +175,11 @@ namespace game_framework
 	void Enemyfactor::UpData(Mario mario, Map map)
 	{
 		for (int i = monster_list.size() - 1; i >= 0; i--) {
-			if (abs(monster_list[i]->GetLeft() - mario.GetLeft()) < 760) {
-				monster_list[i]->UpData(monster_list, mario, map,i);
+			if (abs(monster_list[i]->GetLeft() - mario.GetLeft()) < 800) {
+				monster_list[i]->UpData(monster_list, mario, map, i);
 			}
 		}
-		
+
 		for (int i = monster_list.size() - 1; i >= 0; i--) {
 			if (monster_list[i]->IsDead() == true) {
 				delete monster_list[i];
@@ -178,12 +190,12 @@ namespace game_framework
 
 	void Enemyfactor::Reset()
 	{
-		for (auto enemy : monster_list) 
+		for (auto enemy : monster_list)
 		{
 			for (int i = monster_list.size() - 1; i >= 0; i--) {
 				delete monster_list[i];
 				monster_list.erase(monster_list.begin() + i);
-				
+
 			}
 		}
 	}
