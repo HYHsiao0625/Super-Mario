@@ -67,23 +67,24 @@ namespace game_framework
 
 		
 		//----------
-		CMovingBitmap charactor; 
+		CMovingBitmap charactor;
 		CMovingBitmap charactorjump;
 		CMovingBitmap charactor_right;
 		CMovingBitmap charactor_left;
 		CMovingBitmap charactorbig_right;
 		CMovingBitmap charactorbig_left;
 		int		face = 1;
+		bool	isCrouching = true;
+		bool	isShotable = false;
 	private:
 		bool	isDead = false;
-		bool	isCrouching = true;
 		bool	isCollision = false;
 		bool	isFlipped = false;
 		bool	isOnGround = false;
 		bool	isHitbox = false;
 		bool	isJump = false;
 		bool	isOnHit = false;
-		bool	isShot = false;
+		bool	isShot = false;	
 		bool	isInvincible = false;
 		bool	isDown = false;
 		bool	isSwitchMap = false;

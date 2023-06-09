@@ -32,7 +32,9 @@ namespace game_framework
 
 	void Enemy::ShowBitmap()
 	{
-		charactor.ShowBitmap();
+		if (showtime == 0) {
+			charactor.ShowBitmap();
+		}
 	}
 
 	void Enemy::LoadBitmapByString(vector<string> filepaths, COLORREF color)

@@ -162,9 +162,9 @@ namespace game_framework
 
 	void Enemyfactor::UpData(Mario mario, Map map)
 	{
-		for (auto enemy : monster_list) {
-			if (abs(enemy->GetLeft() - mario.GetLeft()) < 700) {
-				enemy->UpData(monster_list, mario, map);
+		for (int i = monster_list.size() - 1; i >= 0; i--) {
+			if (abs(monster_list[i]->GetLeft() - mario.GetLeft()) < 760) {
+				monster_list[i]->UpData(monster_list, mario, map,i);
 			}
 		}
 		

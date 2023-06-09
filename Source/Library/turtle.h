@@ -18,14 +18,14 @@ namespace game_framework
 	public:
 		Turtle();
 		~Turtle();
-		void UpData(vector<Enemy*> monster_list, Mario mario, Map map);
+		void UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos);
 		void Reset();
 		void Load();
 		void Die();
 		bool IsDead();
 		//-------------------
 		void Collision(Map map);
-		void Collision(vector<Enemy*> monster_list);
+		void Collision(vector<Enemy*> monster_list,int pos);
 		//-------------------
 		void OnGround(Map map);
 		void LoadDieIamge();

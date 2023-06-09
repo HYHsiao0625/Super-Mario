@@ -22,30 +22,42 @@ namespace game_framework
 {
 	Goomba::Goomba() : Enemy() 
 	{
-		
+		showtime = 0;
 	}
 	Goomba::~Goomba() 
 	{
 
 	}
-	void Goomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
+	void Goomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
 	{
 		int x, y;
 		Collision(map);
-		Collision(monster_list);
+		Collision(monster_list,pos);
 		OnGround(map);
 		if (isCollision == true)
 		{
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (-2 <= mario.GetTop() + mario.GetHeight() - GetTop()
-			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
-			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-			) {
-			horizontalSpeed = 0;
-			Die();
+		if (mario.isCrouching==true) {
+			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
+				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+				) {
+				horizontalSpeed = 0;
+				Die();
+			}
+		}
+		else {
+			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 60
+				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+				) {
+				horizontalSpeed = 0;
+				Die();
+			}
 		}
 		if (isOnGround == true)
 		{
@@ -135,9 +147,34 @@ namespace game_framework
 		}
 	}
 
-	void Goomba::Collision(vector<Enemy*> monster_list) 
+	void Goomba::Collision(vector<Enemy*> monster_list,int pos)
 	{
-		
+		int position = pos; //小怪在list裡面第幾個
+		if (pos != 0) {
+			if (charactor.IsOverlap(charactor, monster_list[pos - 1]->charactor) && (charactor.GetLeft() != monster_list[pos - 1]->GetLeft()) && monster_list[pos - 1]->IsDead() == false)
+			{
+				if (monster_list[pos - 1]->charactor.GetFrameIndexOfBitmap() == 2) {
+					horizontalSpeed = 0;
+					Die();
+				}
+				else if (monster_list[pos - 1]->IsDead() == false) {
+					isCollision = true;
+				}
+			}
+		}
+		if (pos != monster_list.size()-1) {
+			if (charactor.IsOverlap(charactor, monster_list[pos + 1]->charactor) && (charactor.GetLeft() != monster_list[pos + 1]->GetLeft()) && monster_list[pos + 1]->IsDead() == false)
+			{
+				if (monster_list[pos + 1]->charactor.GetFrameIndexOfBitmap() == 2) {
+					horizontalSpeed = 0;
+					Die();
+				}
+				else if (monster_list[pos + 1]->IsDead() == false) {
+					isCollision = true;
+				}
+			}
+		}
+		/*
 		for (auto enemy : monster_list) {
 			if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
 			{
@@ -149,7 +186,8 @@ namespace game_framework
 					isCollision = true;
 				}
 			}
-		}
+		}*/
+		
 	}
 	void Goomba::OnGround(Map map)
 	{

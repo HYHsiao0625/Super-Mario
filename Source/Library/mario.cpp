@@ -79,14 +79,24 @@ namespace game_framework
 		if (shot_time != 0) {
 			shot_time--;
 		}
-		if (isShot == true && shot_time == 0) {
+		if (isShot == true && shot_time == 0 && isShotable == true) {
 			fireball.push_back(Fireball());
 			fireball.back().Load();
 			if (face == 1) {
-				fireball.back().SetTopLeft(mario.GetLeft() + 32, mario.GetTop());
+				if (isCrouching == true) {
+					fireball.back().SetTopLeft(mario.GetLeft() + 32, mario.GetTop());
+				}
+				else {
+					fireball.back().SetTopLeft(mario.GetLeft() + 32, mario.GetTop()+32);
+				}
 			}
 			else {
-				fireball.back().SetTopLeft(mario.GetLeft() - 32, mario.GetTop());
+				if (isCrouching == true) {
+					fireball.back().SetTopLeft(mario.GetLeft() - 32, mario.GetTop());
+				}
+				else {
+					fireball.back().SetTopLeft(mario.GetLeft() - 32, mario.GetTop() + 32);
+				}
 			}
 			fireball.back().SetHorizontalSpeed(16 * face);
 			isShot = false;
@@ -162,7 +172,7 @@ namespace game_framework
 		isDead = false;
 		isCrouching = true;
 		SetFrameIndexOfBitmap(0);
-		
+		isShotable = false;
 		SetTopLeft(0, 0);
 		fireball.clear();
 	}
@@ -439,11 +449,11 @@ namespace game_framework
 		else
 		{
 			for (unsigned int i = 0; i < enemylist.size(); i++) {
-				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
-					if (-18 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
-						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -14
-						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
-						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
+				if (enemylist[i]->charactor.IsOverlap(charactorbig_right, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
+					if (-18 <= charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop()
+						&& charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop() <= -14
+						&& charactorbig_right.GetLeft() + charactorbig_right.GetWidth() > enemylist[i]->GetLeft()
+						&& charactorbig_right.GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
 						)
 					{
 					}
@@ -460,6 +470,7 @@ namespace game_framework
 							}
 							SetFrameIndexOfBitmap(0);
 							isCrouching = true;
+							//isShotable = false;
 						}
 					}
 				}
@@ -482,11 +493,15 @@ namespace game_framework
 					switch (_itemTemp[i])
 					{
 					case 1://蘑菇物件
+
 						SetTopLeft(GetLeft(), GetTop() - 32);
 						isCrouching = false;
 						break;
 					case 2://星星物件
 						unbeatable_time = 60;
+						break;
+					case 3://火焰花物件
+						isShotable = true;
 						break;
 					default:
 						break;
@@ -500,6 +515,9 @@ namespace game_framework
 						break;
 					case 2://星星物件
 						unbeatable_time = 60;
+						break;
+					case 3://火焰花物件
+						isShotable = true;
 						break;
 					default:
 						break;

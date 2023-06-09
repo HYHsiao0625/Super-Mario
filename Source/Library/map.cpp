@@ -42,13 +42,13 @@ namespace game_framework
 		int mario_y = (mario.GetTop() - 4) / 32;
 		if (mario.IsHitbox() == true)
 		{
-			if (map_vector[mario_y][mario_x] == 2) {
+			if (map_vector[mario_y][mario_x] == 2 || map_vector[mario_y][mario_x]==12 || map_vector[mario_y][mario_x] == 13 || map_vector[mario_y][mario_x] == 14) {
 				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
 				map_temp.push_back(mario_y);
 				map_temp.push_back(mario_x);
 				resetblock_vector.push_back(map_temp);
 			}
-			else if (map_vector[mario_y][mario_x + 1] == 2) {
+			else if (map_vector[mario_y][mario_x + 1] == 2 || map_vector[mario_y][mario_x+1] == 12 || map_vector[mario_y][mario_x+1] == 13 || map_vector[mario_y][mario_x+1] == 14) {
 				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
 				map_temp.push_back(mario_y);
 				map_temp.push_back(mario_x+1);
@@ -162,6 +162,24 @@ namespace game_framework
 					case 11:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag4.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
+					case 12:								//產出蘑菇的方塊
+						charactor[i][j].LoadBitmapByString({
+							"resources/block2.bmp",
+							"resources/block2_2.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
+					case 13:								//產出星星的方塊
+						charactor[i][j].LoadBitmapByString({
+							"resources/block2.bmp",
+							"resources/block2_2.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
+					case 14:								//產出火焰花的方塊
+						charactor[i][j].LoadBitmapByString({
+							"resources/block2.bmp",
+							"resources/block2_2.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
 					default:

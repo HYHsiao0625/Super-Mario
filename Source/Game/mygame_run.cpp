@@ -244,7 +244,7 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::Print(pDC, 0, 16, "x: " + std::to_string(mario.GetLeft() - map.GetLeft()));
 		CTextDraw::Print(pDC, 0, 32, "y: " + std::to_string(mario.GetTop()));
 		CTextDraw::Print(pDC, 0, 48, "Hnbeatable_time: " + std::to_string(mario.GetHnbeatable_time()));
-		CTextDraw::Print(pDC, 0, 64, "HIT: " + std::to_string(mario.IsHitbox()));
+		CTextDraw::Print(pDC, 0, 64, "fireable: " + std::to_string(mario.isShotable));
 		CTextDraw::Print(pDC, 0, 80, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
 
 		CTextDraw::Print(pDC, 0, 96, std::to_string(mario.IsDead()));

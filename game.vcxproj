@@ -245,11 +245,13 @@
     <ClCompile Include="Source\Library\audio.cpp" />
     <ClCompile Include="Source\Library\enemy.cpp" />
     <ClCompile Include="Source\Library\enemyfactor.cpp" />
+    <ClCompile Include="Source\Library\fireflower.cpp" />
     <ClCompile Include="Source\Library\fireball.cpp" />
     <ClCompile Include="Source\Library\flower.cpp" />
     <ClCompile Include="Source\Library\gamecore.cpp" />
     <ClCompile Include="Source\Library\gameutil.cpp" />
     <ClCompile Include="Source\Library\goomba.cpp" />
+    <ClCompile Include="Source\Library\hatgoomba.cpp" />
     <ClCompile Include="Source\Library\item.cpp" />
     <ClCompile Include="Source\Library\itemfactor.cpp" />
     <ClCompile Include="Source\Library\map.cpp" />
@@ -271,10 +273,12 @@
     <ClInclude Include="Source\Library\enemy.h" />
     <ClInclude Include="Source\Library\enemyfactor.h" />
     <ClInclude Include="Source\Library\fireball.h" />
+    <ClInclude Include="Source\Library\fireflower.h" />
     <ClInclude Include="Source\Library\flower.h" />
     <ClInclude Include="Source\Library\gamecore.h" />
     <ClInclude Include="Source\Library\gameutil.h" />
     <ClInclude Include="Source\Library\goomba.h" />
+    <ClInclude Include="Source\Library\hatgoomba.h" />
     <ClInclude Include="Source\Library\item.h" />
     <ClInclude Include="Source\Library\itemfactor.h" />
     <ClInclude Include="Source\Library\map.h" />
