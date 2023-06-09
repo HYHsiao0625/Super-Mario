@@ -1,5 +1,5 @@
-#ifndef GOOMBA_H
-#define GOOMBA_H
+#ifndef HatGoomba_H
+#define HatGoomba_H
 
 #pragma
 #include "gameutil.h"
@@ -11,13 +11,13 @@ using namespace std;
 
 namespace game_framework
 {
-	class Goomba : public Enemy
+	class HatGoomba : public Enemy
 	{
 	public:
-		Goomba();
-		~Goomba();
+		HatGoomba();
+		~HatGoomba();
 
-		void UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos);
+		void UpData(vector<Enemy*> monster_list, Mario mario, Map map, int pos);
 		void Reset();
 		void Load();
 		void Die();
@@ -28,7 +28,7 @@ namespace game_framework
 		//-------------------
 		void OnGround(Map map);
 		void LoadDieIamge();
-		
+
 	};
 }
-#endif // !GOOMBA_H
+#endif // !HatGoomba_H

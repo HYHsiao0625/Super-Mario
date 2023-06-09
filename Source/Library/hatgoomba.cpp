@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "goomba.h"
+#include "HatGoomba.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,44 +20,32 @@
 
 namespace game_framework
 {
-	Goomba::Goomba() : Enemy() 
+	HatGoomba::HatGoomba() : Enemy()
 	{
 		showtime = 0;
 	}
-	Goomba::~Goomba() 
+	HatGoomba::~HatGoomba()
 	{
 
 	}
-	void Goomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
+	void HatGoomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map, int pos)
 	{
 		int x, y;
 		Collision(map);
-		Collision(monster_list,pos);
+		Collision(monster_list, pos);
 		OnGround(map);
 		if (isCollision == true)
 		{
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (mario.isCrouching==true) {
-			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
-				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
-				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-				) {
-				horizontalSpeed = 0;
-				Die();
-			}
-		}
-		else {
-			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 60
-				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
-				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-				) {
-				horizontalSpeed = 0;
-				Die();
-			}
+		if (-2 <= mario.GetTop() + mario.GetHeight() - GetTop()
+			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
+			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+			) {
+			horizontalSpeed = 0;
+			Die();
 		}
 		if (isOnGround == true)
 		{
@@ -83,7 +71,7 @@ namespace game_framework
 		{
 			y = charactor.GetTop() + verticalSpeed;
 		}
-		
+
 		if (GetTop() > 480)
 		{
 			Die();
@@ -92,34 +80,34 @@ namespace game_framework
 		charactor.SetTopLeft(x, y);
 
 	}
-	
-	void Goomba::Reset()
+
+	void HatGoomba::Reset()
 	{
 
 	}
 
-	void Goomba::Load()
+	void HatGoomba::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/goomba1.bmp",
-			"resources/goomba2.bmp",
-			"resources/goomba3.bmp",
+			"resources/HatGoomba1.bmp",
+			"resources/HatGoomba2.bmp",
+			"resources/HatGoomba3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 
 	}
 
-	void Goomba::Die()
+	void HatGoomba::Die()
 	{
 		charactor.SetFrameIndexOfBitmap(3);
 		isDead = true;
 	}
 
-	bool Goomba::IsDead()
+	bool HatGoomba::IsDead()
 	{
 		return isDead;
 	}
-	void Goomba::Collision(Map map)
+	void HatGoomba::Collision(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -147,7 +135,7 @@ namespace game_framework
 		}
 	}
 
-	void Goomba::Collision(vector<Enemy*> monster_list,int pos)
+	void HatGoomba::Collision(vector<Enemy*> monster_list, int pos)
 	{
 		int position = pos; //小怪在list裡面第幾個
 		if (pos != 0) {
@@ -162,7 +150,7 @@ namespace game_framework
 				}
 			}
 		}
-		if (pos != monster_list.size()-1) {
+		if (pos != monster_list.size() - 1) {
 			if (charactor.IsOverlap(charactor, monster_list[pos + 1]->charactor) && (charactor.GetLeft() != monster_list[pos + 1]->GetLeft()) && monster_list[pos + 1]->IsDead() == false)
 			{
 				if (monster_list[pos + 1]->charactor.GetFrameIndexOfBitmap() == 2) {
@@ -187,18 +175,18 @@ namespace game_framework
 				}
 			}
 		}*/
-		
+
 	}
-	void Goomba::OnGround(Map map)
+	void HatGoomba::OnGround(Map map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int goomba_x = (GetLeft() - map.GetLeft()) / 32;
-		int goomba_y = GetTop() / 32;
-		if (map_vector[goomba_y + 1][goomba_x] != 0)
+		int HatGoomba_x = (GetLeft() - map.GetLeft()) / 32;
+		int HatGoomba_y = GetTop() / 32;
+		if (map_vector[HatGoomba_y + 1][HatGoomba_x] != 0)
 		{
 			isOnGround = true;
 		}
-		else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
+		else if (map_vector[HatGoomba_y + 1][HatGoomba_x + 1] != 0 && map_vector[HatGoomba_y][HatGoomba_x + 1] == 0)
 		{
 			isOnGround = true;
 		}
@@ -208,5 +196,5 @@ namespace game_framework
 		}
 	}
 
-	
+
 }

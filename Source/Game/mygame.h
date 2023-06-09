@@ -42,6 +42,7 @@
 #include "../Library/enemy.h"
 #include "../Library/enemyfactor.h"
 #include "../Library/goomba.h"
+#include "../Library/hatgoomba.h"
 #include "../Library/turtle.h"
 #include "../Library/flower.h"
 #include "../Library/map.h"
@@ -50,6 +51,7 @@
 #include "../Library/mushroom.h"
 #include "../Library/star.h"
 #include "../Library/fireball.h"
+#include "../Library/fireflower.h"
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////

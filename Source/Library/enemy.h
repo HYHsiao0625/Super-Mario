@@ -17,7 +17,7 @@ namespace game_framework
 		Enemy();
 		virtual ~Enemy()=0;
 
-		virtual void UpData(vector<Enemy*> monster_list, Mario mario, Map map) = 0;
+		virtual void UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos) = 0;
 		virtual void Reset() = 0;
 		virtual void Load() = 0;
 		virtual void Die() = 0;
@@ -48,7 +48,7 @@ namespace game_framework
 		CMovingBitmap charactor;
 	
 	protected:
-		
+		int     showtime=0;
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;
 		bool	isCollision = false;

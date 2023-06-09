@@ -32,7 +32,8 @@ namespace game_framework
 		isOnGround(false),
 		horizontalSpeed(0),
 		verticalSpeed(0),
-		jump_timer(-4)
+		jump_timer(-4),
+		dead_timer(4)
 	{
 
 	}
@@ -79,14 +80,24 @@ namespace game_framework
 		if (shot_time != 0) {
 			shot_time--;
 		}
-		if (isShot == true && shot_time == 0) {
+		if (isShot == true && shot_time == 0 && isShotable == true) {
 			fireball.push_back(Fireball());
 			fireball.back().Load();
 			if (face == 1) {
-				fireball.back().SetTopLeft(mario.GetLeft() + 32, mario.GetTop());
+				if (isCrouching == true) {
+					fireball.back().SetTopLeft(mario.GetLeft() + 32, mario.GetTop());
+				}
+				else {
+					fireball.back().SetTopLeft(mario.GetLeft() + 32, mario.GetTop()+32);
+				}
 			}
 			else {
-				fireball.back().SetTopLeft(mario.GetLeft() - 32, mario.GetTop());
+				if (isCrouching == true) {
+					fireball.back().SetTopLeft(mario.GetLeft() - 32, mario.GetTop());
+				}
+				else {
+					fireball.back().SetTopLeft(mario.GetLeft() - 32, mario.GetTop() + 32);
+				}
 			}
 			fireball.back().SetHorizontalSpeed(16 * face);
 			isShot = false;
@@ -153,16 +164,19 @@ namespace game_framework
 			Die();
 		}
 
-		charactor.SetTopLeft(x, y);
+		SetTopLeft(x, y);
+		
 	}
 
 	void Mario::Reset()
 	{
 		isDead = false;
 		isCrouching = true;
-		charactor.SetFrameIndexOfBitmap(0);
-		charactor.SetTopLeft(0, 0);
+		SetFrameIndexOfBitmap(0);
+		isShotable = false;
+		SetTopLeft(0, 0);
 		fireball.clear();
+		dead_timer = 4;
 	}
 
 	void Mario::Load()
@@ -177,25 +191,65 @@ namespace game_framework
 		"resources/bigmario3.bmp",
 		"resources/bigmario4.bmp",
 			}/*, RGB(146, 144, 255)*/);
+		charactor_right.LoadBitmapByString({
+		"resources/mario1.bmp",
+		"resources/mario2.bmp",
+		"resources/mario3.bmp",
+		"resources/mario4.bmp",
+			}/*, RGB(146, 144, 255)*/);
+		charactor_left.LoadBitmapByString({
+		"resources/mario1_left.bmp",
+		"resources/mario2_left.bmp",
+		"resources/mario3_left.bmp",
+		"resources/mario4_left.bmp",
+			}/*, RGB(146, 144, 255)*/);
+		charactorbig_right.LoadBitmapByString({
+		"resources/bigmario1.bmp",
+		"resources/bigmario2.bmp",
+		"resources/bigmario3.bmp",
+		"resources/bigmario4.bmp",
+			}/*, RGB(146, 144, 255)*/);
+		charactorbig_left.LoadBitmapByString({
+		"resources/bigmario1_left.bmp",
+		"resources/bigmario2_left.bmp",
+		"resources/bigmario3_left.bmp",
+		"resources/bigmario4_left.bmp",
+			}/*, RGB(146, 144, 255)*/);
 	}
 	void Mario::Show()
 	{
-		charactor.ShowBitmap();
+		//charactor.ShowBitmap();
+		if (face == 1 && isCrouching==true) {
+			charactor_right.ShowBitmap();
+		}
+		else if (face == -1 && isCrouching == true) {
+			charactor_left.ShowBitmap();
+		}
+		else if (face == 1 && isCrouching == false) {
+			charactorbig_right.ShowBitmap();
+		}
+		else if (face == -1 && isCrouching == false) {
+			charactorbig_left.ShowBitmap();
+		}
 		for (unsigned int i = 0; i < fireball.size(); i++) {
 			fireball[i].ShowBitmap();
 		}
 	}
 	void Mario::Die()
 	{
-		if (unbeatable_time == 0) {
+		if (unbeatable_time == 0) 
+		{
 			isDead = true;
 		}
 	}
 	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
-		charactor.LoadBitmapByString(filepaths, color);
+		charactor.LoadBitmapByString(filepaths, color);	
+		charactor_left.LoadBitmapByString(filepaths, color);
+		charactor_right.LoadBitmapByString(filepaths, color);
+		charactorbig_left.LoadBitmapByString(filepaths, color);
+		charactorbig_right.LoadBitmapByString(filepaths, color);
 	}
-
 	int Mario::GetFrameIndexOfBitmap()
 	{
 		return charactor.GetFrameIndexOfBitmap();
@@ -204,15 +258,28 @@ namespace game_framework
 	void Mario::SetFrameIndexOfBitmap(int frameIndex)
 	{
 		charactor.SetFrameIndexOfBitmap(frameIndex);
+		charactor_left.SetFrameIndexOfBitmap(frameIndex);
+		charactor_right.SetFrameIndexOfBitmap(frameIndex);
+		charactorbig_left.SetFrameIndexOfBitmap(frameIndex);
+		charactorbig_right.SetFrameIndexOfBitmap(frameIndex);
 	}
 
 	void Mario::SetAnimation(int delay, bool _once)
 	{
 		charactor.SetAnimation(delay, _once);
+		charactor_left.SetAnimation(delay, _once);
+		charactor_right.SetAnimation(delay, _once);
+		charactorbig_left.SetAnimation(delay, _once);
+		charactorbig_right.SetAnimation(delay, _once);
+
 	}
 	void Mario::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
+		charactor_left.SetTopLeft(x, y);
+		charactor_right.SetTopLeft(x, y);
+		charactorbig_left.SetTopLeft(x, y);
+		charactorbig_right.SetTopLeft(x, y);
 	}
 	void Mario::SetShot(bool x)
 	{
@@ -380,11 +447,11 @@ namespace game_framework
 		else
 		{
 			for (unsigned int i = 0; i < enemylist.size(); i++) {
-				if (enemylist[i]->charactor.IsOverlap(charactor, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
-					if (-18 <= GetTop() + GetHeight() - enemylist[i]->GetTop()
-						&& GetTop() + GetHeight() - enemylist[i]->GetTop() <= -14
-						&& GetLeft() + GetWidth() > enemylist[i]->GetLeft()
-						&& GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
+				if (enemylist[i]->charactor.IsOverlap(charactorbig_right, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
+					if (-18 <= charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop()
+						&& charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop() <= -14
+						&& charactorbig_right.GetLeft() + charactorbig_right.GetWidth() > enemylist[i]->GetLeft()
+						&& charactorbig_right.GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
 						)
 					{
 					}
@@ -393,14 +460,15 @@ namespace game_framework
 						if (enemylist[i]->GetFrameIndexOfBitmap() != 2) {
 							if (GetLeft() > enemylist[i]->GetLeft())
 							{
-								charactor.SetTopLeft(GetLeft() + 64, GetTop() + 32);
+								SetTopLeft(GetLeft() + 64, GetTop() + 32);
 							}
 							else
 							{
-								charactor.SetTopLeft(GetLeft() - 64, GetTop() + 32);
+								SetTopLeft(GetLeft() - 64, GetTop() + 32);
 							}
-							charactor.SetFrameIndexOfBitmap(0);
+							SetFrameIndexOfBitmap(0);
 							isCrouching = true;
+							//isShotable = false;
 						}
 					}
 				}
@@ -423,12 +491,15 @@ namespace game_framework
 					switch (_itemTemp[i])
 					{
 					case 1://蘑菇物件
-						charactor.SetTopLeft(GetLeft(), GetTop() - 32);
-						charactor.SetFrameIndexOfBitmap(4);
+
+						SetTopLeft(GetLeft(), GetTop() - 32);
 						isCrouching = false;
 						break;
 					case 2://星星物件
 						unbeatable_time = 60;
+						break;
+					case 3://火焰花物件
+						isShotable = true;
 						break;
 					default:
 						break;
@@ -442,6 +513,9 @@ namespace game_framework
 						break;
 					case 2://星星物件
 						unbeatable_time = 60;
+						break;
+					case 3://火焰花物件
+						isShotable = true;
 						break;
 					default:
 						break;

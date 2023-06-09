@@ -23,33 +23,47 @@ namespace game_framework
 {
 	Flower::Flower() : Enemy() 
 	{
-
+		showtime = 1;
 	}
 	Flower::~Flower() 
 	{
-
+		
 	}
-	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
+	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
 	{
 		//Collision(map);
+
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
 		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
 		int enemy_y = GetTop() / 32;
-		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 1)
+		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 2)
 		{
 			trigger = 1;
+			
 		}
 		if (trigger == 1) {
-			if (GetTop() == 580 && active == 1) {
-				verticalSpeed = -1;
+			if (GetTop() == 312 && active == 1) {
+				verticalSpeed = 4;
 			}
-			else if (GetTop() == 510) {
-				verticalSpeed = 1;
+			else if (GetTop() == 364) {
+				verticalSpeed = -4;
 				active = 0;
 			}
-			else if (GetTop() == 580 && active == 0) {
+			else if (GetTop() == 312 && active == 0) {
 				verticalSpeed = 0;
+			}
+			if (showtime != 0) {
+				showtime--;
+			}
+			if (GetTop() <= 325) {
+				charactor.SetFrameIndexOfBitmap(3);
+			}
+			else if (GetTop() <= 338) {
+				charactor.SetFrameIndexOfBitmap(2);
+			}
+			else if (GetTop() <= 351) {
+				charactor.SetFrameIndexOfBitmap(1);
 			}
 			charactor.SetTopLeft(charactor.GetLeft(), charactor.GetTop() + verticalSpeed);
 		}
@@ -63,19 +77,22 @@ namespace game_framework
 	void Flower::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/flower.bmp",
+			"resources/flower1_1.bmp",
+			"resources/flower1_2.bmp",
+			"resources/flower1_3.bmp",
+			"resources/flower1_4.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}
 
 	void Flower::Die()
 	{
-
+		isDead = true;
 	}
 
 	bool Flower::IsDead()
 	{
-		return false;
+		return isDead;
 	}
 
 	void Flower::Collision(Map map)

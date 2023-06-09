@@ -44,11 +44,11 @@ namespace game_framework
 			{
 				data_temp.push_back(0);
 			}
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 7; i++)
 			{
 				emeny_data.push_back(data_temp);
 			}
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 7; i++)
 			{
 				for (int j = 0; j < 3; j++)
 				{
@@ -57,7 +57,7 @@ namespace game_framework
 			}
 			ifs.close();
 
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 7; i++)
 			{
 				int monsterType = emeny_data[i][0];
 				int monsterPosLeft = emeny_data[i][1];
@@ -162,9 +162,10 @@ namespace game_framework
 
 	void Enemyfactor::UpData(Mario mario, Map map)
 	{
-
-		for (auto enemy : monster_list) {
-			enemy->UpData(monster_list, mario, map);
+		for (int i = monster_list.size() - 1; i >= 0; i--) {
+			if (abs(monster_list[i]->GetLeft() - mario.GetLeft()) < 760) {
+				monster_list[i]->UpData(monster_list, mario, map,i);
+			}
 		}
 		
 		for (int i = monster_list.size() - 1; i >= 0; i--) {

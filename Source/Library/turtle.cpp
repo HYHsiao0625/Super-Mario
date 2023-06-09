@@ -21,15 +21,16 @@
 namespace game_framework
 {
 	Turtle::Turtle() : Enemy() {
+		showtime = 0;
 	}
 	Turtle::~Turtle() {
 	}
-	void Turtle::UpData(vector<Enemy*> monster_list, Mario mario, Map map)
+	void Turtle::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
 	{
 		int x, y;
 		Collision(map);
 		OnGround(map);
-		Collision(monster_list);
+		Collision(monster_list,pos);
 
 		if (isCollision == true)
 		{
@@ -180,13 +181,31 @@ namespace game_framework
 			}
 		}
 	}
-	void Turtle::Collision(vector<Enemy*> monster_list) {
+	void Turtle::Collision(vector<Enemy*> monster_list,int pos) {
+		if (pos != 0) {
+			if (charactor.IsOverlap(charactor, monster_list[pos - 1]->charactor) && (charactor.GetLeft() != monster_list[pos - 1]->GetLeft()) && monster_list[pos - 1]->IsDead() == false)
+			{
+				if (monster_list[pos - 1]->IsDead() == false) {
+					isCollision = true;
+				}
+			}
+		}
+		if (pos != monster_list.size()-1) {
+			if (charactor.IsOverlap(charactor, monster_list[pos + 1]->charactor) && (charactor.GetLeft() != monster_list[pos + 1]->GetLeft()) && monster_list[pos + 1]->IsDead() == false)
+			{
+				if (monster_list[pos + 1]->IsDead() == false) {
+					isCollision = true;
+				}
+			}
+		}
+		/*
 		for (auto enemy : monster_list) {
 			if (charactor.IsOverlap(charactor, enemy->charactor) && (charactor.GetLeft() != enemy->GetLeft()) && enemy->IsDead() == false)
 			{
 				isCollision = true;
 			}
 		}
+		*/
 	}
 	void Turtle::OnGround(Map map)
 	{
