@@ -46,18 +46,33 @@ namespace game_framework
 				charactor.SetFrameIndexOfBitmap(3);
 			}
 		}
-		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
-			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
-			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
-		{
-			charactor.SetFrameIndexOfBitmap(2);
-			isKickAble = true;
-			SetTopLeft(GetLeft(), GetTop() + 16);
-			horizontalSpeed = 0;
+		if (mario.isCrouching == true) {
+			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 50
+				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
+			{
+				charactor.SetFrameIndexOfBitmap(2);
+				isKickAble = true;
+				SetTopLeft(GetLeft(), GetTop() + 16);
+				horizontalSpeed = 0;
+			}
+		}
+
+		else {
+			if (abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) < 80
+				&& abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.charactorbig_left.GetLeft() + mario.charactorbig_left.GetWidth() > GetLeft()
+				&& mario.charactorbig_left.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
+			{
+				charactor.SetFrameIndexOfBitmap(2);
+				isKickAble = true;
+				SetTopLeft(GetLeft(), GetTop() + 16);
+				horizontalSpeed = 0;
+			}
 		}
 		if (isKickAble == true) {
-			if (mario.charactor.IsOverlap(charactor, mario.charactor)) 
+			if (mario.charactorbig_left.IsOverlap(charactor, mario.charactorbig_left))
 			{
 				if (isKickAble == true)
 				{

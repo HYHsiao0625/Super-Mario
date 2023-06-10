@@ -49,6 +49,7 @@
 #include "../Library/item.h"
 #include "../Library/itemfactor.h"
 #include "../Library/mushroom.h"
+#include "../Library/missile.h"
 #include "../Library/star.h"
 #include "../Library/fireball.h"
 #include "../Library/fireflower.h"

@@ -1,3 +1,3 @@
 ﻿cl : 命令列 warning D9035: 選項 'Gm' 已被取代，在未來的發行版本中將會移除
-  enemyfactor.cpp
-  game.vcxproj -> C:\Users\User\Downloads\Super-Mario-yulun\Super-Mario-yulun\.\Debug\game.exe
+  missile.cpp
+  game.vcxproj -> C:\Users\User\Downloads\Super-Mario-test (2)\Super-Mario-test\.\Debug\game.exe

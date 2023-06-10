@@ -115,7 +115,16 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		mario.SetDown(false);
 	}
-	
+	if (nChar == 0x4A)
+	{
+		SwitchMap(1, level + 1);
+		map.Clear();
+		map.Load(1, level + 1);
+		mario.SetSwitchMap(false);
+		world = 1;
+		level++;
+		OnBeginState();
+	}
 }
 
 void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // 處理滑鼠的動作
@@ -151,6 +160,27 @@ void CGameStateRun::OnShow()
 		OnBeginState();
 	}
 
+	background.ShowBitmap();
+	map.Show();
+	mario.Show();
+	enemyfactor.Show();
+	itemfactor.Show();
+	ShowMarioPostion();
+	if (mario.IsSwitchMap() == true)
+	{
+		mario.SetVerticalSpeed(8);
+		if (mario.IsOnGround() == true)
+		{
+			SwitchMap(1, level + 1);
+			map.Clear();
+			map.Load(1, level + 1);
+			mario.SetSwitchMap(false);
+			world = 1;
+			level++;
+			OnBeginState();
+		}
+	}
+	/*
 	if (world == 1 && level == 1)
 	{
 		background.ShowBitmap();
@@ -182,7 +212,7 @@ void CGameStateRun::OnShow()
 		mario.Show();
 		enemyfactor.Show();
 		itemfactor.Show();
-	}
+	}*/
 	//----------MARIO-floor-LIMIT----------
 	if (mario.GetLeft() <= map.GetLeft())
 	{

@@ -28,7 +28,7 @@ namespace game_framework
 		//-------------------
 		void OnGround(Map map);
 		void LoadDieIamge();
-		bool havehat = true;
+
 	};
 }
 #endif // !HatGoomba_H

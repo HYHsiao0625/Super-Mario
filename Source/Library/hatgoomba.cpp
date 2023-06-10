@@ -39,39 +39,13 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (mario.isCrouching == true) {
-			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
-				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
-				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-				) {
-				if (havehat == true) {
-					havehat = false;
-					SetFrameIndexOfBitmap(1);
-					horizontalSpeed *= 3;
-				}
-				else {
-					horizontalSpeed = 0;
-					Die();
-				}
-			}
-		}
-		else {
-			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 60
-				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
-				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-				) {
-				if (havehat == true) {
-					havehat = false;
-					SetFrameIndexOfBitmap(1);
-					horizontalSpeed *= 3;
-					mario.SetTopLeft(mario.GetLeft(), mario.GetTop() - 32);
-				}
-				else {
-					Die();
-				}
-			}
+		if (-2 <= mario.GetTop() + mario.GetHeight() - GetTop()
+			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
+			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+			) {
+			horizontalSpeed = 0;
+			Die();
 		}
 		if (isOnGround == true)
 		{
@@ -115,9 +89,9 @@ namespace game_framework
 	void HatGoomba::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/hatgoomba1.bmp",
-			"resources/hatgoomba2.bmp",
-			"resources/goomba2.bmp",
+			"resources/HatGoomba1.bmp",
+			"resources/HatGoomba2.bmp",
+			"resources/HatGoomba3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 
@@ -125,14 +99,8 @@ namespace game_framework
 
 	void HatGoomba::Die()
 	{
-		if (havehat == true) {
-			havehat = false;
-			SetFrameIndexOfBitmap(1);
-			horizontalSpeed *= 5;
-		}
-		else {
-			isDead = true;
-		}
+		charactor.SetFrameIndexOfBitmap(3);
+		isDead = true;
 	}
 
 	bool HatGoomba::IsDead()
