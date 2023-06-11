@@ -73,7 +73,6 @@ namespace game_framework
 		CMovingBitmap charactor_left;
 		CMovingBitmap charactorbig_right;
 		CMovingBitmap charactorbig_left;
-
 		int		face = 1;
 		bool	isCrouching = true;
 		bool	isShotable = false;
@@ -94,7 +93,6 @@ namespace game_framework
 		int		y;
 
 		int		jump_timer;
-		int		dead_timer;
 
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;

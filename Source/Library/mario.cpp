@@ -32,8 +32,7 @@ namespace game_framework
 		isOnGround(false),
 		horizontalSpeed(0),
 		verticalSpeed(0),
-		jump_timer(-4),
-		dead_timer(4)
+		jump_timer(-4)
 	{
 
 	}
@@ -176,7 +175,6 @@ namespace game_framework
 		isShotable = false;
 		SetTopLeft(0, 0);
 		fireball.clear();
-		dead_timer = 4;
 	}
 
 	void Mario::Load()
@@ -196,24 +194,29 @@ namespace game_framework
 		"resources/mario2.bmp",
 		"resources/mario3.bmp",
 		"resources/mario4.bmp",
+		"resources/mario1.bmp",
 			}/*, RGB(146, 144, 255)*/);
 		charactor_left.LoadBitmapByString({
 		"resources/mario1_left.bmp",
 		"resources/mario2_left.bmp",
 		"resources/mario3_left.bmp",
 		"resources/mario4_left.bmp",
+				"resources/mario1_left.bmp",
+
 			}/*, RGB(146, 144, 255)*/);
 		charactorbig_right.LoadBitmapByString({
 		"resources/bigmario1.bmp",
 		"resources/bigmario2.bmp",
 		"resources/bigmario3.bmp",
 		"resources/bigmario4.bmp",
+		"resources/bigmario1.bmp",
 			}/*, RGB(146, 144, 255)*/);
 		charactorbig_left.LoadBitmapByString({
 		"resources/bigmario1_left.bmp",
 		"resources/bigmario2_left.bmp",
 		"resources/bigmario3_left.bmp",
 		"resources/bigmario4_left.bmp",
+		"resources/bigmario1_left.bmp",
 			}/*, RGB(146, 144, 255)*/);
 	}
 	void Mario::Show()
@@ -237,8 +240,7 @@ namespace game_framework
 	}
 	void Mario::Die()
 	{
-		if (unbeatable_time == 0) 
-		{
+		if (unbeatable_time == 0) {
 			isDead = true;
 		}
 	}
@@ -457,7 +459,7 @@ namespace game_framework
 					}
 					else
 					{
-						if (enemylist[i]->GetFrameIndexOfBitmap() != 2 && unbeatable_time==0) {
+						if (enemylist[i]->GetFrameIndexOfBitmap() != 2) {
 							if (GetLeft() > enemylist[i]->GetLeft())
 							{
 								SetTopLeft(GetLeft() + 64, GetTop() + 32);
@@ -580,29 +582,30 @@ namespace game_framework
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
-
-		if (isOnGround == false && isHitbox == false && isOnHit == false)
-		{
-			if (map_vector[mario_y][mario_x] != 0)
+		if (mario_y > 0 && mario_x > 0) {
+			if (isOnGround == false && isHitbox == false && isOnHit == false)
 			{
-				isHitbox = true;
-				isOnHit = true;
-				isJump = false;
+				if (map_vector[mario_y][mario_x] != 0)
+				{
+					isHitbox = true;
+					isOnHit = true;
+					isJump = false;
+				}
+				else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
+				{
+					isHitbox = true;
+					isOnHit = true;
+					isJump = false;
+				}
+				else
+				{
+					isHitbox = false;
+				}
 			}
-			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
-			{
-				isHitbox = true;
-				isOnHit = true;
-				isJump = false;
-			}
-			else
+			else if (isOnHit == true)
 			{
 				isHitbox = false;
 			}
-		}
-		else if (isOnHit == true)
-		{
-			isHitbox = false;
 		}
 
 	}

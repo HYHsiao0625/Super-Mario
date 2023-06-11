@@ -81,7 +81,7 @@ namespace game_framework
 		vector<CMovingBitmap> array1;
 		if (world == 1 && level == 1)
 		{
-			width = 96;
+			width = 128;
 			for (int i = 0; i < width; i++)
 			{
 				map_temp.push_back(0);
@@ -191,7 +191,7 @@ namespace game_framework
 		}
 		else if (world == 1 && level == 2)
 		{
-			width = 96;
+			width = 32;
 			for (int i = 0; i < width; i++)
 			{
 				map_temp.push_back(0);
@@ -281,98 +281,6 @@ namespace game_framework
 			}
 			ifs.close();
 		}
-		else if (world == 1 && level == 3)
-		{
-		width = 96;
-		for (int i = 0; i < width; i++)
-		{
-			map_temp.push_back(0);
-			array1.push_back(block);
-		}
-		for (int i = 0; i < height + 4; i++)
-		{
-			map_vector.push_back(map_temp);
-			charactor.push_back(array1);
-		}
-		array1.clear();
-		map_temp.clear();
-		ifstream ifs("resources/map/1-3/1-3.map");
-		for (int i = 0; i < height + 4; i++)
-		{
-			for (int j = 0; j < width; j++)
-			{
-				ifs >> map_vector[i][j];
-				switch (map_vector[i][j])
-				{
-				case 0:
-					charactor[i][j].LoadBitmapByString({
-						"resources/empty.bmp",
-						"resources/mushroom.bmp"
-						}, RGB(146, 144, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 1:
-					charactor[i][j].LoadBitmapByString({
-						"resources/block.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 2:
-					charactor[i][j].LoadBitmapByString({
-						"resources/block2.bmp",
-						"resources/block2_2.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 3:
-					charactor[i][j].LoadBitmapByString({
-						"resources/block3.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 4:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe1.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 5:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe2.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 6:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe3.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 7:
-					charactor[i][j].LoadBitmapByString({
-						"resources/pipe4.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 8:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag1.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 9:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag2.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 10:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag3.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				case 11:
-					charactor[i][j].LoadBitmapByString({
-						"resources/flag4.bmp"
-						}, RGB(148, 148, 255));
-					charactor[i][j].SetTopLeft(j * 32, i * 32);
-				default:
-					break;
-				}
-			}
-		}
-		ifs.close();
-		}
 	}
 
 	void Map::Show()
@@ -412,7 +320,7 @@ namespace game_framework
 		}
 	}
 
-	void Map::Reset()
+	void Map::Reset(bool reset)
 	{
 		for (int i = 0; i < height + 2; i++)
 		{
@@ -421,9 +329,14 @@ namespace game_framework
 				charactor[i][j].SetTopLeft(j * 32, i * 32);
 			}
 		}
-		for (unsigned int i = 0; i <  resetblock_vector.size(); i++)
-		{
-			charactor[resetblock_vector[i][0]][resetblock_vector[i][1]].SetFrameIndexOfBitmap(0);
+		if (reset==true) {
+			for (unsigned int i = 0; i < resetblock_vector.size(); i++)
+			{
+				charactor[resetblock_vector[i][0]][resetblock_vector[i][1]].SetFrameIndexOfBitmap(0);
+			}
+		}
+		else {
+			resetblock_vector.clear();
 		}
 	}
 

@@ -87,7 +87,6 @@ namespace game_framework
 			"resources/star3.bmp",
 			"resources/star4.bmp",
 			}, RGB(146, 144, 255));
-		charactor.SetAnimation(300, false);
 	}
 
 	void Star::Die()

@@ -49,7 +49,6 @@
 #include "../Library/item.h"
 #include "../Library/itemfactor.h"
 #include "../Library/mushroom.h"
-#include "../Library/missile.h"
 #include "../Library/star.h"
 #include "../Library/fireball.h"
 #include "../Library/fireflower.h"
@@ -97,7 +96,7 @@ namespace game_framework {
 	public:
 		CGameStateRun(CGame *g);
 		~CGameStateRun();
-		void OnBeginState();							// 設定每次重玩所需的變數
+		void OnBeginState(bool);							// 設定每次重玩所需的變數
 		void OnInit();  								// 遊戲的初值及圖形設定
 		void OnKeyDown(UINT, UINT, UINT);
 		void OnKeyUp(UINT, UINT, UINT);
@@ -118,7 +117,7 @@ namespace game_framework {
 
 		int world = 1;
 		int level = 1;
-
+		int lockingtime = 10;
 		Mario mario;
 		Goomba goomba;
 		Enemyfactor enemyfactor;
