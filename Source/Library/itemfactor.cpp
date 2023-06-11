@@ -110,7 +110,7 @@ namespace game_framework
 					itemList.push_back(new FireFlower());
 					itemList.back()->Load();
 					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(2);
+					itemList.back()->SetHorizontalSpeed(0);
 					itemTemp.push_back(3);
 					break;
 				default:

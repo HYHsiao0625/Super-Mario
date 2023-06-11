@@ -19,7 +19,7 @@ namespace game_framework
 		void	Updata(Mario mario);
 		void	Show();
 		void	Load(int world, int level);
-		void	Reset(bool);
+		void	Reset();
 
 		int		GetTop();
 		int		GetLeft();

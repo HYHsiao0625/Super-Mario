@@ -25,7 +25,21 @@ namespace game_framework
 	}
 	Turtle::~Turtle() {
 	}
-	void Turtle::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
+	void Turtle::Show()
+	{
+		if (showtime == 0) {
+			charactor.ShowBitmap();
+		}
+	}
+	void Turtle::fireballSetTopLeft(int x, int y)
+	{
+	}
+	void Turtle::SetTopLeft(int x, int y)
+	{
+		charactor.SetTopLeft(x, y);
+	}
+
+	void Turtle::UpData(vector<Enemy*> monster_list, Mario& mario, Map map,int pos)
 	{
 		int x, y;
 		Collision(map);
@@ -46,18 +60,33 @@ namespace game_framework
 				charactor.SetFrameIndexOfBitmap(3);
 			}
 		}
-		if (-10 <= mario.GetTop() + mario.GetHeight() - GetTop()
-			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
-			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
-		{
-			charactor.SetFrameIndexOfBitmap(2);
-			isKickAble = true;
-			SetTopLeft(GetLeft(), GetTop() + 16);
-			horizontalSpeed = 0;
+		if (mario.isCrouching == true) {
+			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 50
+				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
+			{
+				charactor.SetFrameIndexOfBitmap(2);
+				isKickAble = true;
+				SetTopLeft(GetLeft(), GetTop() + 16);
+				horizontalSpeed = 0;
+			}
+		}
+
+		else {
+			if (abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) < 80
+				&& abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.charactorbig_left.GetLeft() + mario.charactorbig_left.GetWidth() > GetLeft()
+				&& mario.charactorbig_left.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
+			{
+				charactor.SetFrameIndexOfBitmap(2);
+				isKickAble = true;
+				SetTopLeft(GetLeft(), GetTop() + 16);
+				horizontalSpeed = 0;
+			}
 		}
 		if (isKickAble == true) {
-			if (mario.charactor.IsOverlap(charactor, mario.charactor)) 
+			if (mario.charactorbig_left.IsOverlap(charactor, mario.charactorbig_left))
 			{
 				if (isKickAble == true)
 				{
@@ -157,7 +186,7 @@ namespace game_framework
 		//left collision
 		if (horizontalSpeed > 0)
 		{
-			int turtle_x = (GetLeft() - map.GetLeft()) / 32;
+			int turtle_x = (GetLeft() - map.GetLeft() + 32) / 32;
 			if (map_vector[turtle_y][turtle_x + 1] != 0)
 			{
 				isCollision = true;

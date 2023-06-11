@@ -84,7 +84,7 @@ namespace game_framework
 	void FireFlower::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/star1.bmp",
+			"resources/fireflower1.bmp",
 			}, RGB(146, 144, 255));
 	}
 

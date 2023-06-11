@@ -17,7 +17,7 @@ namespace game_framework
 		HatGoomba();
 		~HatGoomba();
 
-		void UpData(vector<Enemy*> monster_list, Mario mario, Map map, int pos);
+		void UpData(vector<Enemy*> monster_list, Mario& mario, Map map, int pos);
 		void Reset();
 		void Load();
 		void Die();
@@ -28,6 +28,9 @@ namespace game_framework
 		//-------------------
 		void OnGround(Map map);
 		void LoadDieIamge();
+		void Show();
+		void SetTopLeft(int, int);
+		void fireballSetTopLeft(int, int);
 		bool havehat = true;
 	};
 }

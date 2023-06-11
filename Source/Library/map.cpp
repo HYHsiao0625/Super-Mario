@@ -71,7 +71,6 @@ namespace game_framework
 	{
 		return charactor[x][y];
 	}
-
 	void Map::Load(int world, int level)
 	{
 		_world = world;
@@ -79,22 +78,28 @@ namespace game_framework
 		CMovingBitmap block;
 		vector<int> map_temp;
 		vector<CMovingBitmap> array1;
-		if (world == 1 && level == 1)
+		width = 96; // Assuming a default width
+
+		for (int i = 0; i < width; i++)
 		{
-			width = 128;
-			for (int i = 0; i < width; i++)
-			{
-				map_temp.push_back(0);
-				array1.push_back(block);
-			}
-			for (int i = 0; i < height + 4; i++)
-			{
-				map_vector.push_back(map_temp);
-				charactor.push_back(array1);
-			}
-			array1.clear();
-			map_temp.clear();
-			ifstream ifs("resources/map/1-1/1-1.map");
+			map_temp.push_back(0);
+			array1.push_back(block);
+		}
+
+		for (int i = 0; i < height + 4; i++)
+		{
+			map_vector.push_back(map_temp);
+			charactor.push_back(array1);
+		}
+
+		array1.clear();
+		map_temp.clear();
+
+		string mapFilePath = "resources/map/" + to_string(world) + "-" + to_string(level) + "/" + to_string(world) + "-" + to_string(level) + ".map";
+		ifstream ifs(mapFilePath);
+
+		if (ifs.is_open())
+		{
 			for (int i = 0; i < height + 4; i++)
 			{
 				for (int j = 0; j < width; j++)
@@ -107,58 +112,58 @@ namespace game_framework
 							"resources/empty.bmp",
 							"resources/mushroom.bmp"
 							}, RGB(146, 144, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 1:
 						charactor[i][j].LoadBitmapByString({
 							"resources/block.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 2:
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
 							"resources/block2_2.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 3:
 						charactor[i][j].LoadBitmapByString({
 							"resources/block3.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 4:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe1.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 5:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe2.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 6:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe3.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 7:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe4.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 8:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag1.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 9:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag2.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 10:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag3.bmp"
 							}, RGB(148, 148, 255));
-						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					case 11:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag4.bmp"
@@ -189,9 +194,219 @@ namespace game_framework
 			}
 			ifs.close();
 		}
-		else if (world == 1 && level == 2)
+		/*
+		void Map::Load(int world, int level)
 		{
-			width = 32;
+			_world = world;
+			_level = level;
+			CMovingBitmap block;
+			vector<int> map_temp;
+			vector<CMovingBitmap> array1;
+			if (world == 1 && level == 1)
+			{
+				width = 96;
+				for (int i = 0; i < width; i++)
+				{
+					map_temp.push_back(0);
+					array1.push_back(block);
+				}
+				for (int i = 0; i < height + 4; i++)
+				{
+					map_vector.push_back(map_temp);
+					charactor.push_back(array1);
+				}
+				array1.clear();
+				map_temp.clear();
+				ifstream ifs("resources/map/1-1/1-1.map");
+				for (int i = 0; i < height + 4; i++)
+				{
+					for (int j = 0; j < width; j++)
+					{
+						ifs >> map_vector[i][j];
+						switch (map_vector[i][j])
+						{
+						case 0:
+							charactor[i][j].LoadBitmapByString({
+								"resources/empty.bmp",
+								"resources/mushroom.bmp"
+								}, RGB(146, 144, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 1:
+							charactor[i][j].LoadBitmapByString({
+								"resources/block.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 2:
+							charactor[i][j].LoadBitmapByString({
+								"resources/block2.bmp",
+								"resources/block2_2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 3:
+							charactor[i][j].LoadBitmapByString({
+								"resources/block3.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 4:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe1.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 5:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 6:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe3.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 7:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe4.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 8:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag1.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 9:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 10:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag3.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 11:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag4.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 12:								//產出蘑菇的方塊
+							charactor[i][j].LoadBitmapByString({
+								"resources/block2.bmp",
+								"resources/block2_2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 13:								//產出星星的方塊
+							charactor[i][j].LoadBitmapByString({
+								"resources/block2.bmp",
+								"resources/block2_2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 14:								//產出火焰花的方塊
+							charactor[i][j].LoadBitmapByString({
+								"resources/block2.bmp",
+								"resources/block2_2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						default:
+							break;
+						}
+					}
+				}
+				ifs.close();
+			}
+			else if (world == 1 && level == 2)
+			{
+				width = 96;
+				for (int i = 0; i < width; i++)
+				{
+					map_temp.push_back(0);
+					array1.push_back(block);
+				}
+				for (int i = 0; i < height + 4; i++)
+				{
+					map_vector.push_back(map_temp);
+					charactor.push_back(array1);
+				}
+				array1.clear();
+				map_temp.clear();
+				ifstream ifs("resources/map/1-2/1-2.map");
+				for (int i = 0; i < height + 4; i++)
+				{
+					for (int j = 0; j < width; j++)
+					{
+						ifs >> map_vector[i][j];
+						switch (map_vector[i][j])
+						{
+						case 0:
+							charactor[i][j].LoadBitmapByString({
+								"resources/empty.bmp",
+								"resources/mushroom.bmp"
+								}, RGB(146, 144, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 1:
+							charactor[i][j].LoadBitmapByString({
+								"resources/block.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 2:
+							charactor[i][j].LoadBitmapByString({
+								"resources/block2.bmp",
+								"resources/block2_2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 3:
+							charactor[i][j].LoadBitmapByString({
+								"resources/block3.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 4:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe1.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 5:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 6:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe3.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 7:
+							charactor[i][j].LoadBitmapByString({
+								"resources/pipe4.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 8:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag1.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 9:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag2.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 10:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag3.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						case 11:
+							charactor[i][j].LoadBitmapByString({
+								"resources/flag4.bmp"
+								}, RGB(148, 148, 255));
+							charactor[i][j].SetTopLeft(j * 32, i * 32);
+						default:
+							break;
+						}
+					}
+				}
+				ifs.close();
+			}
+			else if (world == 1 && level == 3)
+			{
+			width = 96;
 			for (int i = 0; i < width; i++)
 			{
 				map_temp.push_back(0);
@@ -204,7 +419,7 @@ namespace game_framework
 			}
 			array1.clear();
 			map_temp.clear();
-			ifstream ifs("resources/map/1-2/1-2.map");
+			ifstream ifs("resources/map/1-3/1-3.map");
 			for (int i = 0; i < height + 4; i++)
 			{
 				for (int j = 0; j < width; j++)
@@ -280,9 +495,10 @@ namespace game_framework
 				}
 			}
 			ifs.close();
+			}
 		}
+		*/
 	}
-
 	void Map::Show()
 	{
 		for (int i = 0; i < height; i++)
@@ -320,7 +536,7 @@ namespace game_framework
 		}
 	}
 
-	void Map::Reset(bool reset)
+	void Map::Reset()
 	{
 		for (int i = 0; i < height + 2; i++)
 		{
@@ -329,14 +545,9 @@ namespace game_framework
 				charactor[i][j].SetTopLeft(j * 32, i * 32);
 			}
 		}
-		if (reset==true) {
-			for (unsigned int i = 0; i < resetblock_vector.size(); i++)
-			{
-				charactor[resetblock_vector[i][0]][resetblock_vector[i][1]].SetFrameIndexOfBitmap(0);
-			}
-		}
-		else {
-			resetblock_vector.clear();
+		for (unsigned int i = 0; i <  resetblock_vector.size(); i++)
+		{
+			charactor[resetblock_vector[i][0]][resetblock_vector[i][1]].SetFrameIndexOfBitmap(0);
 		}
 	}
 

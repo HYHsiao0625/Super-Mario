@@ -28,7 +28,21 @@ namespace game_framework
 	{
 
 	}
-	void HatGoomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map, int pos)
+	void HatGoomba::Show()
+	{
+		if (showtime == 0) {
+			charactor.ShowBitmap();
+		}
+
+	}
+	void HatGoomba::SetTopLeft(int x, int y)
+	{
+		charactor.SetTopLeft(x, y);
+	}
+	void HatGoomba::fireballSetTopLeft(int x, int y)
+	{
+	}
+	void HatGoomba::UpData(vector<Enemy*> monster_list, Mario& mario, Map map, int pos)
 	{
 		int x, y;
 		Collision(map);
@@ -48,7 +62,7 @@ namespace game_framework
 				if (havehat == true) {
 					havehat = false;
 					SetFrameIndexOfBitmap(1);
-					horizontalSpeed *= 3;
+					horizontalSpeed *= 5;
 				}
 				else {
 					horizontalSpeed = 0;
@@ -128,7 +142,7 @@ namespace game_framework
 		if (havehat == true) {
 			havehat = false;
 			SetFrameIndexOfBitmap(1);
-			horizontalSpeed *= 5;
+			horizontalSpeed = 15;
 		}
 		else {
 			isDead = true;
@@ -152,7 +166,7 @@ namespace game_framework
 		if (horizontalSpeed > 0)
 		{
 			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x + 1] != 0)
+			if (map_vector[mario_y][mario_x + 1] != 0 || map_vector[mario_y + 1][mario_x + 1] == 0)
 			{
 				isCollision = true;
 			}
@@ -160,7 +174,7 @@ namespace game_framework
 		else if (horizontalSpeed < 0)
 		{
 			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x] != 0)
+			if (map_vector[mario_y][mario_x] != 0 || map_vector[mario_y + 1][mario_x] == 0)
 			{
 				isCollision = true;
 			}

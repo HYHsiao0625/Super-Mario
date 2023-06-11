@@ -30,13 +30,6 @@ namespace game_framework
 	}
 
 
-	void Enemy::ShowBitmap()
-	{
-		if (showtime == 0) {
-			charactor.ShowBitmap();
-		}
-	}
-
 	void Enemy::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
 		charactor.LoadBitmapByString(filepaths, color);
@@ -57,10 +50,7 @@ namespace game_framework
 		charactor.SetAnimation(delay, _once);
 	}
 
-	void Enemy::SetTopLeft(int x, int y)
-	{
-		charactor.SetTopLeft(x, y);
-	}
+
 
 	int Enemy::GetTop()
 	{

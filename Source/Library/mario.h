@@ -9,6 +9,7 @@
 #include <map>
 #include "enemyfactor.h"
 #include "itemfactor.h"
+#include "enemyfireballfactor.h"
 #include "fireball.h"
 #include "goomba.h"
 using namespace std;
@@ -73,11 +74,12 @@ namespace game_framework
 		CMovingBitmap charactor_left;
 		CMovingBitmap charactorbig_right;
 		CMovingBitmap charactorbig_left;
+
 		int		face = 1;
 		bool	isCrouching = true;
 		bool	isShotable = false;
-	private:
 		bool	isDead = false;
+	private:
 		bool	isCollision = false;
 		bool	isFlipped = false;
 		bool	isOnGround = false;
@@ -93,6 +95,7 @@ namespace game_framework
 		int		y;
 
 		int		jump_timer;
+		int		dead_timer;
 
 		int		horizontalSpeed = 0;
 		int		verticalSpeed = 0;

@@ -8,6 +8,9 @@
 #include <map>
 #include "enemy.h"
 #include "goomba.h"
+#include "enemyfireballfactor.h" 
+
+
 using namespace std;
 
 namespace game_framework
@@ -20,7 +23,7 @@ namespace game_framework
 		~Enemyfactor();
 		void Load(int world, int level);
 		void Show();
-		void UpData(Mario mario, Map map);
+		void UpData(Mario& mario, Map map);
 		void SetTopLeft(int x, int y);
 		void Reset();
 		vector<Enemy*> GetMonsterlist();
@@ -29,6 +32,7 @@ namespace game_framework
 		vector<vector<int>> monster_position;
 		vector<vector<int>> emeny_data;
 		vector<Enemy*> monster_list;
+
 	};
 }
 #endif // !GOOMBA_H

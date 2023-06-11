@@ -28,69 +28,86 @@ namespace game_framework
 	{
 
 	}
-	void Goomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
+	void Goomba::Show()
 	{
-		int x, y;
-		Collision(map);
-		Collision(monster_list,pos);
-		OnGround(map);
-		if (isCollision == true)
-		{
-			horizontalSpeed *= -1;
-			isCollision = false;
+		if (showtime == 0) {
+			charactor.ShowBitmap();
 		}
-		if (mario.isCrouching==true) {
-			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
-				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
-				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-				) {
-				horizontalSpeed = 0;
-				Die();
-			}
+	}
+	void Goomba::SetTopLeft(int x, int y)
+	{
+		charactor.SetTopLeft(x, y);
+	}
+	void Goomba::fireballSetTopLeft(int x, int y)
+	{
+	}
+	void Goomba::UpData(vector<Enemy*> monster_list, Mario& mario, Map map,int pos)
+	{
+		if (abs(mario.GetLeft() - GetLeft()) > 128 && GetTop() <= 0) {
+
 		}
 		else {
-			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 60
-				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
-				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-				) {
-				horizontalSpeed = 0;
+			int x, y;
+			Collision(map);
+			Collision(monster_list, pos);
+			OnGround(map);
+			if (isCollision == true)
+			{
+				horizontalSpeed *= -1;
+				isCollision = false;
+			}
+			if (mario.isCrouching == true) {
+				if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
+					&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+					&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+					&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+					) {
+					horizontalSpeed = 0;
+					Die();
+				}
+			}
+			else {
+				if (abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) < 60
+					&& abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) > 3
+					&& mario.charactorbig_left.GetLeft() + mario.charactorbig_left.GetWidth() > GetLeft()
+					&& mario.charactorbig_left.GetLeft() < GetLeft() + GetWidth() && isDead == false
+					) {
+					horizontalSpeed = 0;
+					Die();
+				}
+			}
+			if (isOnGround == true)
+			{
+				verticalSpeed = 0;
+			}
+			else
+			{
+				verticalSpeed += 1;
+			}
+
+			if (verticalSpeed > 16)
+			{
+				verticalSpeed = 16;
+			}
+
+			x = charactor.GetLeft() + horizontalSpeed;
+
+			if (isOnGround == true)
+			{
+				y = ((charactor.GetTop() + verticalSpeed) / 32) * 32;
+			}
+			else
+			{
+				y = charactor.GetTop() + verticalSpeed;
+			}
+
+			if (GetTop() > 480)
+			{
 				Die();
 			}
-		}
-		if (isOnGround == true)
-		{
-			verticalSpeed = 0;
-		}
-		else
-		{
-			verticalSpeed += 1;
-		}
 
-		if (verticalSpeed > 16)
-		{
-			verticalSpeed = 16;
+			charactor.SetTopLeft(x, y);
 		}
-
-		x = charactor.GetLeft() + horizontalSpeed;
-
-		if (isOnGround == true)
-		{
-			y = ((charactor.GetTop() + verticalSpeed) / 32) * 32;
-		}
-		else
-		{
-			y = charactor.GetTop() + verticalSpeed;
-		}
-		
-		if (GetTop() > 480)
-		{
-			Die();
-		}
-
-		charactor.SetTopLeft(x, y);
-
 	}
 	
 	void Goomba::Reset()
@@ -123,7 +140,8 @@ namespace game_framework
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
-
+		int mario_x = (GetLeft() - map.GetLeft()) / 32;
+		if (mario_y > 0 && mario_x > 0) {
 		//left collision
 		if (GetLeft() - map.GetLeft() == 0)
 		{
@@ -144,6 +162,7 @@ namespace game_framework
 			{
 				isCollision = true;
 			}
+		}
 		}
 	}
 
@@ -194,17 +213,19 @@ namespace game_framework
 		vector<vector<int>> map_vector = map.GetMap();
 		int goomba_x = (GetLeft() - map.GetLeft()) / 32;
 		int goomba_y = GetTop() / 32;
-		if (map_vector[goomba_y + 1][goomba_x] != 0)
-		{
-			isOnGround = true;
-		}
-		else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
-		{
-			isOnGround = true;
-		}
-		else
-		{
-			isOnGround = false;
+		if (goomba_y > 0 && goomba_x > 0) {
+			if (map_vector[goomba_y + 1][goomba_x] != 0)
+			{
+				isOnGround = true;
+			}
+			else if (map_vector[goomba_y + 1][goomba_x + 1] != 0 && map_vector[goomba_y][goomba_x + 1] == 0)
+			{
+				isOnGround = true;
+			}
+			else
+			{
+				isOnGround = false;
+			}
 		}
 	}
 
