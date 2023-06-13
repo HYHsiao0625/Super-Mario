@@ -1,5 +1,5 @@
-#ifndef Star_H
-#define Star_H
+#ifndef EnemyFireBall_H
+#define EnemyFireBall_H
 
 #pragma
 #include "gameutil.h"
@@ -12,7 +12,7 @@ using namespace std;
 
 namespace game_framework
 {
-	class Star : public Item
+	class EnemyFireBall : public Item
 	{
 	public:
 		void UpData(Mario& mario, Map& map);
@@ -22,13 +22,12 @@ namespace game_framework
 		bool IsDead();
 
 		void Collision(Map& map);
-		void OnGround(Map& map);
 		void LoadDieIamge();
 
 
 	private:
 		bool isdead = false;
-		int	 cd = 2;
+		int	 cd = 3000;
 	};
 }
-#endif // !Star_H
+#endif // !EnemyFireBall_H

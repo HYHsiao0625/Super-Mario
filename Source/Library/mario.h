@@ -9,6 +9,7 @@
 #include <map>
 #include "enemyfactor.h"
 #include "itemfactor.h"
+#include "enemyfireballfactor.h"
 #include "fireball.h"
 #include "goomba.h"
 using namespace std;
@@ -19,7 +20,7 @@ namespace game_framework
 	{
 	public:
 		Mario();
-		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor);
+		void	UpData(Mario mario, Map& map, Enemyfactor& enemyfactor, Itemfactor& itemfactor);
 		void	Reset();
 		void	Load();
 		void	Show();
@@ -45,10 +46,12 @@ namespace game_framework
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
 		void	SetJump(bool);
+		void	SetMode(bool);
 		//--------------
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
 		int		GetHnbeatable_time();
+		bool	GetMode();
 		//--------------
 		bool	IsDead();
 		bool	IsOnGround();
@@ -56,14 +59,15 @@ namespace game_framework
 		bool	IsJump();
 		bool	IsDown();
 		bool	IsSwitchMap();
+		bool	IsInvincible();
 		//--------------
-		void	Collision(Mario mario, Map map);
+		void	Collision(Mario mario, Map& map);
 		void	Collision(Mario mario, Goomba goomba);
-		void    Collision(Enemyfactor enemyfactor);
-		void    Collision(Itemfactor itemyfactor);
+		void    Collision(Enemyfactor& enemyfactor);
+		void    Collision(Itemfactor& itemyfactor);
 
-		void	OnGround(Mario mario, Map map);
-		void	HitBox(Mario mario, Map map);
+		void	OnGround(Mario mario, Map& map);
+		void	HitBox(Mario mario, Map& map);
 
 		
 		//----------
@@ -77,8 +81,8 @@ namespace game_framework
 		int		face = 1;
 		bool	isCrouching = true;
 		bool	isShotable = false;
-	private:
 		bool	isDead = false;
+	private:
 		bool	isCollision = false;
 		bool	isFlipped = false;
 		bool	isOnGround = false;
@@ -89,7 +93,7 @@ namespace game_framework
 		bool	isInvincible = false;
 		bool	isDown = false;
 		bool	isSwitchMap = false;
-		
+		bool	isInvincibleMode = false;
 		int		x;
 		int		y;
 

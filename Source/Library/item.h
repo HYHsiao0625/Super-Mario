@@ -17,7 +17,7 @@ namespace game_framework
 		Item();
 		~Item();
 
-		virtual void UpData(Mario mario, Map map) = 0;
+		virtual void UpData(Mario& mario, Map& map) = 0;
 		virtual void Reset() = 0;
 		virtual void Load() = 0;
 		virtual void Die() = 0;

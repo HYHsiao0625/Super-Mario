@@ -1,5 +1,5 @@
-#ifndef flower_H
-#define flower_H
+#ifndef Missile_H
+#define Missile_H
 
 #pragma
 #include "gameutil.h"
@@ -13,12 +13,12 @@ using namespace std;
 
 namespace game_framework
 {
-	class Flower : public Enemy
+	class Missile : public Enemy
 	{
 	public:
-		Flower();
-		~Flower();
-		void UpData(vector<Enemy*>& monster_list,Mario& mario, Map& map,int pos);
+		Missile();
+		~Missile();
+		void UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos);
 		void Collision(Map& map);
 		void Reset();
 		void Load();
@@ -32,4 +32,4 @@ namespace game_framework
 		bool trigger = 0;
 	};
 }
-#endif // !flower_H
+#endif // !Missile_H

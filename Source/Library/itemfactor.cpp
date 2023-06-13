@@ -49,7 +49,7 @@ namespace game_framework
 
 	}
 
-	void Itemfactor::UpData(Mario mario, Map map)
+	void Itemfactor::UpData(Mario& mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		vector<vector<CMovingBitmap>> map_charactor = map.GetMapcharactor();
@@ -62,7 +62,7 @@ namespace game_framework
 
 		if (mario.IsHitbox() == true)
 		{
-			if (map_vector[mario_y][mario_x] != 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap()== 0) {
+			if (map_vector[mario_y][mario_x] != 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap() != 4) {
 				switch (map_vector[mario_y][mario_x]) {
 				case 12:
 					itemList.push_back(new Mushroom());
@@ -90,7 +90,7 @@ namespace game_framework
 				}
 			
 			}
-			if (map_vector[mario_y][mario_x + 1]!=2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 0) {
+			if (map_vector[mario_y][mario_x + 1]!=2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() != 4) {
 				switch (map_vector[mario_y][mario_x+1]) {
 				case 12:
 					itemList.push_back(new Mushroom());
@@ -110,7 +110,7 @@ namespace game_framework
 					itemList.push_back(new FireFlower());
 					itemList.back()->Load();
 					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(2);
+					itemList.back()->SetHorizontalSpeed(0);
 					itemTemp.push_back(3);
 					break;
 				default:

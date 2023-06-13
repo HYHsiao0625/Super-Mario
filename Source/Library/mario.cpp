@@ -30,6 +30,8 @@ namespace game_framework
 		isDead(false),
 		isFlipped(false),
 		isOnGround(false),
+		isInvincible(false),
+		isInvincibleMode(false),
 		horizontalSpeed(0),
 		verticalSpeed(0),
 		jump_timer(-4),
@@ -38,17 +40,19 @@ namespace game_framework
 
 	}
 
-	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor)
+	void Mario::UpData(Mario mario, Map& map, Enemyfactor& enemyfactor, Itemfactor& itemfactor)
 	{
 		int mario_x = (map.GetLeft() - mario.GetLeft()) / 32;
 		int mario_y = mario.GetTop() / 32;
-		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
+		std::vector<Enemy*>& enemylist = enemyfactor.GetMonsterlist();
 
 		Collision(mario, map);
 		Collision(itemfactor);
 		Collision(enemyfactor);
 		OnGround(mario, map);
 		HitBox(mario, map);
+		SetAnimation(10, false);
+		
 		for (unsigned int i = 0; i < fireball.size();)
 		{
 			if (fireball[i].IsDead() == true)
@@ -67,12 +71,16 @@ namespace game_framework
 				i++;
 			}
 		}
-
-		if (unbeatable_time != 0) {
+		if (isInvincibleMode == true)
+		{
+			unbeatable_time = 100;
+			isInvincible = true;
+		}
+		else if (isInvincibleMode == false && unbeatable_time != 0) {
 			unbeatable_time--;
 			isInvincible = true;
 		}
-		else
+		else if (unbeatable_time == 0)
 		{
 			isInvincible = false;
 		}
@@ -114,6 +122,25 @@ namespace game_framework
 			isJump = false;
 			isOnHit = false;
 			jump_timer = -4;
+
+			if (horizontalSpeed > 0)
+			{
+				if (GetFrameIndexOfBitmap() == 4 || GetFrameIndexOfBitmap() == 5)
+				{
+					SetFrameIndexOfBitmap(1);
+				}
+			}
+			else if (horizontalSpeed < 0)
+			{
+				if (GetFrameIndexOfBitmap() == 4 || GetFrameIndexOfBitmap() == 5)
+				{
+					SetFrameIndexOfBitmap(1);
+				}
+			}
+			else
+			{
+				SetFrameIndexOfBitmap(0);
+			}
 		}
 		else
 		{
@@ -126,6 +153,7 @@ namespace game_framework
 			{
 				if (isJump == true)
 				{
+					SetFrameIndexOfBitmap(5);
 					if (jump_timer < 0)
 					{
 						verticalSpeed = -16;
@@ -139,6 +167,7 @@ namespace game_framework
 				}
 				else
 				{
+					SetFrameIndexOfBitmap(5);
 					verticalSpeed += 2 * GRAVITY;
 				}
 			}
@@ -164,8 +193,8 @@ namespace game_framework
 			Die();
 		}
 
-		SetTopLeft(x, y);
 		
+		SetTopLeft(x, y);
 	}
 
 	void Mario::Reset()
@@ -175,6 +204,7 @@ namespace game_framework
 		SetFrameIndexOfBitmap(0);
 		isShotable = false;
 		SetTopLeft(0, 0);
+		SetVerticalSpeed(0);
 		fireball.clear();
 		dead_timer = 4;
 	}
@@ -186,34 +216,40 @@ namespace game_framework
 		"resources/mario2.bmp",
 		"resources/mario3.bmp",
 		"resources/mario4.bmp",
-		"resources/bigmario1.bmp",
-		"resources/bigmario2.bmp",
-		"resources/bigmario3.bmp",
-		"resources/bigmario4.bmp",
+		"resources/mario1.bmp",
+		"resources/mario6.bmp",
 			}/*, RGB(146, 144, 255)*/);
 		charactor_right.LoadBitmapByString({
 		"resources/mario1.bmp",
 		"resources/mario2.bmp",
 		"resources/mario3.bmp",
 		"resources/mario4.bmp",
+		"resources/mario1.bmp",
+		"resources/mario6.bmp",
 			}/*, RGB(146, 144, 255)*/);
 		charactor_left.LoadBitmapByString({
 		"resources/mario1_left.bmp",
 		"resources/mario2_left.bmp",
 		"resources/mario3_left.bmp",
 		"resources/mario4_left.bmp",
+		"resources/mario1_left.bmp",
+		"resources/mario6_left.bmp",
 			}/*, RGB(146, 144, 255)*/);
 		charactorbig_right.LoadBitmapByString({
 		"resources/bigmario1.bmp",
 		"resources/bigmario2.bmp",
 		"resources/bigmario3.bmp",
 		"resources/bigmario4.bmp",
+		"resources/bigmario1.bmp",
+		"resources/bigmario6.bmp",
 			}/*, RGB(146, 144, 255)*/);
 		charactorbig_left.LoadBitmapByString({
 		"resources/bigmario1_left.bmp",
 		"resources/bigmario2_left.bmp",
 		"resources/bigmario3_left.bmp",
 		"resources/bigmario4_left.bmp",
+		"resources/bigmario1_left.bmp",
+		"resources/bigmario6_left.bmp",
 			}/*, RGB(146, 144, 255)*/);
 	}
 	void Mario::Show()
@@ -237,10 +273,11 @@ namespace game_framework
 	}
 	void Mario::Die()
 	{
-		if (unbeatable_time == 0) 
+		if (unbeatable_time == 0 || GetTop() > 480) 
 		{
 			isDead = true;
 		}
+		
 	}
 	void Mario::LoadBitmapByString(vector<string> filepaths, COLORREF color)
 	{
@@ -327,13 +364,8 @@ namespace game_framework
 	{
 		return horizontalSpeed;
 	}
-	int Mario::GetHnbeatable_time()
-	{
-		return unbeatable_time;
-	}
 
-
-	void Mario::Collision(Mario mario, Map map)
+	void Mario::Collision(Mario mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 
@@ -342,7 +374,7 @@ namespace game_framework
 		//left collision
 		if (isCrouching == true)
 		{
-			if (mario.GetHorizontalSpeed() > 0)
+			if (GetHorizontalSpeed() > 0)
 			{
 				int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 				if (map_vector[mario_y][mario_x + 1] != 0)
@@ -354,9 +386,9 @@ namespace game_framework
 					SetSwitchMap(true);
 				}
 			}//right collision
-			else if (mario.GetHorizontalSpeed() < 0)
+			else if (GetHorizontalSpeed() < 0)
 			{
-				int mario_x = (mario.GetLeft() - map.GetLeft() - 4) / 32;
+				int mario_x = (GetLeft() - map.GetLeft() - 4) / 32;
 				if (map_vector[mario_y][mario_x] != 0)
 				{
 					isCollision = true;
@@ -373,9 +405,9 @@ namespace game_framework
 		}
 		else
 		{
-			if (mario.GetHorizontalSpeed() > 0)
+			if (GetHorizontalSpeed() > 0)
 			{
-				int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+				int mario_x = (GetLeft() - map.GetLeft()) / 32;
 				if (map_vector[mario_y][mario_x + 1] != 0 || map_vector[mario_y + 1][mario_x + 1] != 0)
 				{
 					isCollision = true;
@@ -385,9 +417,9 @@ namespace game_framework
 					SetSwitchMap(true);
 				}
 			}
-			else if (mario.GetHorizontalSpeed() < 0)
+			else if (GetHorizontalSpeed() < 0)
 			{
-				int mario_x = (mario.GetLeft() - map.GetLeft() - 4) / 32;
+				int mario_x = (GetLeft() - map.GetLeft() - 4) / 32;
 				if (map_vector[mario_y][mario_x] != 0 || map_vector[mario_y + 1][mario_x] != 0)
 				{
 					isCollision = true;
@@ -422,7 +454,7 @@ namespace game_framework
 		}
 	}
 	*/
-	void Mario::Collision(Enemyfactor enemyfactor) {
+	void Mario::Collision(Enemyfactor& enemyfactor) {
 		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
 		if (isCrouching == true)
 		{
@@ -457,7 +489,7 @@ namespace game_framework
 					}
 					else
 					{
-						if (enemylist[i]->GetFrameIndexOfBitmap() != 2) {
+						if (enemylist[i]->GetFrameIndexOfBitmap() != 2 && unbeatable_time==0) {
 							if (GetLeft() > enemylist[i]->GetLeft())
 							{
 								SetTopLeft(GetLeft() + 64, GetTop() + 32);
@@ -476,9 +508,9 @@ namespace game_framework
 		}
 	}
 
-	void Mario::Collision(Itemfactor itemfactor) {
-		std::vector<Item*>_itemList = itemfactor.GetItemList();
-		std::vector<int>_itemTemp = itemfactor.GetItemTemp();
+	void Mario::Collision(Itemfactor& itemfactor) {
+		std::vector<Item*>& _itemList = itemfactor.GetItemList();
+		std::vector<int>&_itemTemp = itemfactor.GetItemTemp();
 		for (unsigned int i = 0; i < _itemList.size(); i++)
 		{
 			if (GetLeft() + GetWidth() > _itemList[i]->GetLeft()
@@ -521,10 +553,11 @@ namespace game_framework
 						break;
 					}
 				}
+				_itemList[i]->Die();
 			}
 		}
 	}
-	void Mario::OnGround(Mario mario, Map map)
+	void Mario::OnGround(Mario mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
@@ -575,36 +608,37 @@ namespace game_framework
 		}
 	}
 
-	void Mario::HitBox(Mario mario, Map map)
+	void Mario::HitBox(Mario mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
+		if (mario_x > 0 && mario_y > 0) {
+			if (isOnGround == false && isHitbox == false && isOnHit == false)
+			{
 
-		if (isOnGround == false && isHitbox == false && isOnHit == false)
-		{
-			if (map_vector[mario_y][mario_x] != 0)
-			{
-				isHitbox = true;
-				isOnHit = true;
-				isJump = false;
+				if (map_vector[mario_y][mario_x] != 0)
+				{
+					isHitbox = true;
+					isOnHit = true;
+					isJump = false;
+				}
+				else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
+				{
+					isHitbox = true;
+					isOnHit = true;
+					isJump = false;
+				}
+				else
+				{
+					isHitbox = false;
+				}
 			}
-			else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0)
-			{
-				isHitbox = true;
-				isOnHit = true;
-				isJump = false;
-			}
-			else
+			else if (isOnHit == true)
 			{
 				isHitbox = false;
 			}
 		}
-		else if (isOnHit == true)
-		{
-			isHitbox = false;
-		}
-
 	}
 
 	bool Mario::IsDead()
@@ -657,5 +691,22 @@ namespace game_framework
 	bool Mario::IsSwitchMap()
 	{
 		return isSwitchMap;
+	}
+	bool Mario::IsInvincible()
+	{
+		return isInvincible;
+	}
+
+	void Mario::SetMode(bool flags)
+	{
+		isInvincibleMode = flags;
+	}
+	bool Mario::GetMode()
+	{
+		return isInvincibleMode;
+	}
+	int Mario::GetHnbeatable_time()
+	{
+		return unbeatable_time;
 	}
 }

@@ -28,7 +28,21 @@ namespace game_framework
 	{
 
 	}
-	void HatGoomba::UpData(vector<Enemy*> monster_list, Mario mario, Map map, int pos)
+	void HatGoomba::Show()
+	{
+		if (showtime == 0) {
+			charactor.ShowBitmap();
+		}
+
+	}
+	void HatGoomba::SetTopLeft(int x, int y)
+	{
+		charactor.SetTopLeft(x, y);
+	}
+	void HatGoomba::fireballSetTopLeft(int x, int y)
+	{
+	}
+	void HatGoomba::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos)
 	{
 		int x, y;
 		Collision(map);
@@ -39,13 +53,45 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (-2 <= mario.GetTop() + mario.GetHeight() - GetTop()
-			&& mario.GetTop() + mario.GetHeight() - GetTop() <= 0
-			&& mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
-			) {
-			horizontalSpeed = 0;
+		if (charactor.IsOverlap(charactor, mario.charactor) && mario.IsInvincible() == true)
+		{
 			Die();
+		}
+		else if (mario.isCrouching == true) 
+		{
+			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
+				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+				) {
+				if (havehat == true) {
+					havehat = false;
+					SetFrameIndexOfBitmap(1);
+					horizontalSpeed *= 5;
+					mario.Die();
+				}
+				else {
+					horizontalSpeed = 0;
+					Die();
+				}
+			}
+		}
+		else {
+			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 60
+				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
+				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth() && isDead == false
+				) {
+				if (havehat == true) {
+					havehat = false;
+					SetFrameIndexOfBitmap(1);
+					horizontalSpeed *= 3;
+					mario.SetTopLeft(mario.GetLeft(), mario.GetTop() - 32);
+				}
+				else {
+					Die();
+				}
+			}
 		}
 		if (isOnGround == true)
 		{
@@ -89,25 +135,36 @@ namespace game_framework
 	void HatGoomba::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/HatGoomba1.bmp",
-			"resources/HatGoomba2.bmp",
-			"resources/HatGoomba3.bmp",
+			"resources/hatgoomba1.bmp",
+			"resources/hatgoomba2.bmp",
+			"resources/goomba2.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
-
+		charactor_right.LoadBitmapByString({
+			"resources/hatgoomba1.bmp",
+			"resources/hatgoomba2.bmp",
+			"resources/goomba2.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
 	}
 
 	void HatGoomba::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(3);
-		isDead = true;
+		if (havehat == true) {
+			havehat = false;
+			SetFrameIndexOfBitmap(1);
+			horizontalSpeed = 15;
+		}
+		else {
+			isDead = true;
+		}
 	}
 
 	bool HatGoomba::IsDead()
 	{
 		return isDead;
 	}
-	void HatGoomba::Collision(Map map)
+	void HatGoomba::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -120,7 +177,7 @@ namespace game_framework
 		if (horizontalSpeed > 0)
 		{
 			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x + 1] != 0)
+			if (map_vector[mario_y][mario_x + 1] != 0 || map_vector[mario_y + 1][mario_x + 1] == 0)
 			{
 				isCollision = true;
 			}
@@ -128,14 +185,14 @@ namespace game_framework
 		else if (horizontalSpeed < 0)
 		{
 			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x] != 0)
+			if (map_vector[mario_y][mario_x] != 0 || map_vector[mario_y + 1][mario_x] == 0)
 			{
 				isCollision = true;
 			}
 		}
 	}
 
-	void HatGoomba::Collision(vector<Enemy*> monster_list, int pos)
+	void HatGoomba::Collision(vector<Enemy*>& monster_list, int pos)
 	{
 		int position = pos; //小怪在list裡面第幾個
 		if (pos != 0) {
@@ -177,7 +234,7 @@ namespace game_framework
 		}*/
 
 	}
-	void HatGoomba::OnGround(Map map)
+	void HatGoomba::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int HatGoomba_x = (GetLeft() - map.GetLeft()) / 32;

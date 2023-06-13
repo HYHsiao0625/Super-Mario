@@ -10,7 +10,7 @@
 #include "audio.h"
 #include "gameutil.h"
 #include "gamecore.h"
-#include "Fireball.h"
+#include "EnemyFireBall.h"
 #include "Shlwapi.h"
 #include "../Game/config.h"
 #include "../Game/mygame.h"
@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void Fireball::UpData(Mario& mario, Map& map)
+	void EnemyFireBall::UpData(Mario& mario, Map& map)
 	{
 		int x, y;
 		Collision(map);
@@ -31,63 +31,62 @@ namespace game_framework
 		{
 			Die();
 		}
-		if (isCollision == true || cd==0)
+		if (isCollision == true)
 		{
 			Die();
 		}
-
+		
 		x = charactor.GetLeft() + horizontalSpeed;
 		y = charactor.GetTop();
 		charactor.SetTopLeft(x, y);
 
 	}
 
-	void Fireball::Reset()
+	void EnemyFireBall::Reset()
 	{
 
 	}
 
-	void Fireball::Load()
+	void EnemyFireBall::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/fireball1.bmp",
-			"resources/fireball2.bmp",
-			"resources/fireball3.bmp",
-			"resources/fireball4.bmp",
+			"resources/enemyfireball.bmp",
 			}, RGB(146, 144, 255));
 		charactor.SetAnimation(100, false);
 	}
 
-	void Fireball::Die()
+	void EnemyFireBall::Die()
 	{
 		isdead = true;
 	}
 
-	bool Fireball::IsDead()
+	bool EnemyFireBall::IsDead()
 	{
 		return isdead;
 	}
 
-	void Fireball::Collision(Map& map)
+	void EnemyFireBall::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
+		int mario_x = (GetLeft() - map.GetLeft()) / 32;
 		int mario_y = GetTop() / 32;
-
-		//left collision
-		if (horizontalSpeed > 0)
-		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x + 1] != 0)
+		if (mario_x > 0 && mario_y > 0) {
+			//left collision
+			if (horizontalSpeed > 0)
 			{
-				isCollision = true;
-			}
-		}//right collision
-		else if (horizontalSpeed < 0)
-		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x] != 0)
+				int mario_x = (GetLeft() - map.GetLeft()) / 32;
+				if (map_vector[mario_y][mario_x + 1] != 0)
+				{
+					isCollision = true;
+				}
+			}//right collision
+			else if (horizontalSpeed < 0)
 			{
-				isCollision = true;
+				int mario_x = (GetLeft() - map.GetLeft()) / 32;
+				if (map_vector[mario_y][mario_x] != 0)
+				{
+					isCollision = true;
+				}
 			}
 		}
 	}

@@ -24,17 +24,42 @@ namespace game_framework
 	Flower::Flower() : Enemy() 
 	{
 		showtime = 1;
+		
 	}
 	Flower::~Flower() 
 	{
 		
 	}
-	void Flower::UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos)
+	void Flower::Show()
+	{
+		if (showtime == 0) {
+			charactor.ShowBitmap();
+		}
+	}
+	void Flower::SetTopLeft(int x, int y)
+	{
+		charactor.SetTopLeft(x, y);
+	}
+	void Flower::fireballSetTopLeft(int x, int y)
+	{
+	}
+	void Flower::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos)
 	{
 		//Collision(map);
-
-		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
-		int mario_y = (mario.GetTop() - 4) / 32;
+		int mario_x;
+		int mario_y;
+		if (charactor.IsOverlap(charactor, mario.charactor) && mario.IsInvincible() == true)
+		{
+			Die();
+		}
+		if (mario.isCrouching == true) {
+			mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+			mario_y = (mario.GetTop() - 4) / 32;
+		}
+		else {
+			mario_x = (mario.charactorbig_left.GetLeft() - map.GetLeft()) / 32;
+			mario_y = (mario.charactorbig_left.GetTop()+32) / 32;
+		}
 		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
 		int enemy_y = GetTop() / 32;
 		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 2)
@@ -43,26 +68,26 @@ namespace game_framework
 			
 		}
 		if (trigger == 1) {
-			if (GetTop() == 312 && active == 1) {
+			if (GetTop() == (original_y-52) && active == 1) {
 				verticalSpeed = 4;
 			}
-			else if (GetTop() == 364) {
+			else if (GetTop() == original_y) {
 				verticalSpeed = -4;
 				active = 0;
 			}
-			else if (GetTop() == 312 && active == 0) {
+			else if (GetTop() == (original_y - 52) && active == 0) {
 				verticalSpeed = 0;
 			}
 			if (showtime != 0) {
 				showtime--;
 			}
-			if (GetTop() <= 325) {
+			if (GetTop() <= (original_y - 39)) {
 				charactor.SetFrameIndexOfBitmap(3);
 			}
-			else if (GetTop() <= 338) {
+			else if (GetTop() <= (original_y - 26)) {
 				charactor.SetFrameIndexOfBitmap(2);
 			}
-			else if (GetTop() <= 351) {
+			else if (GetTop() <= (original_y - 13)) {
 				charactor.SetFrameIndexOfBitmap(1);
 			}
 			charactor.SetTopLeft(charactor.GetLeft(), charactor.GetTop() + verticalSpeed);
@@ -95,7 +120,7 @@ namespace game_framework
 		return isDead;
 	}
 
-	void Flower::Collision(Map map)
+	void Flower::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int enemy_x = (GetLeft() - map.GetLeft()) / 32;

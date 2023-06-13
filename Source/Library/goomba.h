@@ -7,6 +7,8 @@
 #include <vector>
 #include <map>
 #include "enemy.h"
+#include "enemyfireballfactor.h" 
+
 using namespace std;
 
 namespace game_framework
@@ -17,16 +19,19 @@ namespace game_framework
 		Goomba();
 		~Goomba();
 
-		void UpData(vector<Enemy*> monster_list, Mario mario, Map map,int pos);
+		void UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos);
 		void Reset();
 		void Load();
 		void Die();
 		bool IsDead();
+		void Show();
+		void SetTopLeft(int, int);
+		void fireballSetTopLeft(int, int);
 		//-------------------
-		void Collision(Map map);
-		void Collision(vector<Enemy*> monster_list, int pos);
+		void Collision(Map& map);
+		void Collision(vector<Enemy*>& monster_list, int pos);
 		//-------------------
-		void OnGround(Map map);
+		void OnGround(Map& map);
 		void LoadDieIamge();
 		
 	};

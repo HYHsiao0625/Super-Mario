@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void Star::UpData(Mario mario, Map map)
+	void Star::UpData(Mario& mario, Map& map)
 	{
 		int x, y;
 		Collision(map);
@@ -30,15 +30,30 @@ namespace game_framework
 			horizontalSpeed *= -1;
 			isCollision = false;
 		}
-		if (mario.GetLeft() + mario.GetWidth() > GetLeft()
-			&& mario.GetLeft() < GetLeft() + GetWidth()
-			&& mario.GetTop() + mario.GetHeight() > GetTop()
-			&& mario.GetTop() < GetTop() + GetHeight()) {
-			cd--;
-			horizontalSpeed = 0;
-			isDead = true;
-			if (cd == 0) {
-				Die();
+		if (mario.isCrouching == true) {
+			if (mario.GetLeft() + mario.GetWidth() > GetLeft()
+				&& mario.GetLeft() < GetLeft() + GetWidth()
+				&& mario.GetTop() + mario.GetHeight() > GetTop()
+				&& mario.GetTop() < GetTop() + GetHeight()) {
+				cd--;
+				horizontalSpeed = 0;
+				isDead = true;
+				if (cd == 0) {
+					Die();
+				}
+			}
+		}
+		else {
+			if (mario.charactorbig_right.GetLeft() + mario.charactorbig_right.GetWidth() > GetLeft()
+				&& mario.charactorbig_right.GetLeft() < GetLeft() + GetWidth()
+				&& mario.charactorbig_right.GetTop() + mario.charactorbig_right.GetHeight() > GetTop()
+				&& mario.charactorbig_right.GetTop() < GetTop() + GetHeight()) {
+				cd--;
+				horizontalSpeed = 0;
+				isDead = true;
+				if (cd == 0) {
+					Die();
+				}
 			}
 		}
 		if (isOnGround == true)
@@ -87,7 +102,7 @@ namespace game_framework
 			"resources/star3.bmp",
 			"resources/star4.bmp",
 			}, RGB(146, 144, 255));
-		charactor.SetAnimation(300, false);
+		charactor.SetAnimation(100, false);
 	}
 
 	void Star::Die()
@@ -100,7 +115,7 @@ namespace game_framework
 		return isdead;
 	}
 
-	void Star::Collision(Map map)
+	void Star::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -123,7 +138,7 @@ namespace game_framework
 			}
 		}
 	}
-	void Star::OnGround(Map map)
+	void Star::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int Star_x = (GetLeft() - map.GetLeft()) / 32;

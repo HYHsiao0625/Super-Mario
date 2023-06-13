@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void Mushroom::UpData(Mario mario, Map map)
+	void Mushroom::UpData(Mario& mario, Map& map)
 	{
 		int x, y;
 		Collision(map);
@@ -67,6 +67,10 @@ namespace game_framework
 			y = charactor.GetTop() + verticalSpeed;
 		}
 
+		if (GetLeft() - map.GetLeft() <= 0)
+		{
+			Die();
+		}
 		if (GetTop() > 480)
 		{
 			Die();
@@ -86,6 +90,7 @@ namespace game_framework
 		charactor.LoadBitmapByString({
 			"resources/Mushroom.bmp",
 			}, RGB(146, 144, 255));
+
 	}
 
 	void Mushroom::Die()
@@ -98,7 +103,7 @@ namespace game_framework
 		return isdead;
 	}
 
-	void Mushroom::Collision(Map map)
+	void Mushroom::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -121,7 +126,7 @@ namespace game_framework
 			}
 		}
 	}
-	void Mushroom::OnGround(Map map)
+	void Mushroom::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mushroom_x = (GetLeft() - map.GetLeft()) / 32;

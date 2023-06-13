@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void FireFlower::UpData(Mario mario, Map map)
+	void FireFlower::UpData(Mario& mario, Map& map)
 	{
 		int x, y;
 		Collision(map);
@@ -84,7 +84,7 @@ namespace game_framework
 	void FireFlower::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/star1.bmp",
+			"resources/fireflower1.bmp",
 			}, RGB(146, 144, 255));
 	}
 
@@ -98,7 +98,7 @@ namespace game_framework
 		return isdead;
 	}
 
-	void FireFlower::Collision(Map map)
+	void FireFlower::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -121,7 +121,7 @@ namespace game_framework
 			}
 		}
 	}
-	void FireFlower::OnGround(Map map)
+	void FireFlower::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int FireFlower_x = (GetLeft() - map.GetLeft()) / 32;

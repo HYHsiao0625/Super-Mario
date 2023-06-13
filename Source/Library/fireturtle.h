@@ -1,5 +1,5 @@
-#ifndef Turtle_H
-#define Turtle_H
+#ifndef FireTurtle_H
+#define FireTurtle_H
 
 #pragma
 #include "gameutil.h"
@@ -7,17 +7,18 @@
 #include <vector>
 #include <map>
 #include "enemy.h"
+#include "enemyfireball.h"
 #include "mario.h"
 
 using namespace std;
 
 namespace game_framework
 {
-	class Turtle : public Enemy
+	class FireTurtle : public Enemy
 	{
 	public:
-		Turtle();
-		~Turtle();
+		FireTurtle();
+		~FireTurtle();
 		void UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos);
 		void Reset();
 		void Load();
@@ -32,11 +33,12 @@ namespace game_framework
 		void Show();
 		void SetTopLeft(int, int);
 		void fireballSetTopLeft(int, int);
-
+		std::vector<EnemyFireBall> fireball;
+		int shot_time = 20;
 	private:
 		bool isKickAble = false;
 		bool isdead = false;
 		bool on_kick = false;
 	};
 }
-#endif // !Turtle_H
+#endif // !FireTurtle_H
