@@ -23,7 +23,7 @@ namespace game_framework
 		~Enemyfactor();
 		void Load(int world, int level);
 		void Show();
-		void UpData(Mario& mario, Map map);
+		void UpData(Mario& mario, Map& map);
 		void SetTopLeft(int x, int y);
 		void Reset();
 		vector<Enemy*> GetMonsterlist();

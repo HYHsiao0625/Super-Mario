@@ -49,7 +49,7 @@ namespace game_framework
 
 	}
 
-	void Itemfactor::UpData(Mario mario, Map map)
+	void Itemfactor::UpData(Mario& mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		vector<vector<CMovingBitmap>> map_charactor = map.GetMapcharactor();

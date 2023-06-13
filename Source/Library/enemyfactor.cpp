@@ -119,10 +119,10 @@ namespace game_framework
 
 	}
 
-	void Enemyfactor::UpData(Mario& mario, Map map)
+	void Enemyfactor::UpData(Mario& mario, Map& map)
 	{
 		for (int i = monster_list.size() - 1; i >= 0; i--) {
-			if (abs(monster_list[i]->GetLeft() - mario.GetLeft()) < 800) {
+			if (abs(monster_list[i]->GetLeft() - mario.GetLeft()) < 1024) {
 				monster_list[i]->UpData(monster_list, mario, map,i);
 			}
 		}

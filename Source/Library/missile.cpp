@@ -42,10 +42,10 @@ namespace game_framework
 	void Missile::fireballSetTopLeft(int x, int y)
 	{
 	}
-	void Missile::UpData(vector<Enemy*> monster_list, Mario& mario, Map map, int pos)
+	void Missile::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos)
 	{
 		///Collision(map);
-		if (abs(mario.GetLeft() - GetLeft()) > 48) {
+		if (abs(mario.GetLeft() - GetLeft()) > 40) {
 		}
 		else {
 			trigger = 1;
@@ -53,7 +53,7 @@ namespace game_framework
 		}
 		
 		if (trigger == 1) {
-			verticalSpeed = -32;
+			verticalSpeed = -40;
 		}
 		if (GetTop() <= 0) {
 			Die();
@@ -72,6 +72,10 @@ namespace game_framework
 			"resources/missile1.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
+		charactor.LoadBitmapByString({
+			"resources/missile1.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
 	}
 
 	void Missile::Die()
@@ -84,7 +88,7 @@ namespace game_framework
 		return isDead;
 	}
 
-	void Missile::Collision(Map map)
+	void Missile::Collision(Map& map)
 	{
 		
 	}

@@ -15,13 +15,13 @@ namespace game_framework
 	class EnemyFireBall : public Item
 	{
 	public:
-		void UpData(Mario mario, Map map);
+		void UpData(Mario& mario, Map& map);
 		void Reset();
 		void Load();
 		void Die();
 		bool IsDead();
 
-		void Collision(Map map);
+		void Collision(Map& map);
 		void LoadDieIamge();
 
 

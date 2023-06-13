@@ -27,8 +27,11 @@ namespace game_framework
 	}
 	void FireTurtle::Show()
 	{
-		if (showtime == 0) {
+		if (horizontalSpeed<0) {
 			charactor.ShowBitmap();
+		}
+		else {
+			charactor_right.ShowBitmap();
 		}
 		for (unsigned int i = 0; i < fireball.size(); i++) {
 			fireball[i].ShowBitmap();
@@ -37,6 +40,7 @@ namespace game_framework
 	void FireTurtle::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
+		charactor_right.SetTopLeft(x, y);
 	}
 	void FireTurtle::fireballSetTopLeft(int x, int y)
 	{
@@ -44,13 +48,13 @@ namespace game_framework
 			fireball[i].SetTopLeft(fireball[i].GetLeft()-x, fireball[i].GetTop()- y);
 		}
 	}
-	void FireTurtle::UpData(vector<Enemy*> monster_list, Mario &mario, Map map, int pos)
+	void FireTurtle::UpData(vector<Enemy*>& monster_list, Mario &mario, Map& map, int pos)
 	{
 		int x, y;
 		Collision(map);
 		OnGround(map);
 		Collision(monster_list, pos);
-
+		std::vector<Fireball>& mario_fireball = mario.GetFireball();
 		for (unsigned int i = 0; i < fireball.size();)
 		{
 			if (fireball[i].IsDead() == true)
@@ -65,7 +69,13 @@ namespace game_framework
 					mario.Die();
 
 				}
-
+				for (unsigned int j = 0; j < mario_fireball.size(); j++)
+				{
+					if (fireball[i].charactor.IsOverlap(fireball[i].charactor, mario_fireball[j].charactor) == true) {
+						Die();
+						mario_fireball[j].Die();
+					}
+				}
 				i++;
 			}
 		}
@@ -99,7 +109,6 @@ namespace game_framework
 			{
 				horizontalSpeed = 0;
 				Die();
-				charactor.SetFrameIndexOfBitmap(3);
 			}
 		}
 		if (mario.isCrouching == true) {
@@ -108,7 +117,7 @@ namespace game_framework
 				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
 				&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
 			{
-				charactor.SetFrameIndexOfBitmap(2);
+				SetFrameIndexOfBitmap(2);
 				isKickAble = true;
 				SetTopLeft(GetLeft(), GetTop() + 16);
 				horizontalSpeed = 0;
@@ -189,7 +198,7 @@ namespace game_framework
 		{
 			Die();
 		}
-		charactor.SetTopLeft(x, y);
+		SetTopLeft(x, y);
 	}
 
 	void FireTurtle::Reset()
@@ -202,7 +211,13 @@ namespace game_framework
 		charactor.LoadBitmapByString({
 			"resources/fireturtle1.bmp",
 			"resources/turtle2.bmp",
-			"resources/turtle3.bmp",
+			"resources/fireturtle3.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
+		charactor_right.LoadBitmapByString({
+			"resources/fireturtle1_right.bmp",
+			"resources/turtle2.bmp",
+			"resources/fireturtle3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}
@@ -210,6 +225,7 @@ namespace game_framework
 	void FireTurtle::Die()
 	{
 		charactor.SetFrameIndexOfBitmap(3);
+		charactor_right.SetFrameIndexOfBitmap(3);
 		isdead = true;
 	}
 
@@ -218,7 +234,7 @@ namespace game_framework
 		return isdead;
 	}
 
-	void FireTurtle::Collision(Map map)
+	void FireTurtle::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int FireTurtle_x = (GetLeft() - map.GetLeft()) / 32;
@@ -255,7 +271,7 @@ namespace game_framework
 			isCollision = true;
 		}
 	}
-	void FireTurtle::Collision(vector<Enemy*> monster_list, int pos) {
+	void FireTurtle::Collision(vector<Enemy*>& monster_list, int pos) {
 		if (pos != 0) {
 			if (charactor.IsOverlap(charactor, monster_list[pos - 1]->charactor) && (charactor.GetLeft() != monster_list[pos - 1]->GetLeft()) && monster_list[pos - 1]->IsDead() == false)
 			{
@@ -281,9 +297,9 @@ namespace game_framework
 		}
 		*/
 	}
-	void FireTurtle::OnGround(Map map)
+	void FireTurtle::OnGround(Map& map)
 	{
-		vector<vector<int>> map_vector = map.GetMap();
+		vector<vector<int>>& map_vector = map.GetMap();
 		int FireTurtle_x = (GetLeft() - map.GetLeft()) / 32;
 		int FireTurtle_y = (GetTop() + 16) / 32;
 

@@ -20,7 +20,7 @@
 
 namespace game_framework
 {
-	void Fireball::UpData(Mario mario, Map map)
+	void Fireball::UpData(Mario& mario, Map& map)
 	{
 		int x, y;
 		Collision(map);
@@ -31,7 +31,7 @@ namespace game_framework
 		{
 			Die();
 		}
-		if (isCollision == true)
+		if (isCollision == true || cd==0)
 		{
 			Die();
 		}
@@ -68,7 +68,7 @@ namespace game_framework
 		return isdead;
 	}
 
-	void Fireball::Collision(Map map)
+	void Fireball::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;

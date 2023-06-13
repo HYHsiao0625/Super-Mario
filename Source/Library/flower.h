@@ -18,8 +18,8 @@ namespace game_framework
 	public:
 		Flower();
 		~Flower();
-		void UpData(vector<Enemy*> monster_list,Mario& mario, Map map,int pos);
-		void Collision(Map map);
+		void UpData(vector<Enemy*>& monster_list,Mario& mario, Map& map,int pos);
+		void Collision(Map& map);
 		void Reset();
 		void Load();
 		void Die();

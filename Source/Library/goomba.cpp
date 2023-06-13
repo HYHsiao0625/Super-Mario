@@ -41,9 +41,9 @@ namespace game_framework
 	void Goomba::fireballSetTopLeft(int x, int y)
 	{
 	}
-	void Goomba::UpData(vector<Enemy*> monster_list, Mario& mario, Map map,int pos)
+	void Goomba::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos)
 	{
-		if (abs(mario.GetLeft() - GetLeft()) > 128 && GetTop() <= 0) {
+		if (abs(mario.GetLeft() - GetLeft()) > 192 && GetTop() <= 0) {
 
 		}
 		else {
@@ -67,7 +67,7 @@ namespace game_framework
 				}
 			}
 			else {
-				if (abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) < 60
+				if (abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) < 50
 					&& abs(mario.charactorbig_left.GetTop() + mario.charactorbig_left.GetHeight() - GetTop() - GetHeight()) > 3
 					&& mario.charactorbig_left.GetLeft() + mario.charactorbig_left.GetWidth() > GetLeft()
 					&& mario.charactorbig_left.GetLeft() < GetLeft() + GetWidth() && isDead == false
@@ -123,7 +123,12 @@ namespace game_framework
 			"resources/goomba3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
-
+		charactor_right.LoadBitmapByString({
+		"resources/goomba1.bmp",
+		"resources/goomba2.bmp",
+		"resources/goomba3.bmp",
+		"resources/empty.bmp"
+			}, RGB(146, 144, 255));
 	}
 
 	void Goomba::Die()
@@ -136,7 +141,7 @@ namespace game_framework
 	{
 		return isDead;
 	}
-	void Goomba::Collision(Map map)
+	void Goomba::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -166,7 +171,7 @@ namespace game_framework
 		}
 	}
 
-	void Goomba::Collision(vector<Enemy*> monster_list,int pos)
+	void Goomba::Collision(vector<Enemy*>& monster_list,int pos)
 	{
 		int position = pos; //小怪在list裡面第幾個
 		if (pos != 0) {
@@ -208,7 +213,7 @@ namespace game_framework
 		}*/
 		
 	}
-	void Goomba::OnGround(Map map)
+	void Goomba::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int goomba_x = (GetLeft() - map.GetLeft()) / 32;

@@ -15,14 +15,14 @@ namespace game_framework
 	class Mushroom : public Item
 	{
 	public:
-		void UpData(Mario mario, Map map);
+		void UpData(Mario& mario, Map& map);
 		void Reset();
 		void Load();
 		void Die();
 		bool IsDead();
 
-		void Collision(Map map);
-		void OnGround(Map map);
+		void Collision(Map& map);
+		void OnGround(Map& map);
 		void LoadDieIamge();
 
 		

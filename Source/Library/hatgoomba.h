@@ -17,16 +17,16 @@ namespace game_framework
 		HatGoomba();
 		~HatGoomba();
 
-		void UpData(vector<Enemy*> monster_list, Mario& mario, Map map, int pos);
+		void UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos);
 		void Reset();
 		void Load();
 		void Die();
 		bool IsDead();
 		//-------------------
-		void Collision(Map map);
-		void Collision(vector<Enemy*> monster_list, int pos);
+		void Collision(Map& map);
+		void Collision(vector<Enemy*>& monster_list, int pos);
 		//-------------------
-		void OnGround(Map map);
+		void OnGround(Map& map);
 		void LoadDieIamge();
 		void Show();
 		void SetTopLeft(int, int);

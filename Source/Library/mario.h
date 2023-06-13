@@ -20,7 +20,7 @@ namespace game_framework
 	{
 	public:
 		Mario();
-		void	UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor);
+		void	UpData(Mario mario, Map& map, Enemyfactor& enemyfactor, Itemfactor& itemfactor);
 		void	Reset();
 		void	Load();
 		void	Show();
@@ -58,13 +58,13 @@ namespace game_framework
 		bool	IsDown();
 		bool	IsSwitchMap();
 		//--------------
-		void	Collision(Mario mario, Map map);
+		void	Collision(Mario mario, Map& map);
 		void	Collision(Mario mario, Goomba goomba);
-		void    Collision(Enemyfactor enemyfactor);
-		void    Collision(Itemfactor itemyfactor);
+		void    Collision(Enemyfactor& enemyfactor);
+		void    Collision(Itemfactor& itemyfactor);
 
-		void	OnGround(Mario mario, Map map);
-		void	HitBox(Mario mario, Map map);
+		void	OnGround(Mario mario, Map& map);
+		void	HitBox(Mario mario, Map& map);
 
 		
 		//----------

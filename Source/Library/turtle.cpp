@@ -27,8 +27,11 @@ namespace game_framework
 	}
 	void Turtle::Show()
 	{
-		if (showtime == 0) {
+		if (horizontalSpeed < 0) {
 			charactor.ShowBitmap();
+		}
+		else {
+			charactor_right.ShowBitmap();
 		}
 	}
 	void Turtle::fireballSetTopLeft(int x, int y)
@@ -37,9 +40,10 @@ namespace game_framework
 	void Turtle::SetTopLeft(int x, int y)
 	{
 		charactor.SetTopLeft(x, y);
+		charactor_right.SetTopLeft(x, y);
 	}
 
-	void Turtle::UpData(vector<Enemy*> monster_list, Mario& mario, Map map,int pos)
+	void Turtle::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos)
 	{
 		int x, y;
 		Collision(map);
@@ -57,7 +61,6 @@ namespace game_framework
 			{
 				horizontalSpeed = 0;
 				Die();
-				charactor.SetFrameIndexOfBitmap(3);
 			}
 		}
 		if (mario.isCrouching == true) {
@@ -66,7 +69,7 @@ namespace game_framework
 				&& mario.GetLeft() + mario.GetWidth() > GetLeft()
 				&& mario.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
 			{
-				charactor.SetFrameIndexOfBitmap(2);
+				SetFrameIndexOfBitmap(2);
 				isKickAble = true;
 				SetTopLeft(GetLeft(), GetTop() + 16);
 				horizontalSpeed = 0;
@@ -79,7 +82,7 @@ namespace game_framework
 				&& mario.charactorbig_left.GetLeft() + mario.charactorbig_left.GetWidth() > GetLeft()
 				&& mario.charactorbig_left.GetLeft() < GetLeft() + GetWidth() && isKickAble == false)
 			{
-				charactor.SetFrameIndexOfBitmap(2);
+				SetFrameIndexOfBitmap(2);
 				isKickAble = true;
 				SetTopLeft(GetLeft(), GetTop() + 16);
 				horizontalSpeed = 0;
@@ -149,7 +152,7 @@ namespace game_framework
 		{
 			Die();
 		}
-		charactor.SetTopLeft(x, y);
+		SetTopLeft(x, y);
 	}
 
 	void Turtle::Reset()
@@ -165,11 +168,17 @@ namespace game_framework
 			"resources/turtle3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
+		charactor_right.LoadBitmapByString({
+			"resources/turtle1_right.bmp",
+			"resources/turtle2.bmp",
+			"resources/turtle3.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
 	}
 
 	void Turtle::Die()
 	{
-		charactor.SetFrameIndexOfBitmap(3);
+		SetFrameIndexOfBitmap(3);
 		isdead = true;
 	}
 
@@ -178,7 +187,7 @@ namespace game_framework
 		return isdead;
 	}
 
-	void Turtle::Collision(Map map)
+	void Turtle::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int turtle_y = GetTop() / 32;
@@ -210,7 +219,7 @@ namespace game_framework
 			}
 		}
 	}
-	void Turtle::Collision(vector<Enemy*> monster_list,int pos) {
+	void Turtle::Collision(vector<Enemy*>& monster_list,int pos) {
 		if (pos != 0) {
 			if (charactor.IsOverlap(charactor, monster_list[pos - 1]->charactor) && (charactor.GetLeft() != monster_list[pos - 1]->GetLeft()) && monster_list[pos - 1]->IsDead() == false)
 			{
@@ -236,7 +245,7 @@ namespace game_framework
 		}
 		*/
 	}
-	void Turtle::OnGround(Map map)
+	void Turtle::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int turtle_x = (GetLeft() - map.GetLeft()) / 32;

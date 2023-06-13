@@ -15,19 +15,19 @@ namespace game_framework
 	class Fireball : public Item
 	{
 	public:
-		void UpData(Mario mario, Map map);
+		void UpData(Mario& mario, Map& map);
 		void Reset();
 		void Load();
 		void Die();
 		bool IsDead();
 
-		void Collision(Map map);
+		void Collision(Map& map);
 		void LoadDieIamge();
 
 
 	private:
 		bool isdead = false;
-		int	 cd = 3000;
+		int	 cd = 20;
 	};
 }
 #endif // !Fireball_H

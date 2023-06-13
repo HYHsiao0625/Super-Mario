@@ -38,11 +38,11 @@ namespace game_framework
 
 	}
 
-	void Mario::UpData(Mario mario, Map map, Enemyfactor enemyfactor, Itemfactor itemfactor)
+	void Mario::UpData(Mario mario, Map& map, Enemyfactor& enemyfactor, Itemfactor& itemfactor)
 	{
 		int mario_x = (map.GetLeft() - mario.GetLeft()) / 32;
 		int mario_y = mario.GetTop() / 32;
-		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
+		std::vector<Enemy*>& enemylist = enemyfactor.GetMonsterlist();
 
 		Collision(mario, map);
 		Collision(itemfactor);
@@ -335,7 +335,7 @@ namespace game_framework
 	}
 
 
-	void Mario::Collision(Mario mario, Map map)
+	void Mario::Collision(Mario mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 
@@ -424,7 +424,7 @@ namespace game_framework
 		}
 	}
 	*/
-	void Mario::Collision(Enemyfactor enemyfactor) {
+	void Mario::Collision(Enemyfactor& enemyfactor) {
 		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
 		if (isCrouching == true)
 		{
@@ -478,9 +478,9 @@ namespace game_framework
 		}
 	}
 
-	void Mario::Collision(Itemfactor itemfactor) {
-		std::vector<Item*>_itemList = itemfactor.GetItemList();
-		std::vector<int>_itemTemp = itemfactor.GetItemTemp();
+	void Mario::Collision(Itemfactor& itemfactor) {
+		std::vector<Item*>& _itemList = itemfactor.GetItemList();
+		std::vector<int>&_itemTemp = itemfactor.GetItemTemp();
 		for (unsigned int i = 0; i < _itemList.size(); i++)
 		{
 			if (GetLeft() + GetWidth() > _itemList[i]->GetLeft()
@@ -523,10 +523,11 @@ namespace game_framework
 						break;
 					}
 				}
+				_itemList[i]->Die();
 			}
 		}
 	}
-	void Mario::OnGround(Mario mario, Map map)
+	void Mario::OnGround(Mario mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
@@ -577,7 +578,7 @@ namespace game_framework
 		}
 	}
 
-	void Mario::HitBox(Mario mario, Map map)
+	void Mario::HitBox(Mario mario, Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;

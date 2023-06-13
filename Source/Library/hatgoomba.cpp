@@ -42,7 +42,7 @@ namespace game_framework
 	void HatGoomba::fireballSetTopLeft(int x, int y)
 	{
 	}
-	void HatGoomba::UpData(vector<Enemy*> monster_list, Mario& mario, Map map, int pos)
+	void HatGoomba::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos)
 	{
 		int x, y;
 		Collision(map);
@@ -63,6 +63,7 @@ namespace game_framework
 					havehat = false;
 					SetFrameIndexOfBitmap(1);
 					horizontalSpeed *= 5;
+					mario.Die();
 				}
 				else {
 					horizontalSpeed = 0;
@@ -134,7 +135,12 @@ namespace game_framework
 			"resources/goomba2.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
-
+		charactor_right.LoadBitmapByString({
+			"resources/hatgoomba1.bmp",
+			"resources/hatgoomba2.bmp",
+			"resources/goomba2.bmp",
+			"resources/empty.bmp"
+			}, RGB(146, 144, 255));
 	}
 
 	void HatGoomba::Die()
@@ -153,7 +159,7 @@ namespace game_framework
 	{
 		return isDead;
 	}
-	void HatGoomba::Collision(Map map)
+	void HatGoomba::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
@@ -181,7 +187,7 @@ namespace game_framework
 		}
 	}
 
-	void HatGoomba::Collision(vector<Enemy*> monster_list, int pos)
+	void HatGoomba::Collision(vector<Enemy*>& monster_list, int pos)
 	{
 		int position = pos; //小怪在list裡面第幾個
 		if (pos != 0) {
@@ -223,7 +229,7 @@ namespace game_framework
 		}*/
 
 	}
-	void HatGoomba::OnGround(Map map)
+	void HatGoomba::OnGround(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int HatGoomba_x = (GetLeft() - map.GetLeft()) / 32;

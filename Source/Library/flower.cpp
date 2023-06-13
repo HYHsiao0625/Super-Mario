@@ -43,12 +43,19 @@ namespace game_framework
 	void Flower::fireballSetTopLeft(int x, int y)
 	{
 	}
-	void Flower::UpData(vector<Enemy*> monster_list, Mario& mario, Map map,int pos)
+	void Flower::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos)
 	{
 		//Collision(map);
-
-		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
-		int mario_y = (mario.GetTop() - 4) / 32;
+		int mario_x;
+		int mario_y;
+		if (mario.isCrouching == true) {
+			mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
+			mario_y = (mario.GetTop() - 4) / 32;
+		}
+		else {
+			mario_x = (mario.charactorbig_left.GetLeft() - map.GetLeft()) / 32;
+			mario_y = (mario.charactorbig_left.GetTop()+32) / 32;
+		}
 		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
 		int enemy_y = GetTop() / 32;
 		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 2)
@@ -109,7 +116,7 @@ namespace game_framework
 		return isDead;
 	}
 
-	void Flower::Collision(Map map)
+	void Flower::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int enemy_x = (GetLeft() - map.GetLeft()) / 32;

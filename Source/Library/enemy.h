@@ -21,7 +21,7 @@ namespace game_framework
 		Enemy();
 		virtual ~Enemy()=0;
 
-		virtual void UpData(vector<Enemy*> monster_list, Mario& mario, Map map,int pos) = 0;
+		virtual void UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos) = 0;
 		virtual void Reset() = 0;
 		virtual void Load() = 0;
 		virtual void Die() = 0;
@@ -52,6 +52,8 @@ namespace game_framework
 		//-----------------------
 
 		CMovingBitmap charactor;
+		CMovingBitmap charactor_right;
+
 		int		original_y = 0;
 
 	protected:
