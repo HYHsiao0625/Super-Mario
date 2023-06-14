@@ -46,10 +46,12 @@ namespace game_framework
 		void	SetVerticalSpeed(int);
 		void	SetHorizontalSpeed(int);
 		void	SetJump(bool);
+		void	SetMode(bool);
 		//--------------
 		int		GetVerticalSpeed();
 		int		GetHorizontalSpeed();
 		int		GetHnbeatable_time();
+		bool	GetMode();
 		//--------------
 		bool	IsDead();
 		bool	IsOnGround();
@@ -57,10 +59,11 @@ namespace game_framework
 		bool	IsJump();
 		bool	IsDown();
 		bool	IsSwitchMap();
+		bool	IsInvincible();
 		//--------------
 		void	Collision(Mario mario, Map& map);
 		void	Collision(Mario mario, Goomba goomba);
-		void    Collision(Enemyfactor& enemyfactor);
+		void    Collision(Enemyfactor& enemyfactor, Map& map);
 		void    Collision(Itemfactor& itemyfactor);
 
 		void	OnGround(Mario mario, Map& map);
@@ -90,7 +93,7 @@ namespace game_framework
 		bool	isInvincible = false;
 		bool	isDown = false;
 		bool	isSwitchMap = false;
-		
+		bool	isInvincibleMode = false;
 		int		x;
 		int		y;
 

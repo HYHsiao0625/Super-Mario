@@ -40,16 +40,77 @@ namespace game_framework
 		vector<int> map_temp;
 		int mario_x = (mario.GetLeft() - GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
-		if (mario.IsHitbox() == true)
+		for (int i = 0; i < height + 4; i++)
+		{
+			for (int j = 0; j < width; j++)
+			{
+				switch (map_vector[i][j])
+				{
+				case 2:
+					charactor[i][j].SetAnimation(200, false);
+					if (charactor[i][j].GetFrameIndexOfBitmap() == 4)
+					{
+						charactor[i][j].SetAnimation(200, true);
+						charactor[i][j].SetFrameIndexOfBitmap(4);
+					}
+					else if (charactor[i][j].GetFrameIndexOfBitmap() == 3)
+					{
+						charactor[i][j].SetFrameIndexOfBitmap(0);
+					}
+					break;
+				case 12:								//產出蘑菇的方塊
+					charactor[i][j].SetAnimation(200, false);
+					if (charactor[i][j].GetFrameIndexOfBitmap() == 4)
+					{
+						charactor[i][j].SetAnimation(200, true);
+						charactor[i][j].SetFrameIndexOfBitmap(4);
+					}
+					else if (charactor[i][j].GetFrameIndexOfBitmap() == 3)
+					{
+						charactor[i][j].SetFrameIndexOfBitmap(0);
+					}
+					break;
+				case 13:								//產出星星的方塊
+					charactor[i][j].SetAnimation(200, false);
+					if (charactor[i][j].GetFrameIndexOfBitmap() == 4)
+					{
+						charactor[i][j].SetAnimation(200, true);
+						charactor[i][j].SetFrameIndexOfBitmap(4);
+					}
+					else if (charactor[i][j].GetFrameIndexOfBitmap() == 3)
+					{
+						charactor[i][j].SetFrameIndexOfBitmap(0);
+					}
+					break;
+				case 14:								//產出火焰花的方塊
+					charactor[i][j].SetAnimation(200, false);
+					if (charactor[i][j].GetFrameIndexOfBitmap() == 4)
+					{
+						charactor[i][j].SetAnimation(200, true);
+						charactor[i][j].SetFrameIndexOfBitmap(4);
+					}
+					else if (charactor[i][j].GetFrameIndexOfBitmap() == 3)
+					{
+						charactor[i][j].SetFrameIndexOfBitmap(0);
+					}
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		if (mario.IsHitbox() == true && mario_y >=0)
 		{
 			if (map_vector[mario_y][mario_x] == 2 || map_vector[mario_y][mario_x]==12 || map_vector[mario_y][mario_x] == 13 || map_vector[mario_y][mario_x] == 14) {
-				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
+				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(4);
+				charactor[mario_y][mario_x].is_used = true;
 				map_temp.push_back(mario_y);
 				map_temp.push_back(mario_x);
 				resetblock_vector.push_back(map_temp);
 			}
 			else if (map_vector[mario_y][mario_x + 1] == 2 || map_vector[mario_y][mario_x+1] == 12 || map_vector[mario_y][mario_x+1] == 13 || map_vector[mario_y][mario_x+1] == 14) {
-				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(1);
+				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(4);
+				charactor[mario_y][mario_x].is_used = true;
 				map_temp.push_back(mario_y);
 				map_temp.push_back(mario_x+1);
 				resetblock_vector.push_back(map_temp);
@@ -110,83 +171,113 @@ namespace game_framework
 					case 0:
 						charactor[i][j].LoadBitmapByString({
 							"resources/empty.bmp",
-							"resources/mushroom.bmp"
 							}, RGB(146, 144, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 1:
 						charactor[i][j].LoadBitmapByString({
 							"resources/block.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 2:
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
-							"resources/block2_2.bmp"
+							"resources/block2_2.bmp",
+							"resources/block2_3.bmp",
+							"resources/block2.bmp",
+							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 3:
 						charactor[i][j].LoadBitmapByString({
 							"resources/block3.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 4:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe1.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 5:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe2.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 6:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe3.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 7:
 						charactor[i][j].LoadBitmapByString({
 							"resources/pipe4.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 8:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag1.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 9:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag2.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 10:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag3.bmp"
 							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
 					case 11:
 						charactor[i][j].LoadBitmapByString({
 							"resources/flag4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					case 12:								//產出蘑菇的方塊
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
-							"resources/block2_2.bmp"
+							"resources/block2_2.bmp",
+							"resources/block2_3.bmp",
+							"resources/block2.bmp",
+							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					case 13:								//產出星星的方塊
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
-							"resources/block2_2.bmp"
+							"resources/block2_2.bmp",
+							"resources/block2_3.bmp",
+							"resources/block2.bmp",
+							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					case 14:								//產出火焰花的方塊
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
-							"resources/block2_2.bmp"
+							"resources/block2_2.bmp",
+							"resources/block2_3.bmp",
+							"resources/block2.bmp",
+							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					default:
 						break;
 					}

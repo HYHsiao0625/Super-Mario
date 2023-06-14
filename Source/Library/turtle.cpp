@@ -63,7 +63,11 @@ namespace game_framework
 				Die();
 			}
 		}
-		if (mario.isCrouching == true) {
+		if (charactor.IsOverlap(charactor, mario.charactor) && mario.IsInvincible() == true)
+		{
+			Die();
+		}
+		else if (mario.isCrouching == true) {
 			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 50
 				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
 				&& mario.GetLeft() + mario.GetWidth() > GetLeft()

@@ -64,13 +64,11 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == 0x41)//left
 	{
-		mario.SetAnimation(10, false);
 		mario.SetHorizontalSpeed(-16);
 		mario.face = -1;
 	}
 	if (nChar == 0x44) //right
 	{
-		mario.SetAnimation(10, false);
 		mario.SetHorizontalSpeed(16);
 		mario.face = 1;
 	}
@@ -98,15 +96,11 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if (nChar == 0x41)
 	{
-		mario.SetAnimation(100, true);
-		mario.SetFrameIndexOfBitmap(0);
 		mario.SetHorizontalSpeed(0);
 		
 	}
 	if (nChar == 0x44) //key(2)== D
 	{
-		mario.SetAnimation(100, true);
-		mario.SetFrameIndexOfBitmap(0);
 		mario.SetHorizontalSpeed(0);
 	}
 	if (nChar == VK_SPACE)
@@ -118,15 +112,22 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 		mario.SetDown(false);
 	}
+	if (nChar == 0x58)
+	{
+		mario.SetMode(!mario.GetMode());
+	}
 	if (nChar == 0x4A)
 	{
-		SwitchMap(1, level + 1);
-		map.Clear();
-		map.Load(1, level + 1);
-		mario.SetSwitchMap(false);
-		world = 1;
-		level++;
-		OnBeginState();
+		if (level < 3)
+		{
+			SwitchMap(1, level + 1);
+			map.Clear();
+			map.Load(1, level + 1);
+			mario.SetSwitchMap(false);
+			world = 1;
+			level++;
+			OnBeginState();
+		}
 	}
 }
 
@@ -166,10 +167,11 @@ void CGameStateRun::OnShow()
 
 	background.ShowBitmap();
 	map.Show();
+
 	mario.Show();
 	enemyfactor.Show();
 	itemfactor.Show();
-	if (mario.IsSwitchMap() == true)
+	if (mario.IsSwitchMap() == true && level < 3)
 	{
 		mario.SetVerticalSpeed(8);
 		if (mario.IsOnGround() == true)
@@ -181,6 +183,17 @@ void CGameStateRun::OnShow()
 			world = 1;
 			level++;
 			OnBeginState();
+		}
+	}
+	else if (mario.IsSwitchMap() == true && level == 3)
+	{
+		mario.SetVerticalSpeed(8);
+		if (mario.IsOnGround() == true)
+		{
+			finish.LoadBitmapByString({
+			"resources/finish.bmp",
+				});
+			finish.ShowBitmap();
 		}
 	}
 	ShowMarioPostion();
@@ -281,7 +294,6 @@ void CGameStateRun::ShowMarioPostion()
 		CTextDraw::Print(pDC, 0, 80, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
 
 		CTextDraw::Print(pDC, 0, 96, std::to_string(mario.IsDead()));
-		CTextDraw::Print(pDC, 0, 112, "type:" + std::to_string(map.GetMap()[mario_y][mario_x]));
 		//CTextDraw::Print(pDC, 0, 128, "position:" + std::to_string(enemyfactor.Get_List()[0].GetTop()));
 	CDDraw::ReleaseBackCDC();
 

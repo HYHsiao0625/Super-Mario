@@ -72,7 +72,7 @@ namespace game_framework
 				for (unsigned int j = 0; j < mario_fireball.size(); j++)
 				{
 					if (fireball[i].charactor.IsOverlap(fireball[i].charactor, mario_fireball[j].charactor) == true) {
-						Die();
+						fireball[i].Die();
 						mario_fireball[j].Die();
 					}
 				}
@@ -111,7 +111,11 @@ namespace game_framework
 				Die();
 			}
 		}
-		if (mario.isCrouching == true) {
+		if (charactor.IsOverlap(charactor, mario.charactor) && mario.IsInvincible() == true)
+		{
+			Die();
+		}
+		else if (mario.isCrouching == true) {
 			if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 50
 				&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
 				&& mario.GetLeft() + mario.GetWidth() > GetLeft()

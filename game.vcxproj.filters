@@ -105,6 +105,12 @@
     <ClCompile Include="Source\Library\fireturtle.cpp">
       <Filter>GameLibrary</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Library\axeturtle.cpp">
+      <Filter>GameLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Library\axe.cpp">
+      <Filter>GameLibrary</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Library\audio.h">
@@ -189,6 +195,12 @@
       <Filter>GameLibrary</Filter>
     </ClInclude>
     <ClInclude Include="Source\Library\fireturtle.h">
+      <Filter>GameLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Library\axeturtle.h">
+      <Filter>GameLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Library\axe.h">
       <Filter>GameLibrary</Filter>
     </ClInclude>
   </ItemGroup>

@@ -55,6 +55,10 @@
 #include "../Library/star.h"
 #include "../Library/fireball.h"
 #include "../Library/fireflower.h"
+#include "../Library/axe.h"
+#include "../Library/axeturtle.h"
+
+
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -129,6 +133,7 @@ namespace game_framework {
 		CMovingBitmap background;
 		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;
+		CMovingBitmap finish;
 	};
 
 	/////////////////////////////////////////////////////////////////////////////

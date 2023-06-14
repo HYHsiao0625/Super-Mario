@@ -67,6 +67,10 @@ namespace game_framework
 			y = charactor.GetTop() + verticalSpeed;
 		}
 
+		if (GetLeft() - map.GetLeft() <= 0)
+		{
+			Die();
+		}
 		if (GetTop() > 480)
 		{
 			Die();

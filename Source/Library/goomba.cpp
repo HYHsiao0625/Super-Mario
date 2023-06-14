@@ -41,7 +41,7 @@ namespace game_framework
 	void Goomba::fireballSetTopLeft(int x, int y)
 	{
 	}
-	void Goomba::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos)
+	void Goomba::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos)
 	{
 		if (abs(mario.GetLeft() - GetLeft()) > 192 && GetTop() <= 0) {
 
@@ -56,7 +56,13 @@ namespace game_framework
 				horizontalSpeed *= -1;
 				isCollision = false;
 			}
-			if (mario.isCrouching == true) {
+
+			if (charactor.IsOverlap(charactor, mario.charactor) && mario.IsInvincible() == true)
+			{
+				Die();
+			}
+			else if (mario.isCrouching == true) 
+			{
 				if (abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) < 30
 					&& abs(mario.GetTop() + mario.GetHeight() - GetTop() - GetHeight()) > 3
 					&& mario.GetLeft() + mario.GetWidth() > GetLeft()
@@ -76,6 +82,7 @@ namespace game_framework
 					Die();
 				}
 			}
+
 			if (isOnGround == true)
 			{
 				verticalSpeed = 0;

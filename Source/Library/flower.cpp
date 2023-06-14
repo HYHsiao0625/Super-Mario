@@ -48,6 +48,10 @@ namespace game_framework
 		//Collision(map);
 		int mario_x;
 		int mario_y;
+		if (charactor.IsOverlap(charactor, mario.charactor) && mario.IsInvincible() == true)
+		{
+			Die();
+		}
 		if (mario.isCrouching == true) {
 			mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 			mario_y = (mario.GetTop() - 4) / 32;

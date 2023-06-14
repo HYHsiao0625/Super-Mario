@@ -243,6 +243,8 @@
     <ClCompile Include="Source\Game\mygame_over.cpp" />
     <ClCompile Include="Source\Game\mygame_run.cpp" />
     <ClCompile Include="Source\Library\audio.cpp" />
+    <ClCompile Include="Source\Library\axe.cpp" />
+    <ClCompile Include="Source\Library\axeturtle.cpp" />
     <ClCompile Include="Source\Library\enemy.cpp" />
     <ClCompile Include="Source\Library\enemyfactor.cpp" />
     <ClCompile Include="Source\Library\enemyfireball.cpp" />
@@ -273,6 +275,8 @@
     <ClInclude Include="Source\Game\config.h" />
     <ClInclude Include="Source\Game\mygame.h" />
     <ClInclude Include="Source\Library\audio.h" />
+    <ClInclude Include="Source\Library\axe.h" />
+    <ClInclude Include="Source\Library\axeturtle.h" />
     <ClInclude Include="Source\Library\enemy.h" />
     <ClInclude Include="Source\Library\enemyfactor.h" />
     <ClInclude Include="Source\Library\enemyfireball.h" />
