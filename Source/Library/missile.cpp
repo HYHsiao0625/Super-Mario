@@ -53,7 +53,7 @@ namespace game_framework
 		}
 		
 		if (trigger == 1) {
-			verticalSpeed = -40;
+			verticalSpeed = -30;
 		}
 		if (GetTop() <= 0) {
 			Die();

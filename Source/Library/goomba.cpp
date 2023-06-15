@@ -43,7 +43,7 @@ namespace game_framework
 	}
 	void Goomba::UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map, int pos)
 	{
-		if (abs(mario.GetLeft() - GetLeft()) > 192 && GetTop() <= 0) {
+		if (abs(mario.GetLeft() - GetLeft()) > 200 && GetTop() <= 0) {
 
 		}
 		else {

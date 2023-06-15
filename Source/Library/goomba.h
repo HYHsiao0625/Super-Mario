@@ -33,7 +33,8 @@ namespace game_framework
 		//-------------------
 		void OnGround(Map& map);
 		void LoadDieIamge();
-		
+
+		bool	trigger = 0;
 	};
 }
 #endif // !GOOMBA_H

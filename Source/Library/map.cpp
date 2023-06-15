@@ -38,7 +38,7 @@ namespace game_framework
 	void Map::Updata(Mario mario)
 	{
 		vector<int> map_temp;
-		int mario_x = (mario.GetLeft() - GetLeft()) / 32;
+		int mario_x = (mario.GetLeft() - GetLeft() - 16) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
 		for (int i = 0; i < height + 4; i++)
 		{
@@ -111,6 +111,18 @@ namespace game_framework
 			else if (map_vector[mario_y][mario_x + 1] == 2 || map_vector[mario_y][mario_x+1] == 12 || map_vector[mario_y][mario_x+1] == 13 || map_vector[mario_y][mario_x+1] == 14) {
 				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(4);
 				charactor[mario_y][mario_x].is_used = true;
+				map_temp.push_back(mario_y);
+				map_temp.push_back(mario_x+1);
+				resetblock_vector.push_back(map_temp);
+			}
+			if (map_vector[mario_y][mario_x] == 15) {
+				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(1);
+				map_temp.push_back(mario_y);
+				map_temp.push_back(mario_x);
+				resetblock_vector.push_back(map_temp);
+			}
+			else if (map_vector[mario_y][mario_x+1] == 15) {
+				charactor[mario_y][mario_x+1].SetFrameIndexOfBitmap(1);
 				map_temp.push_back(mario_y);
 				map_temp.push_back(mario_x+1);
 				resetblock_vector.push_back(map_temp);
@@ -277,7 +289,13 @@ namespace game_framework
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
 						break;
-
+					case 15:								//ÁôÂÃªº¤è¶ô
+						charactor[i][j].LoadBitmapByString({
+							"resources/empty.bmp",
+							"resources/block2_4.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					default:
 						break;
 					}

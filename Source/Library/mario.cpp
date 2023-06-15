@@ -367,8 +367,8 @@ namespace game_framework
 
 	void Mario::Collision(Mario mario, Map& map)
 	{
-		vector<vector<int>> map_vector = map.GetMap();
-
+		vector<vector<int>>& map_vector = map.GetMap();
+		vector<vector<CMovingBitmap>>& map_characrot = map.GetMapcharactor();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = mario.GetTop() / 32;
 		//left collision
@@ -377,8 +377,7 @@ namespace game_framework
 			if (GetHorizontalSpeed() > 0 && mario_y>0)
 			{
 				int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
-				if (map_vector[mario_y][mario_x + 1] != 0)
-				{
+				if ((map_vector[mario_y][mario_x+1] != 0 && map_vector[mario_y][mario_x+1] != 15) || (map_vector[mario_y][mario_x+1] == 15 && map_characrot[mario_y][mario_x+1].GetFrameIndexOfBitmap() == 1)) {
 					isCollision = true;
 				}
 				if (map_vector[mario_y][mario_x + 1] == 9 || map_vector[mario_y][mario_x + 1] == 10)
@@ -389,13 +388,14 @@ namespace game_framework
 			else if (GetHorizontalSpeed() < 0 && mario_y > 0)
 			{
 				int mario_x = (GetLeft() - map.GetLeft() - 4) / 32;
-				if (map_vector[mario_y][mario_x] != 0)
+				if ((map_vector[mario_y][mario_x] != 0 && map_vector[mario_y][mario_x] != 15) || (map_vector[mario_y][mario_x] == 15 && map_characrot[mario_y][mario_x].GetFrameIndexOfBitmap() == 1)) {
 				{
 					isCollision = true;
 				}
 				if (map_vector[mario_y][mario_x] == 9 || map_vector[mario_y][mario_x] == 10)
 				{
-					SetSwitchMap(true);
+						SetSwitchMap(true);
+					}
 				}
 			}
 			else
@@ -408,7 +408,7 @@ namespace game_framework
 			if (GetHorizontalSpeed() > 0 && mario_y > 0)
 			{
 				int mario_x = (GetLeft() - map.GetLeft()) / 32;
-				if (map_vector[mario_y][mario_x + 1] != 0 || map_vector[mario_y + 1][mario_x + 1] != 0)
+				if ((map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y][mario_x + 1] != 15) || map_vector[mario_y + 1][mario_x + 1] != 0 || (map_vector[mario_y][mario_x + 1] == 15 && map_characrot[mario_y][mario_x + 1].GetFrameIndexOfBitmap() == 1))
 				{
 					isCollision = true;
 				}
@@ -420,7 +420,7 @@ namespace game_framework
 			else if (GetHorizontalSpeed() < 0 && mario_y > 0)
 			{
 				int mario_x = (GetLeft() - map.GetLeft() - 4) / 32;
-				if (map_vector[mario_y][mario_x] != 0 || map_vector[mario_y + 1][mario_x] != 0)
+				if ((map_vector[mario_y][mario_x] != 0 && map_vector[mario_y][mario_x] != 15) || map_vector[mario_y + 1][mario_x] != 0 || (map_vector[mario_y][mario_x] == 15 && map_characrot[mario_y][mario_x].GetFrameIndexOfBitmap() == 1))
 				{
 					isCollision = true;
 				}
@@ -456,7 +456,7 @@ namespace game_framework
 	*/
 	void Mario::Collision(Enemyfactor& enemyfactor,Map& map) {
 		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
-		std::vector<vector<int>>&mapvector = map.GetMap();
+		std::vector<vector<int>>& mapvector = map.GetMap();
 		if (isCrouching == true)
 		{
 			for (unsigned int i = 0; i < enemylist.size(); i++) {
@@ -573,18 +573,19 @@ namespace game_framework
 	}
 	void Mario::OnGround(Mario mario, Map& map)
 	{
-		vector<vector<int>> map_vector = map.GetMap();
+		vector<vector<int>>& map_vector = map.GetMap();
+		vector<vector<CMovingBitmap>>& map_characrot = map.GetMapcharactor();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = mario.GetTop() / 32;
 		if (isCrouching == true)
 		{
 			if (isJump == false && mario_y >= 0)
 			{
-				if (map_vector[mario_y + 1][mario_x] != 0)
+				if ((map_vector[mario_y + 1][mario_x] != 0 && map_vector[mario_y + 1][mario_x] != 15) || (map_vector[mario_y + 1][mario_x]==15 && map_characrot[mario_y + 1][mario_x].GetFrameIndexOfBitmap()==1))
 				{
 					isOnGround = true;
 				}
-				else if (map_vector[mario_y + 1][mario_x + 1] != 0 && map_vector[mario_y][mario_x + 1] == 0 && mario_y > 0)
+				else if ((map_vector[mario_y + 1][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x+1] != 15 )&& map_vector[mario_y][mario_x + 1] == 0 && mario_y > 0 || (map_vector[mario_y + 1][mario_x+1] == 15 && map_characrot[mario_y + 1][mario_x+1].GetFrameIndexOfBitmap() == 1))
 				{
 					isOnGround = true;
 				}
@@ -602,11 +603,11 @@ namespace game_framework
 		{
 			if (isJump == false && mario_y >= 0)
 			{
-				if (map_vector[mario_y + 2][mario_x] != 0)
+				if ((map_vector[mario_y + 2][mario_x] != 0 && map_vector[mario_y + 2][mario_x] != 15) || (map_vector[mario_y + 2][mario_x] == 15 && map_characrot[mario_y + 2][mario_x].GetFrameIndexOfBitmap() == 1))
 				{
 					isOnGround = true;
 				}
-				else if (map_vector[mario_y + 2][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0 && mario_y > 0)
+				else if ((map_vector[mario_y + 2][mario_x + 1] != 0 && map_vector[mario_y + 2][mario_x + 1] != 15) && map_vector[mario_y + 1][mario_x + 1] == 0 && mario_y > 0 || (map_vector[mario_y + 2][mario_x + 1] == 15 && map_characrot[mario_y + 2][mario_x + 1].GetFrameIndexOfBitmap() == 1))
 				{
 					isOnGround = true;
 				}
@@ -624,24 +625,39 @@ namespace game_framework
 
 	void Mario::HitBox(Mario mario, Map& map)
 	{
-		vector<vector<int>> map_vector = map.GetMap();
+		vector<vector<int>>& map_vector = map.GetMap();
+		vector<vector<CMovingBitmap>>& map_characrot = map.GetMapcharactor();
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 		int mario_y = (mario.GetTop() - 4) / 32;
 		if (mario_x > 0 && mario_y > 0) {
 			if (isOnGround == false && isHitbox == false && isOnHit == false)
 			{
 
-				if (map_vector[mario_y][mario_x] != 0 && mario_y > 0)
+				if (map_vector[mario_y][mario_x] != 0 && mario_y > 0 )
 				{
-					isHitbox = true;
-					isOnHit = true;
-					isJump = false;
+					if (map_vector[mario_y][mario_x] != 15) {
+						isHitbox = true;
+						isOnHit = true;
+						isJump = false;
+					}
+					else if (map_vector[mario_y][mario_x] == 15 && verticalSpeed < 0) {
+						isHitbox = true;
+						isOnHit = true;
+						isJump = false;
+					}
 				}
 				else if (map_vector[mario_y][mario_x + 1] != 0 && map_vector[mario_y + 1][mario_x + 1] == 0 && mario_y > 0)
 				{
-					isHitbox = true;
-					isOnHit = true;
-					isJump = false;
+					if (map_vector[mario_y][mario_x+1] != 15) {
+						isHitbox = true;
+						isOnHit = true;
+						isJump = false;
+					}
+					else if (map_vector[mario_y][mario_x+1] == 15 && verticalSpeed < 0) {
+						isHitbox = true;
+						isOnHit = true;
+						isJump = false;
+					}
 				}
 				else
 				{
