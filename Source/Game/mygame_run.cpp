@@ -19,7 +19,7 @@
 using namespace game_framework;
 
 /////////////////////////////////////////////////////////////////////////////
-// ³o­Óclass¬°¹CÀ¸ªº¹CÀ¸°õ¦æª«¥ó¡A¥D­nªº¹CÀ¸µ{¦¡³£¦b³o¸Ì
+// é€™å€‹classç‚ºéŠæˆ²çš„éŠæˆ²åŸ·è¡Œç‰©ä»¶ï¼Œä¸»è¦çš„éŠæˆ²ç¨‹å¼éƒ½åœ¨é€™è£¡
 /////////////////////////////////////////////////////////////////////////////
 
 CGameStateRun::CGameStateRun(CGame *g) : CGameState(g)
@@ -40,7 +40,7 @@ void CGameStateRun::OnBeginState()
 	enemyfactor.Load(world, level);
 }
 
-void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
+void CGameStateRun::OnMove()							// ç§»å‹•éŠæˆ²å…ƒç´ 
 {
 	if (mario.IsDead() == true)
 	{
@@ -48,7 +48,7 @@ void CGameStateRun::OnMove()							// ²¾°Ê¹CÀ¸¤¸¯À
 	}
 }
 
-void CGameStateRun::OnInit()  								// ¹CÀ¸ªºªì­È¤Î¹Ï§Î³]©w
+void CGameStateRun::OnInit()  								// éŠæˆ²çš„åˆå€¼åŠåœ–å½¢è¨­å®š
 {
 	LoadBackground();
 	map.Load(1, 1);
@@ -133,23 +133,23 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 }
 
-void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnLButtonDown(UINT nFlags, CPoint point)  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnLButtonUp(UINT nFlags, CPoint point)	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnMouseMove(UINT nFlags, CPoint point)	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnRButtonDown(UINT nFlags, CPoint point)  // è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
-void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// ³B²z·Æ¹«ªº°Ê§@
+void CGameStateRun::OnRButtonUp(UINT nFlags, CPoint point)	// è™•ç†æ»‘é¼ çš„å‹•ä½œ
 {
 }
 
@@ -293,16 +293,17 @@ void CGameStateRun::ShowMarioPostion()
 	int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 	int mario_y = mario.GetTop() / 32;
 	CDC *pDC = CDDraw::GetBackCDC();
-	CTextDraw::ChangeFontLog(pDC, 16, "·L³n¥¿¶ÂÅé", RGB(0, 0, 0), 800);
 
-	CTextDraw::Print(pDC, 0, 0, "STAGE: " + to_string(world) + "-" + to_string(level));
-	CTextDraw::Print(pDC, 0, 16, "Hnbeatable_time: " + std::to_string(mario.GetHnbeatable_time()));
-	//CTextDraw::Print(pDC, 0, 32, "fireable: " + std::to_string(mario.isShotable));
-	//CTextDraw::Print(pDC, 0, 48, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
-	//CTextDraw::Print(pDC, 0, 72, "x: " + std::to_string(mario.GetLeft() - map.GetLeft()));
-	//CTextDraw::Print(pDC, 0, 84, "y: " + std::to_string(mario.GetTop()));
-	//CTextDraw::Print(pDC, 0, 100, "IsOnGround: " + std::to_string(mario.IsOnGround()));
-	//CTextDraw::Print(pDC, 0, 128, "position:" + std::to_string(enemyfactor.Get_List()[0].GetTop()));
+  CTextDraw::ChangeFontLog(pDC, 16, "å¾®è»Ÿæ­£é»‘é«”", RGB(0, 0, 0), 800);
+
+  CTextDraw::Print(pDC, 0, 0, "STAGE: " + to_string(world) + "-" + to_string(level));
+  CTextDraw::Print(pDC, 0, 16, "Hnbeatable_time: " + std::to_string(mario.GetHnbeatable_time()));
+  CTextDraw::Print(pDC, 0, 32, "fireable: " + std::to_string(mario.isShotable));
+  //CTextDraw::Print(pDC, 0, 48, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
+  CTextDraw::Print(pDC, 0, 72, "x: " + std::to_string(mario.GetLeft() - map.GetLeft()));
+  CTextDraw::Print(pDC, 0, 84, "y: " + std::to_string(mario.GetTop()));
+  //CTextDraw::Print(pDC, 0, 100, "IsOnGround: " + std::to_string(mario.IsOnGround()));
+  //CTextDraw::Print(pDC, 0, 128, "position:" + std::to_string(enemyfactor.Get_List()[0].GetTop()));
 	CDDraw::ReleaseBackCDC();
 
 }
