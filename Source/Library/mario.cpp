@@ -314,6 +314,7 @@ namespace game_framework
 		"resources/firebigmario6_left.bmp",
 			}, RGB(146, 144, 255));
 
+
 		//Load SoundEffect
 		
 		MarioSoundEffect->Load(1, "Resources/SoundEffects/Jump.wav");
@@ -413,7 +414,6 @@ namespace game_framework
 		charactorfire_left.SetAnimation(delay, _once);
 		charactorbigfire.SetAnimation(delay, _once);
 		charactorbigfire_left.SetAnimation(delay, _once);
-
 	}
 	void Mario::SetTopLeft(int x, int y)
 	{
@@ -873,4 +873,5 @@ namespace game_framework
 	{
 		return unbeatable_time;
 	}
+
 }

@@ -222,15 +222,15 @@ namespace game_framework
 	void AxeTurtle::Load()
 	{
 		charactor.LoadBitmapByString({
-			"resources/Turtle1.bmp",
+			"resources/axeturtle1.bmp",
 			"resources/turtle2.bmp",
-			"resources/Turtle3.bmp",
+			"resources/axeturtle3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 		charactor_right.LoadBitmapByString({
-			"resources/Turtle1_right.bmp",
+			"resources/axeturtle1_right.bmp",
 			"resources/turtle2.bmp",
-			"resources/Turtle3.bmp",
+			"resources/axeturtle3.bmp",
 			"resources/empty.bmp"
 			}, RGB(146, 144, 255));
 	}

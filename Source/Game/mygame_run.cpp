@@ -192,6 +192,11 @@ void CGameStateRun::OnShow()
 		mario.SetVerticalSpeed(8);
 		if (mario.IsOnGround() == true)
 		{
+			mario.Reset();
+			map.Reset();
+			enemyfactor.Reset();
+			itemfactor.Reset();
+			ThemeSoundEffect->Stop(0);
 			GotoGameState(GAME_STATE_OVER);
 		}
 	}
