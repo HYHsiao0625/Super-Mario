@@ -84,14 +84,12 @@ namespace game_framework
 		CMovingBitmap charactorfire_left;
 		CMovingBitmap charactorbigfire;
 		CMovingBitmap charactorbigfire_left;
-		CMovingBitmap deadcharactor;
-		CMovingBitmap deadfirecharactor;
+
 		int		face = 1;
 		bool	isCrouching = true;
 		bool	isShotable = false;
 		bool	isDead = false;
 	private:
-		void	DeadAnimation();
 		CAudio *MarioSoundEffect = CAudio::Instance();
 		bool	isCollision = false;
 		bool	isFlipped = false;

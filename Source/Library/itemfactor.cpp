@@ -73,21 +73,21 @@ namespace game_framework
 					case 12:
 						itemList.push_back(new Mushroom());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(2);
 						itemTemp.push_back(1);
 						break;
 					case 13:
 						itemList.push_back(new Star());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(2);
 						itemTemp.push_back(2);
 						break;
 					case 14:
 						itemList.push_back(new FireFlower());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(0);
 						itemTemp.push_back(3);
 						break;
@@ -100,21 +100,21 @@ namespace game_framework
 					case 12:
 						itemList.push_back(new Mushroom());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(2);
 						itemTemp.push_back(1);
 						break;
 					case 13:
 						itemList.push_back(new Star());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(2);
 						itemTemp.push_back(2);
 						break;
 					case 14:
 						itemList.push_back(new FireFlower());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(0);
 						itemTemp.push_back(3);
 						break;
@@ -128,21 +128,21 @@ namespace game_framework
 					case 12:
 						itemList.push_back(new Mushroom());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(2);
 						itemTemp.push_back(1);
 						break;
 					case 13:
 						itemList.push_back(new Star());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft(((mario.GetLeft() / 32) * 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(2);
 						itemTemp.push_back(2);
 						break;
 					case 14:
 						itemList.push_back(new FireFlower());
 						itemList.back()->Load();
-						itemList.back()->SetTopLeft((mario.GetLeft() / 32) * 32, (mario_y_hit - 1) * 32);
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
 						itemList.back()->SetHorizontalSpeed(0);
 						itemTemp.push_back(3);
 						break;

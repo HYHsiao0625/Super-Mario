@@ -150,7 +150,6 @@ namespace game_framework {
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
 		CMovingBitmap finish;
-		CAudio *EndSoundEffect = CAudio::Instance();
 	private:
 		int counter;	// 倒數之計數器
 	};
