@@ -15,6 +15,8 @@ using namespace game_framework;
 
 CGameStateOver::CGameStateOver(CGame *g) : CGameState(g)
 {
+	
+	
 }
 
 void CGameStateOver::OnMove()
@@ -31,9 +33,11 @@ void CGameStateOver::OnInit()
 	finish.LoadBitmapByString({
 		"resources/finish.bmp"
 		});
+	
 }
 
 void CGameStateOver::OnShow()
 {
 	finish.ShowBitmap();
+	
 }
