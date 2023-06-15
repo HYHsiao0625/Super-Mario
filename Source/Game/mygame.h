@@ -55,6 +55,11 @@
 #include "../Library/star.h"
 #include "../Library/fireball.h"
 #include "../Library/fireflower.h"
+#include "../Library/axe.h"
+#include "../Library/axeturtle.h"
+
+
+
 
 namespace game_framework {
 	/////////////////////////////////////////////////////////////////////////////
@@ -114,13 +119,12 @@ namespace game_framework {
 	private:
 		void SwitchMap(int world, int level);
 		void LoadBackground();
-		void LoadMap(int world, int level);
 		void ShowMarioPostion();
 		string prestatus = "initial";
 
 		int world = 1;
 		int level = 1;
-
+		CAudio *ThemeSoundEffect = CAudio::Instance();
 		Mario mario;
 		Goomba goomba;
 		Enemyfactor enemyfactor;
@@ -129,7 +133,7 @@ namespace game_framework {
 		CMovingBitmap background;
 		CMovingBitmap floor;
 		CMovingBitmap switchAnimation;
-		CMovingBitmap finish;
+		
 	};
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -145,6 +149,7 @@ namespace game_framework {
 	protected:
 		void OnMove();									// 移動遊戲元素
 		void OnShow();									// 顯示這個狀態的遊戲畫面
+		CMovingBitmap finish;
 	private:
 		int counter;	// 倒數之計數器
 	};

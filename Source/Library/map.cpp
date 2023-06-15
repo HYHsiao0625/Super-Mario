@@ -39,7 +39,12 @@ namespace game_framework
 	{
 		vector<int> map_temp;
 		int mario_x = (mario.GetLeft() - GetLeft()) / 32;
-		int mario_y = (mario.GetTop() - 4) / 32;
+		int mario_y = (mario.GetTop()) / 32;
+
+		int mario_x_left = (mario.GetLeft() - GetLeft() + 4) / 32;
+		int mario_x_right = (mario.GetLeft() - GetLeft() + 28) / 32;
+		int mario_y_hit = (mario.GetTop() - 4) / 32;
+
 		for (int i = 0; i < height + 4; i++)
 		{
 			for (int j = 0; j < width; j++)
@@ -69,6 +74,7 @@ namespace game_framework
 					{
 						charactor[i][j].SetFrameIndexOfBitmap(0);
 					}
+					break;
 				case 13:								//產出星星的方塊
 					charactor[i][j].SetAnimation(200, false);
 					if (charactor[i][j].GetFrameIndexOfBitmap() == 4)
@@ -80,6 +86,7 @@ namespace game_framework
 					{
 						charactor[i][j].SetFrameIndexOfBitmap(0);
 					}
+					break;
 				case 14:								//產出火焰花的方塊
 					charactor[i][j].SetAnimation(200, false);
 					if (charactor[i][j].GetFrameIndexOfBitmap() == 4)
@@ -91,23 +98,55 @@ namespace game_framework
 					{
 						charactor[i][j].SetFrameIndexOfBitmap(0);
 					}
+					break;
 				default:
 					break;
 				}
 			}
 		}
-		if (mario.IsHitbox() == true)
+		if (mario.IsHitbox() == true && mario_y >= 0)
 		{
-			if (map_vector[mario_y][mario_x] == 2 || map_vector[mario_y][mario_x]==12 || map_vector[mario_y][mario_x] == 13 || map_vector[mario_y][mario_x] == 14) {
-				charactor[mario_y][mario_x].SetFrameIndexOfBitmap(4);
-				map_temp.push_back(mario_y);
+			if (map_vector[mario_y_hit][mario_x_right] == 2 || map_vector[mario_y_hit][mario_x_right]==12 || map_vector[mario_y_hit][mario_x_right] == 13 || map_vector[mario_y_hit][mario_x_right] == 14) {
+				charactor[mario_y_hit][mario_x_right].SetFrameIndexOfBitmap(4);
+				charactor[mario_y_hit][mario_x_right].is_used = true;
+				map_temp.push_back(mario_y_hit);
+				map_temp.push_back(mario_x_right);
+				resetblock_vector.push_back(map_temp);
+			}
+			else if (map_vector[mario_y_hit][mario_x] == 2 || map_vector[mario_y][mario_x]== 12 || map_vector[mario_y][mario_x] == 13 || map_vector[mario_y][mario_x] == 14) {
+				charactor[mario_y_hit][mario_x].SetFrameIndexOfBitmap(4);
+				charactor[mario_y_hit][mario_x].is_used = true;
+				map_temp.push_back(mario_y_hit);
 				map_temp.push_back(mario_x);
 				resetblock_vector.push_back(map_temp);
 			}
-			else if (map_vector[mario_y][mario_x + 1] == 2 || map_vector[mario_y][mario_x+1] == 12 || map_vector[mario_y][mario_x+1] == 13 || map_vector[mario_y][mario_x+1] == 14) {
-				charactor[mario_y][mario_x + 1].SetFrameIndexOfBitmap(4);
-				map_temp.push_back(mario_y);
-				map_temp.push_back(mario_x+1);
+			else if (map_vector[mario_y_hit][mario_x_left] == 2 || map_vector[mario_y][mario_x_left]== 12 || map_vector[mario_y][mario_x_left] == 13 || map_vector[mario_y][mario_x_left] == 14) {
+				charactor[mario_y_hit][mario_x_left].SetFrameIndexOfBitmap(4);
+				charactor[mario_y_hit][mario_x_left].is_used = true;
+				map_temp.push_back(mario_y_hit);
+				map_temp.push_back(mario_x_left);
+				resetblock_vector.push_back(map_temp);
+			}
+			//---------------------
+			if (map_vector[mario_y_hit][mario_x_right] == 15) 
+			{
+				charactor[mario_y_hit][mario_x_right].SetFrameIndexOfBitmap(1);
+				map_temp.push_back(mario_y_hit);
+				map_temp.push_back(mario_x_right);
+				resetblock_vector.push_back(map_temp);
+			}
+			else if (map_vector[mario_y_hit][mario_x] == 15) 
+			{
+				charactor[mario_y_hit][mario_x].SetFrameIndexOfBitmap(1);
+				map_temp.push_back(mario_y_hit);
+				map_temp.push_back(mario_x);
+				resetblock_vector.push_back(map_temp);
+			}
+			else if (map_vector[mario_y_hit][mario_x_left] == 15) 
+			{
+				charactor[mario_y_hit][mario_x_left].SetFrameIndexOfBitmap(1);
+				map_temp.push_back(mario_y_hit);
+				map_temp.push_back(mario_x_left);
 				resetblock_vector.push_back(map_temp);
 			}
 		}
@@ -238,6 +277,8 @@ namespace game_framework
 							"resources/flag4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					case 12:								//產出蘑菇的方塊
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
@@ -247,6 +288,8 @@ namespace game_framework
 							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					case 13:								//產出星星的方塊
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
@@ -256,6 +299,8 @@ namespace game_framework
 							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+
 					case 14:								//產出火焰花的方塊
 						charactor[i][j].LoadBitmapByString({
 							"resources/block2.bmp",
@@ -265,6 +310,14 @@ namespace game_framework
 							"resources/block2_4.bmp"
 							}, RGB(148, 148, 255));
 						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
+					case 15:								//隱藏的方塊
+						charactor[i][j].LoadBitmapByString({
+							"resources/empty.bmp",
+							"resources/block2_4.bmp"
+							}, RGB(148, 148, 255));
+						charactor[i][j].SetTopLeft(j * 32, i * 32);
+						break;
 					default:
 						break;
 					}

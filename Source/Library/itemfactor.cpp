@@ -58,64 +58,100 @@ namespace game_framework
 		int mario_y = (mario.GetTop()) / 32;*/
 
 		int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
-		int mario_y = (mario.GetTop() - 4) / 32;
+		int mario_y = (mario.GetTop()) / 32;
 
-		if (mario.IsHitbox() == true)
+		int mario_x_left = (mario.GetLeft() - map.GetLeft() + 4) / 32;
+		int mario_x_right = (mario.GetLeft() - map.GetLeft() + 28) / 32;
+		int mario_y_hit = (mario.GetTop() - 8) / 32;
+
+		if(mario_y >= 0)
 		{
-			if (map_vector[mario_y][mario_x] != 2 && map_charactor[mario_y][mario_x].GetFrameIndexOfBitmap() != 4) {
-				switch (map_vector[mario_y][mario_x]) {
-				case 12:
-					itemList.push_back(new Mushroom());
-					itemList.back()->Load();
-					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(2);
-					itemTemp.push_back(1);
-					break;
-				case 13:
-					itemList.push_back(new Star());
-					itemList.back()->Load();
-					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(2);
-					itemTemp.push_back(2);
-					break;
-				case 14:
-					itemList.push_back(new FireFlower());
-					itemList.back()->Load();
-					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(0);
-					itemTemp.push_back(3);
-					break;
-				default:
-					break;
+			if (mario.IsHitbox() == true)
+			{
+				if (map_vector[mario_y_hit][mario_x_right] != 2 && map_charactor[mario_y_hit][mario_x_right].GetFrameIndexOfBitmap() != 4) {
+					switch (map_vector[mario_y_hit][mario_x_right]) {
+					case 12:
+						itemList.push_back(new Mushroom());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(2);
+						itemTemp.push_back(1);
+						break;
+					case 13:
+						itemList.push_back(new Star());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(2);
+						itemTemp.push_back(2);
+						break;
+					case 14:
+						itemList.push_back(new FireFlower());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(0);
+						itemTemp.push_back(3);
+						break;
+					default:
+						break;
+					}
 				}
-			
-			}
-			if (map_vector[mario_y][mario_x + 1]!=2 && map_charactor[mario_y][mario_x + 1].GetFrameIndexOfBitmap() != 4) {
-				switch (map_vector[mario_y][mario_x+1]) {
-				case 12:
-					itemList.push_back(new Mushroom());
-					itemList.back()->Load();
-					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(2);
-					itemTemp.push_back(1);
-					break;
-				case 13:
-					itemList.push_back(new Star());
-					itemList.back()->Load();
-					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(2);
-					itemTemp.push_back(2);
-					break;
-				case 14:
-					itemList.push_back(new FireFlower());
-					itemList.back()->Load();
-					itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y - 1) * 32);
-					itemList.back()->SetHorizontalSpeed(0);
-					itemTemp.push_back(3);
-					break;
-				default:
-					break;
+				else if (map_vector[mario_y_hit][mario_x] != 2 && map_charactor[mario_y_hit][mario_x].GetFrameIndexOfBitmap() != 4) {
+					switch (map_vector[mario_y_hit][mario_x]) {
+					case 12:
+						itemList.push_back(new Mushroom());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(2);
+						itemTemp.push_back(1);
+						break;
+					case 13:
+						itemList.push_back(new Star());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(2);
+						itemTemp.push_back(2);
+						break;
+					case 14:
+						itemList.push_back(new FireFlower());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(0);
+						itemTemp.push_back(3);
+						break;
+					default:
+						break;
+					}
+
 				}
+				else if (map_vector[mario_y_hit][mario_x_left] != 2 && map_charactor[mario_y_hit][mario_x_left].GetFrameIndexOfBitmap() != 4) {
+					switch (map_vector[mario_y_hit][mario_x_left]) {
+					case 12:
+						itemList.push_back(new Mushroom());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(2);
+						itemTemp.push_back(1);
+						break;
+					case 13:
+						itemList.push_back(new Star());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(2);
+						itemTemp.push_back(2);
+						break;
+					case 14:
+						itemList.push_back(new FireFlower());
+						itemList.back()->Load();
+						itemList.back()->SetTopLeft(mario.GetLeft(), (mario_y_hit - 1) * 32);
+						itemList.back()->SetHorizontalSpeed(0);
+						itemTemp.push_back(3);
+						break;
+					default:
+						break;
+					}
+				}
+				
+				
 			}
 		}
 		//Collision(map);

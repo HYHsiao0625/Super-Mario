@@ -93,6 +93,12 @@ namespace game_framework
 				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
 				monster_list[i]->SetHorizontalSpeed(mosterSpeed);
 				break;
+			case 7: // missile怪物
+				monster_list.push_back(new AxeTurtle());
+				monster_list[i]->Load();
+				monster_list[i]->SetTopLeft(monsterPosLeft, monsterPosTop);
+				monster_list[i]->SetHorizontalSpeed(mosterSpeed);
+				break;
 			default:
 				break;
 			}

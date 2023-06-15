@@ -72,7 +72,7 @@ namespace game_framework
 				for (unsigned int j = 0; j < mario_fireball.size(); j++)
 				{
 					if (fireball[i].charactor.IsOverlap(fireball[i].charactor, mario_fireball[j].charactor) == true) {
-						Die();
+						fireball[i].Die();
 						mario_fireball[j].Die();
 					}
 				}

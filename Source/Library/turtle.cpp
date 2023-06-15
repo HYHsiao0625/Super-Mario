@@ -194,33 +194,38 @@ namespace game_framework
 	void Turtle::Collision(Map& map)
 	{
 		vector<vector<int>> map_vector = map.GetMap();
-		int turtle_y = GetTop() / 32;
+		int Turtle_x = (GetLeft() - map.GetLeft()) / 32;
+		int Turtle_y = GetTop() / 32;
+		if (Turtle_y > 0 && Turtle_x > 0) {
+			//left collision
+			if (horizontalSpeed > 0)
+			{
+				int Turtle_x = (GetLeft() - map.GetLeft() + 32) / 32;
+				if (map_vector[Turtle_y][Turtle_x + 1] != 0 || map_vector[Turtle_y + 2][Turtle_x + 1] == 0)
+				{
+					isCollision = true;
+				}
+				if (GetLeft() - map.GetLeft() == 0)
+				{
+					isCollision = true;
+				}
+			}//right collision
+			else if (horizontalSpeed < 0)
+			{
+				int Turtle_x = (GetLeft() - map.GetLeft()) / 32;
 
-		//left collision
-		if (horizontalSpeed > 0)
-		{
-			int turtle_x = (GetLeft() - map.GetLeft() + 32) / 32;
-			if (map_vector[turtle_y][turtle_x + 1] != 0)
-			{
-				isCollision = true;
+				if (map_vector[Turtle_y][Turtle_x] != 0 || map_vector[Turtle_y + 2][Turtle_x] == 0)
+				{
+					isCollision = true;
+				}
+				if (GetLeft() - map.GetLeft() == 0)
+				{
+					isCollision = true;
+				}
 			}
-			if (GetLeft() - map.GetLeft() == 0)
-			{
-				isCollision = true;
-			}
-		}//right collision
-		else if (horizontalSpeed < 0)
-		{
-			int turtle_x = (GetLeft() - map.GetLeft()) / 32;
-
-			if (map_vector[turtle_y][turtle_x] != 0)
-			{
-				isCollision = true;
-			}
-			if (GetLeft() - map.GetLeft() == 0)
-			{
-				isCollision = true;
-			}
+		}
+		else {
+			isCollision = true;
 		}
 	}
 	void Turtle::Collision(vector<Enemy*>& monster_list,int pos) {

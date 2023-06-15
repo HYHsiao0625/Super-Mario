@@ -62,7 +62,7 @@ namespace game_framework
 		}
 		int enemy_x = (GetLeft() - map.GetLeft()) / 32;
 		int enemy_y = GetTop() / 32;
-		if (abs(mario_x - enemy_x) <= 1 && abs(mario_y - enemy_y) <= 2)
+		if (abs(mario_x - enemy_x) <= 5)
 		{
 			trigger = 1;
 			

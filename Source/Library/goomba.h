@@ -8,6 +8,7 @@
 #include <map>
 #include "enemy.h"
 #include "enemyfireballfactor.h" 
+#include "audio.h"
 
 using namespace std;
 
@@ -17,8 +18,7 @@ namespace game_framework
 	{
 	public:
 		Goomba();
-		~Goomba();
-
+		~Goomba();		
 		void UpData(vector<Enemy*>& monster_list, Mario& mario, Map& map,int pos);
 		void Reset();
 		void Load();
@@ -32,7 +32,8 @@ namespace game_framework
 		void Collision(vector<Enemy*>& monster_list, int pos);
 		//-------------------
 		void OnGround(Map& map);
-		void LoadDieIamge();
+
+		bool trigger = 0;
 		
 	};
 }

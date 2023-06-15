@@ -54,9 +54,7 @@ void CGameStateRun::OnInit()  								// 遊戲的初值及圖形設定
 	map.Load(1, 1);
 	enemyfactor.Load(1, 1);
 	mario.Load();
-	//goomba.Load();
-	//goomba.SetTopLeft(50, 384);
-	//mushroom.Load();
+	
 }
 
 void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
@@ -64,12 +62,12 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 	if (nChar == 0x41)//left
 	{
-		mario.SetHorizontalSpeed(-16);
+		mario.SetHorizontalSpeed(-8);
 		mario.face = -1;
 	}
 	if (nChar == 0x44) //right
 	{
-		mario.SetHorizontalSpeed(16);
+		mario.SetHorizontalSpeed(8);
 		mario.face = 1;
 	}
 	if (nChar == VK_SPACE)
@@ -89,6 +87,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	if (nChar == 0x53)
 	{
 		mario.SetDown(true);
+	}
+	if (nChar == 0x5A)
+	{
+		OnBeginState();
 	}
 }
 
@@ -118,7 +120,7 @@ void CGameStateRun::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 	if (nChar == 0x4A)
 	{
-		if (level < 3)
+		if (level < 4)
 		{
 			SwitchMap(1, level + 1);
 			map.Clear();
@@ -167,10 +169,11 @@ void CGameStateRun::OnShow()
 
 	background.ShowBitmap();
 	map.Show();
+
 	mario.Show();
 	enemyfactor.Show();
 	itemfactor.Show();
-	if (mario.IsSwitchMap() == true && level < 3)
+	if (mario.IsSwitchMap() == true && level < 4)
 	{
 		mario.SetVerticalSpeed(8);
 		if (mario.IsOnGround() == true)
@@ -184,15 +187,12 @@ void CGameStateRun::OnShow()
 			OnBeginState();
 		}
 	}
-	else if (mario.IsSwitchMap() == true && level == 3)
+	else if (mario.IsSwitchMap() == true && level == 4)
 	{
 		mario.SetVerticalSpeed(8);
 		if (mario.IsOnGround() == true)
 		{
-			finish.LoadBitmapByString({
-			"resources/finish.bmp",
-				});
-			finish.ShowBitmap();
+			GotoGameState(GAME_STATE_OVER);
 		}
 	}
 	ShowMarioPostion();
@@ -276,6 +276,11 @@ void CGameStateRun::LoadBackground()
 		"resources/1-1 backgorund.bmp"
 		});
 	background.SetTopLeft(0, 0);
+
+	//Load ThemeSoundEffect
+	ThemeSoundEffect->Load(0, "Resources/SoundEffects/Theme.mp3");
+	ThemeSoundEffect->Play(0, true);
+
 }
 
 void CGameStateRun::ShowMarioPostion()
@@ -283,17 +288,15 @@ void CGameStateRun::ShowMarioPostion()
 	int mario_x = (mario.GetLeft() - map.GetLeft()) / 32;
 	int mario_y = mario.GetTop() / 32;
 	CDC *pDC = CDDraw::GetBackCDC();
-		CTextDraw::ChangeFontLog(pDC, 21, "微軟正黑體", RGB(0, 0, 0), 800);
+		CTextDraw::ChangeFontLog(pDC, 16, "微軟正黑體", RGB(0, 0, 0), 800);
 
-		CTextDraw::Print(pDC, 0, 0, "MARIO: ");
-		CTextDraw::Print(pDC, 0, 16, "x: " + std::to_string(mario.GetLeft() - map.GetLeft()));
-		CTextDraw::Print(pDC, 0, 32, "y: " + std::to_string(mario.GetTop()));
-		CTextDraw::Print(pDC, 0, 48, "Hnbeatable_time: " + std::to_string(mario.GetHnbeatable_time()));
-		CTextDraw::Print(pDC, 0, 64, "fireable: " + std::to_string(mario.IsDead()));
-		CTextDraw::Print(pDC, 0, 80, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
-
-		CTextDraw::Print(pDC, 0, 96, std::to_string(mario.IsDead()));
-		CTextDraw::Print(pDC, 0, 112, "type:" + std::to_string(map.GetMap()[mario_y][mario_x]));
+		CTextDraw::Print(pDC, 0, 0, "STAGE: " + to_string(world) + "-" + to_string(level));
+		CTextDraw::Print(pDC, 0, 16, "Hnbeatable_time: " + std::to_string(mario.GetHnbeatable_time()));
+		CTextDraw::Print(pDC, 0, 32, "fireable: " + std::to_string(mario.isShotable));
+		//CTextDraw::Print(pDC, 0, 48, "VerticalSpeed: " + std::to_string(mario.GetVerticalSpeed()));
+		CTextDraw::Print(pDC, 0, 72, "x: " + std::to_string(mario.GetLeft() - map.GetLeft()));
+		CTextDraw::Print(pDC, 0, 84, "y: " + std::to_string(mario.GetTop()));
+		//CTextDraw::Print(pDC, 0, 100, "IsOnGround: " + std::to_string(mario.IsOnGround()));
 		//CTextDraw::Print(pDC, 0, 128, "position:" + std::to_string(enemyfactor.Get_List()[0].GetTop()));
 	CDDraw::ReleaseBackCDC();
 

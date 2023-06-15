@@ -72,24 +72,27 @@ namespace game_framework
 	{
 		vector<vector<int>> map_vector = map.GetMap();
 		int mario_y = GetTop() / 32;
-
-		//left collision
-		if (horizontalSpeed > 0)
+		if (mario_y >= 0)
 		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x + 1] != 0)
+			//left collision
+			if (horizontalSpeed > 0)
 			{
-				isCollision = true;
-			}
-		}//right collision
-		else if (horizontalSpeed < 0)
-		{
-			int mario_x = (GetLeft() - map.GetLeft()) / 32;
-			if (map_vector[mario_y][mario_x] != 0)
+				int mario_x = (GetLeft() - map.GetLeft()) / 32;
+				if (map_vector[mario_y][mario_x + 1] != 0)
+				{
+					isCollision = true;
+				}
+			}//right collision
+			else if (horizontalSpeed < 0)
 			{
-				isCollision = true;
+				int mario_x = (GetLeft() - map.GetLeft()) / 32;
+				if (map_vector[mario_y][mario_x] != 0)
+				{
+					isCollision = true;
+				}
 			}
 		}
+		
 	}
 
 

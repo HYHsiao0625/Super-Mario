@@ -8,8 +8,7 @@
 #include <map>
 #include "enemy.h"
 #include "goomba.h"
-#include "enemyfireballfactor.h" 
-
+#include "enemyfireballfactor.h"
 
 using namespace std;
 
@@ -26,6 +25,7 @@ namespace game_framework
 		void UpData(Mario& mario, Map& map);
 		void SetTopLeft(int x, int y);
 		void Reset();
+		Goomba goomba;
 		vector<Enemy*> GetMonsterlist();
 
 		vector<int> monster_temp;

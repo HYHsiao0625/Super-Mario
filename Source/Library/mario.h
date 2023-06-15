@@ -12,6 +12,8 @@
 #include "enemyfireballfactor.h"
 #include "fireball.h"
 #include "goomba.h"
+#include "audio.h"
+
 using namespace std;
 
 namespace game_framework
@@ -19,6 +21,7 @@ namespace game_framework
 	class Mario
 	{
 	public:
+		
 		Mario();
 		void	UpData(Mario mario, Map& map, Enemyfactor& enemyfactor, Itemfactor& itemfactor);
 		void	Reset();
@@ -63,7 +66,7 @@ namespace game_framework
 		//--------------
 		void	Collision(Mario mario, Map& map);
 		void	Collision(Mario mario, Goomba goomba);
-		void    Collision(Enemyfactor& enemyfactor);
+		void    Collision(Enemyfactor& enemyfactor, Map& map);
 		void    Collision(Itemfactor& itemyfactor);
 
 		void	OnGround(Mario mario, Map& map);
@@ -77,12 +80,17 @@ namespace game_framework
 		CMovingBitmap charactor_left;
 		CMovingBitmap charactorbig_right;
 		CMovingBitmap charactorbig_left;
+		CMovingBitmap charactorfire;
+		CMovingBitmap charactorfire_left;
+		CMovingBitmap charactorbigfire;
+		CMovingBitmap charactorbigfire_left;
 
 		int		face = 1;
 		bool	isCrouching = true;
 		bool	isShotable = false;
 		bool	isDead = false;
 	private:
+		CAudio *MarioSoundEffect = CAudio::Instance();
 		bool	isCollision = false;
 		bool	isFlipped = false;
 		bool	isOnGround = false;
@@ -94,6 +102,8 @@ namespace game_framework
 		bool	isDown = false;
 		bool	isSwitchMap = false;
 		bool	isInvincibleMode = false;
+		bool	isOnJump = false;
+		bool	isPowerUP = false;
 		int		x;
 		int		y;
 
