@@ -168,7 +168,7 @@ BEGIN
     LTEXT           "This is a OOPL project made by NTUT-Hsiao, NTUT-Chen",IDC_STATIC,39,12,300,8,SS_NOPREFIX
     LTEXT           "We referenced the Mario Brothers to complete the project.",IDC_STATIC,39,24,300,8,SS_NOPREFIX
 	LTEXT           "It is a revised game framework, base on game framework made by woei-kae, Chen", IDC_STATIC, 39, 36, 300, 8
-    LTEXT           "Copyright (C) 2022-2023",IDC_STATIC,39,36,119,8
+    LTEXT           "Copyright (C) 2022-2023",IDC_STATIC,39,48,119,8
 END
 
 
