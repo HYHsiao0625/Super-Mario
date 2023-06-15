@@ -31,7 +31,7 @@ namespace game_framework
 		{
 			Die();
 		}
-		if (isCollision == true || cd==0)
+		if (isCollision == true || cd == 0)
 		{
 			Die();
 		}
