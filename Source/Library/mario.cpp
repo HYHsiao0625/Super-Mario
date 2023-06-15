@@ -563,7 +563,7 @@ namespace game_framework
 		}
 	}
 	*/
-	void Mario::Collision(Enemyfactor& enemyfactor,Map& map) {
+	void Mario::Collision(Enemyfactor& enemyfactor, Map& map) {
 		std::vector<Enemy*>enemylist = enemyfactor.GetMonsterlist();
 		std::vector<vector<int>>& mapvector = map.GetMap();
 		if (isCrouching == true)
@@ -590,8 +590,8 @@ namespace game_framework
 		{
 			for (unsigned int i = 0; i < enemylist.size(); i++) {
 				if (enemylist[i]->charactor.IsOverlap(charactorbig_right, enemylist[i]->charactor) && enemylist[i]->IsDead() == false) {
-					if (-18 <= charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop()
-						&& charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop() <= -14
+					if (-35 <= charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop()
+						&& charactorbig_right.GetTop() + charactorbig_right.GetHeight() - enemylist[i]->GetTop() <= 0
 						&& charactorbig_right.GetLeft() + charactorbig_right.GetWidth() > enemylist[i]->GetLeft()
 						&& charactorbig_right.GetLeft() < enemylist[i]->GetLeft() + enemylist[i]->GetWidth()
 						)
@@ -599,7 +599,7 @@ namespace game_framework
 					}
 					else
 					{
-						if (enemylist[i]->GetFrameIndexOfBitmap() != 2 && unbeatable_time==0) {
+						if (enemylist[i]->GetFrameIndexOfBitmap() != 2 && unbeatable_time == 0) {
 							if (GetLeft() > enemylist[i]->GetLeft())
 							{
 								int x = (GetLeft() + 64) / 32;
